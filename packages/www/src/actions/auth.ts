@@ -96,14 +96,30 @@ export async function signUp(
   redirect("/");
 }
 
-// Supabaseのエラーを日本語に翻訳する
 function translateError(error: AuthError): string {
   switch (error.code) {
     case "invalid_credentials":
       return "無効な認証情報です。メールアドレスとパスワードを確認してください。";
     case "email_exists":
       return "このメールアドレスは既に登録されています。";
+    case "user_already_exists":
+      return "このメールアドレスは既に登録されています。";
     default:
+      console.log("Supabase Auth Error:", error);
+
       return error.message;
   }
+}
+
+export async function signOut() {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error("Sign out error:", error);
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/");
 }
