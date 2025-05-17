@@ -27,6 +27,7 @@
   "homepage": "https://github.com/ke1ta1to/shokujin-wiki#readme",
   "packageManager": "pnpm@10.11.0",
   "devDependencies": {
-    "prettier": "^3.5.3"
+    "prettier": "^3.5.3",
+    "supabase": "^2.22.12"
   }
 }
