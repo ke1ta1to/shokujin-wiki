@@ -1,7 +1,7 @@
 "use client";
 
 import { createTheme } from "@mui/material";
-import { deepOrange } from "@mui/material/colors";
+import { deepOrange, grey } from "@mui/material/colors";
 
 const theme = createTheme({
   typography: {
@@ -9,6 +9,7 @@ const theme = createTheme({
   },
   palette: {
     primary: deepOrange,
+    secondary: grey,
   },
   components: {
     MuiPaper: {
@@ -23,6 +24,9 @@ const theme = createTheme({
       },
     },
     MuiButton: {
+      defaultProps: {
+        disableElevation: true,
+      },
       styleOverrides: {
         root: {
           textTransform: "none",

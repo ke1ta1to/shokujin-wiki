@@ -1,12 +1,12 @@
 import { Box, Button, Typography } from "@mui/material";
 import NextLink from "next/link";
 
+import { AppLayout } from "@/components/app-layout";
 import { AuthForm } from "@/components/auth-form";
-import { BaseLayout } from "@/components/base-layout";
 
 export default function SignUpPage() {
   return (
-    <BaseLayout>
+    <AppLayout>
       <Typography variant="h5" component="h1" align="center" my={4}>
         新規登録
       </Typography>
@@ -22,6 +22,6 @@ export default function SignUpPage() {
           ログインページへ
         </Button>
       </Box>
-    </BaseLayout>
+    </AppLayout>
   );
 }
