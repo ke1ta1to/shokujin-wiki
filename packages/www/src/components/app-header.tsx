@@ -1,6 +1,13 @@
 import { Menu as MenuIcon } from "@mui/icons-material";
-import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
-import Link from "next/link";
+import {
+  AppBar,
+  Button,
+  IconButton,
+  Link,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import NextLink from "next/link";
 
 import { SignOutButton } from "./sign-out-button";
 
@@ -25,16 +32,18 @@ export async function AppHeader() {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          {user?.email}
+          <Link component={NextLink} href="/" color="inherit" underline="none">
+            食神Wiki
+          </Link>
         </Typography>
         {user ? (
           <SignOutButton color="inherit">ログアウト</SignOutButton>
         ) : (
           <>
-            <Button component={Link} href="/signup" color="inherit">
+            <Button component={NextLink} href="/signup" color="inherit">
               新規登録
             </Button>
-            <Button component={Link} href="/signin" color="inherit">
+            <Button component={NextLink} href="/signin" color="inherit">
               ログイン
             </Button>
           </>
