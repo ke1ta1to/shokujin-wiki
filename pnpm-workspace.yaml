@@ -2,4 +2,5 @@ packages:
   - packages/*
 onlyBuiltDependencies:
   - sharp
+  - supabase
   - unrs-resolver
