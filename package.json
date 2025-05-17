@@ -1,0 +1,26 @@
+{
+  "name": "shokujin-wiki",
+  "version": "1.0.0",
+  "description": "Shokujin Wiki",
+  "private": true,
+  "scripts": {},
+  "engines": {
+    "node": ">=22.15.0",
+    "pnpm": ">=10.11.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ke1ta1to/shokujin-wiki.git"
+  },
+  "keywords": [
+    "react",
+    "nextjs"
+  ],
+  "author": "Keita Ito",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ke1ta1to/shokujin-wiki/issues"
+  },
+  "homepage": "https://github.com/ke1ta1to/shokujin-wiki#readme",
+  "packageManager": "pnpm@10.11.0"
+}
