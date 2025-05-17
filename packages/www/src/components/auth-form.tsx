@@ -6,6 +6,7 @@ import {
   Button,
   Divider,
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -15,6 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 import Image from "next/image";
+import type { ButtonHTMLAttributes } from "react";
 import { useState } from "react";
 
 import GitHubIcon from "@/assets/logo-github.svg";
@@ -26,9 +28,23 @@ type AuthMode = "signin" | "signup";
 
 type AuthFormProps = {
   mode?: AuthMode;
+  submitAction: ButtonHTMLAttributes<HTMLButtonElement>["formAction"];
+  disabled?: boolean;
+  error?: string;
+  errorFields?: {
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
+  };
 };
 
-export function AuthForm({ mode = "signin" }: AuthFormProps) {
+export function AuthForm({
+  mode = "signin",
+  submitAction,
+  disabled = false,
+  error,
+  errorFields,
+}: AuthFormProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => {
@@ -48,8 +64,11 @@ export function AuthForm({ mode = "signin" }: AuthFormProps) {
   };
 
   return (
-    <Box maxWidth={400} mx="auto">
+    <Box maxWidth={400} mx="auto" component="form">
       <Paper sx={{ p: 2 }}>
+        {/* 全体のエラー表示 */}
+        {error && <FormHelperText error>{error}</FormHelperText>}
+
         <TextField
           margin="normal"
           required
@@ -59,10 +78,21 @@ export function AuthForm({ mode = "signin" }: AuthFormProps) {
           label="メールアドレス"
           autoComplete={mode === "signin" ? "email" : "new-email"}
           autoFocus
+          type="email"
+          disabled={disabled}
+          error={!!errorFields?.email}
+          helperText={errorFields?.email}
+          slotProps={{
+            formHelperText: {
+              sx: { whiteSpace: "pre-line" },
+            },
+          }}
         />
 
         <FormControl variant="outlined" margin="normal" required fullWidth>
-          <InputLabel htmlFor="password">パスワード</InputLabel>
+          <InputLabel htmlFor="password" error={!!errorFields?.password}>
+            パスワード
+          </InputLabel>
           <OutlinedInput
             id="password"
             name="password"
@@ -78,18 +108,29 @@ export function AuthForm({ mode = "signin" }: AuthFormProps) {
                   onMouseDown={handleMouseDownPassword}
                   onMouseUp={handleMouseUpPassword}
                   edge="end"
+                  tabIndex={-1}
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             }
             label="パスワード"
+            disabled={disabled}
+            error={!!errorFields?.password}
           />
+          {errorFields?.password && (
+            <FormHelperText error sx={{ whiteSpace: "pre-line" }}>
+              {errorFields.password}
+            </FormHelperText>
+          )}
         </FormControl>
 
         {mode === "signup" && (
           <FormControl variant="outlined" margin="normal" required fullWidth>
-            <InputLabel htmlFor="confirm-password">
+            <InputLabel
+              htmlFor="confirm-password"
+              error={!!errorFields?.confirmPassword}
+            >
               パスワード（確認）
             </InputLabel>
             <OutlinedInput
@@ -105,17 +146,32 @@ export function AuthForm({ mode = "signin" }: AuthFormProps) {
                     onMouseDown={handleMouseDownPassword}
                     onMouseUp={handleMouseUpPassword}
                     edge="end"
+                    tabIndex={-1}
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               }
               label="パスワード（確認）"
+              disabled={disabled}
+              error={!!errorFields?.confirmPassword}
             />
+            {errorFields?.confirmPassword && (
+              <FormHelperText error sx={{ whiteSpace: "pre-line" }}>
+                {errorFields.confirmPassword}
+              </FormHelperText>
+            )}
           </FormControl>
         )}
 
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3 }}
+          formAction={submitAction}
+          disabled={disabled}
+        >
           {mode === "signin" ? "ログイン" : "新規登録"}
         </Button>
 
@@ -125,6 +181,7 @@ export function AuthForm({ mode = "signin" }: AuthFormProps) {
           <Button
             fullWidth
             variant="outlined"
+            color="inherit"
             startIcon={
               <Image
                 alt="Google"
@@ -133,6 +190,7 @@ export function AuthForm({ mode = "signin" }: AuthFormProps) {
                 style={{ width: 24, height: 24 }}
               />
             }
+            disabled={disabled}
           >
             Google
           </Button>
@@ -140,6 +198,7 @@ export function AuthForm({ mode = "signin" }: AuthFormProps) {
           <Button
             fullWidth
             variant="outlined"
+            color="inherit"
             startIcon={
               <Image
                 alt="GitHub"
@@ -148,6 +207,7 @@ export function AuthForm({ mode = "signin" }: AuthFormProps) {
                 style={{ width: 24, height: 24 }}
               />
             }
+            disabled={disabled}
           >
             GitHub
           </Button>
@@ -155,6 +215,7 @@ export function AuthForm({ mode = "signin" }: AuthFormProps) {
           <Button
             fullWidth
             variant="outlined"
+            color="inherit"
             startIcon={
               <Image
                 alt="X"
@@ -163,6 +224,7 @@ export function AuthForm({ mode = "signin" }: AuthFormProps) {
                 style={{ width: 24, height: 24 }}
               />
             }
+            disabled={disabled}
           >
             X
           </Button>
@@ -170,6 +232,7 @@ export function AuthForm({ mode = "signin" }: AuthFormProps) {
           <Button
             fullWidth
             variant="outlined"
+            color="inherit"
             startIcon={
               <Image
                 alt="LINE"
@@ -178,6 +241,7 @@ export function AuthForm({ mode = "signin" }: AuthFormProps) {
                 style={{ width: 24, height: 24 }}
               />
             }
+            disabled={disabled}
           >
             LINE
           </Button>
