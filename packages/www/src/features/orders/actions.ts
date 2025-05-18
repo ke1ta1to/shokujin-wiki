@@ -58,7 +58,7 @@ export async function createOrder(
   let imageUrl = "";
   if (image) {
     try {
-      const key = `${Date.now()}_${image.name}`;
+      const key = `user_uploads/${user.id}/${Date.now()}_${image.name}`;
       const arrayBuffer = await image.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
       await client.send(
