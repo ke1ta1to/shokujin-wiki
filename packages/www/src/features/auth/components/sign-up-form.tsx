@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 
 import { signUp } from "@/features/auth/actions";
-import { AuthForm } from "@/features/components/auth-form";
+import { AuthForm } from "@/features/auth/components/auth-form";
 
 export function SignUpForm() {
   const [state, formAction, pending] = useActionState(signUp, {

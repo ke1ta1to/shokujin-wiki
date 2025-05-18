@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import NextLink from "next/link";
 
-import { SignInForm } from "../../features/components/sign-in-form";
+import { SignInForm } from "../../features/auth/components/sign-in-form";
 
 import { AppLayout } from "@/components/app-layout";
 
