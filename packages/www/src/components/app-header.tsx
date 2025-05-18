@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import NextLink from "next/link";
 
-import { SignOutButton } from "./sign-out-button";
+import { HeaderMenuButton } from "./header-menu-button";
 
 import { createClient } from "@/utils/supabase/server";
 
@@ -20,7 +20,13 @@ export async function AppHeader() {
   } = await supabase.auth.getUser();
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="static"
+      color="inherit"
+      sx={{
+        borderTop: `4px solid var(--mui-palette-primary-main)`,
+      }}
+    >
       <Toolbar>
         <IconButton
           size="large"
@@ -37,7 +43,7 @@ export async function AppHeader() {
           </Link>
         </Typography>
         {user ? (
-          <SignOutButton color="inherit">ログアウト</SignOutButton>
+          <HeaderMenuButton />
         ) : (
           <>
             <Button component={NextLink} href="/signup" color="inherit">

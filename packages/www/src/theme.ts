@@ -4,8 +4,9 @@ import { createTheme } from "@mui/material";
 import { deepOrange, grey } from "@mui/material/colors";
 
 const theme = createTheme({
+  cssVariables: true,
   typography: {
-    fontFamily: "var(--fo]nt-noto-sans-jp)",
+    fontFamily: "var(--font-noto-sans-jp)",
   },
   palette: {
     primary: deepOrange,
