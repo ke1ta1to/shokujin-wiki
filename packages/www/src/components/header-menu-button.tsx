@@ -10,7 +10,7 @@ import NextLink from "next/link";
 import type { MouseEvent } from "react";
 import { useState } from "react";
 
-import { signOut } from "@/actions/auth";
+import { signOut } from "@/features/auth/actions";
 
 export function HeaderMenuButton() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
