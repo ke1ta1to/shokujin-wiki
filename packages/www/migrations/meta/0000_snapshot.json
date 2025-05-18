@@ -1,11 +1,11 @@
 {
-  "id": "4209fabf-27d7-4981-81c7-6730ee593627",
+  "id": "a0049084-dfcb-4efc-854a-8265a8f5ab05",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.pages": {
-      "name": "pages",
+    "public.orders": {
+      "name": "orders",
       "schema": "",
       "columns": {
         "id": {
@@ -14,27 +14,59 @@
           "primaryKey": true,
           "notNull": true
         },
-        "author_id": {
-          "name": "author_id",
+        "user_id": {
+          "name": "user_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image_urls": {
+          "name": "image_urls",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "pages_author_id_users_id_fk": {
-          "name": "pages_author_id_users_id_fk",
-          "tableFrom": "pages",
+        "orders_user_id_users_id_fk": {
+          "name": "orders_user_id_users_id_fk",
+          "tableFrom": "orders",
           "tableTo": "users",
           "schemaTo": "auth",
           "columnsFrom": [
-            "author_id"
+            "user_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },

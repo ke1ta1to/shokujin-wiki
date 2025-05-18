@@ -1,10 +1,20 @@
-import { pgTable, uuid } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { authUsers } from "drizzle-orm/supabase";
 
-import { authUsers } from "./supabase-schema";
-
-export const pages = pgTable("pages", {
+/**
+ * 注文記録
+ */
+export const orders = pgTable("orders", {
   id: uuid("id").primaryKey().notNull(),
-  authorId: uuid("author_id")
+  userId: uuid("user_id")
     .notNull()
-    .references(() => authUsers.id),
+    .references(() => authUsers.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  content: text("content").notNull(),
+  imageUrls: text("image_urls").array().notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .notNull()
+    .defaultNow()
+    .$onUpdateFn(() => new Date()),
 });

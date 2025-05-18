@@ -9,7 +9,7 @@
     "lint": "next lint",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "drizzle:dev": "dotenv -e .env.development.local -- drizzle-kit"
+    "drizzle": "dotenv -e .env.development.local -- drizzle-kit"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
