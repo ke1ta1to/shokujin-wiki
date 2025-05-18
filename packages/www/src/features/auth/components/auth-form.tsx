@@ -67,7 +67,11 @@ export function AuthForm({
     <Box maxWidth={400} mx="auto" component="form">
       <Paper sx={{ p: 2 }}>
         {/* 全体のエラー表示 */}
-        {error && <FormHelperText error>{error}</FormHelperText>}
+        {error && (
+          <FormHelperText error sx={{ whiteSpace: "pre-line" }}>
+            {error}
+          </FormHelperText>
+        )}
 
         <TextField
           margin="normal"

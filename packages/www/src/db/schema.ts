@@ -1,11 +1,11 @@
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { authUsers } from "drizzle-orm/supabase";
 
 /**
  * 注文記録
  */
 export const orders = pgTable("orders", {
-  id: uuid("id").primaryKey().notNull(),
+  id: serial("id").primaryKey().notNull(),
   userId: uuid("user_id")
     .notNull()
     .references(() => authUsers.id, { onDelete: "cascade" }),

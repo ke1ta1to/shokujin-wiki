@@ -1,5 +1,5 @@
 CREATE TABLE "orders" (
-	"id" uuid PRIMARY KEY NOT NULL,
+	"id" serial PRIMARY KEY NOT NULL,
 	"user_id" uuid NOT NULL,
 	"name" text NOT NULL,
 	"content" text NOT NULL,
