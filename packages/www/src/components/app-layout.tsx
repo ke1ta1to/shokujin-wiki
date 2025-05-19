@@ -9,7 +9,7 @@ export function AppLayout({ children }: { children?: ReactNode }) {
   return (
     <>
       <AppHeader />
-      <Container>{children}</Container>
+      <Container sx={{ paddingBottom: 20 }}>{children}</Container>
       <AppBottomNavigation />
       <NewOrderButton />
     </>
