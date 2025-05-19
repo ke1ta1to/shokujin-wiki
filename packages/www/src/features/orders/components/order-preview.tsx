@@ -30,14 +30,20 @@ export function OrderPreview({ order }: OrderPreviewProps) {
         {/* メインコンテンツ */}
         <Box sx={{ flex: 1 }}>
           {/* ヘッダー */}
-          <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-            <Typography variant="subtitle1" component="h2" fontWeight="bold">
+          <Box sx={{ display: "flex", alignItems: "start", mb: 1, gap: 1 }}>
+            <Typography
+              variant="subtitle1"
+              component="h2"
+              fontWeight="bold"
+              lineHeight={1}
+            >
               {order.name}
             </Typography>
             <Typography
               variant="body2"
               color="text.secondary"
               sx={{ ml: "auto" }}
+              whiteSpace="nowrap"
             >
               {formatDate(order.createdAt)}
             </Typography>

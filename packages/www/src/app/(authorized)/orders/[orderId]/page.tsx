@@ -27,7 +27,7 @@ export default async function OrderDetailPage({
 
   return (
     <AppLayout>
-      <Box maxWidth={600} margin="0 auto">
+      <Box maxWidth={600} margin="0 auto" pt={2}>
         <OrderDetail order={order} />
       </Box>
     </AppLayout>

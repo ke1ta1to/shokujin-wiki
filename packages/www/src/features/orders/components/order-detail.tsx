@@ -31,10 +31,10 @@ export function OrderDetail({ order }: OrderDetailProps) {
             {order.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            投稿日時: {formatDate(order.createdAt)}
+            {formatDate(order.createdAt)}
             {order.updatedAt &&
               order.updatedAt.getTime() !== order.createdAt.getTime() && (
-                <>更新日時: {formatDate(order.updatedAt)}</>
+                <>更新: {formatDate(order.updatedAt)}</>
               )}
           </Typography>
         </Box>
@@ -45,8 +45,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
         variant="body1"
         sx={{
           whiteSpace: "pre-line",
-          mb: 3,
-          lineHeight: 1.6,
+          mb: 2,
         }}
       >
         {order.content}

@@ -1,5 +1,6 @@
 import { Divider, Stack } from "@mui/material";
 import { desc } from "drizzle-orm";
+import NextLink from "next/link";
 
 import { AppLayout } from "@/components/app-layout";
 import { db } from "@/db/drizzle";
@@ -13,7 +14,6 @@ export default async function IndexPage() {
     .orderBy(desc(orders.createdAt));
   return (
     <AppLayout>
-      <h1>Index Page</h1>
       <Stack
         divider={<Divider />}
         sx={{
@@ -22,7 +22,13 @@ export default async function IndexPage() {
         }}
       >
         {orderList.map((order) => (
-          <OrderPreview order={order} key={order.id} />
+          <NextLink
+            href={`/orders/${order.id}`}
+            key={order.id}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <OrderPreview order={order} />
+          </NextLink>
         ))}
       </Stack>
     </AppLayout>
