@@ -15,8 +15,8 @@ const createOrderSchema = z.object({
     .instanceof(File)
     .optional()
     .refine(
-      (file) => !!file && file?.size <= 50 * 1024 * 1024,
-      "画像は50MB以下のファイルを4枚までアップロードできます",
+      (file) => !file || file.size <= 50 * 1024 * 1024,
+      "画像は50MB以下でアップロードしてください",
     ),
 });
 
@@ -56,7 +56,9 @@ export async function createOrder(
 
   // Storageに画像をアップロード
   let imageUrl = "";
-  if (image) {
+  console.log(image);
+
+  if (image && image.size > 0 && image.name !== "undefined") {
     try {
       const key = `user_uploads/${user.id}/${Date.now()}_${image.name}`;
       const arrayBuffer = await image.arrayBuffer();
