@@ -1,11 +1,16 @@
 "use client";
 
 import {
-  AccountCircle as AccountCircleIcon,
   Logout as LogoutIcon,
   Person as PersonIcon,
 } from "@mui/icons-material";
-import { IconButton, ListItemIcon, Menu, MenuItem } from "@mui/material";
+import {
+  Avatar,
+  ButtonBase,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import NextLink from "next/link";
 import type { MouseEvent } from "react";
 import { useState } from "react";
@@ -29,16 +34,15 @@ export function HeaderMenuButton() {
 
   return (
     <>
-      <IconButton
-        size="large"
+      <ButtonBase
         aria-label="account of current user"
         aria-controls="menu-appbar"
         aria-haspopup="true"
         onClick={handleOpen}
         color="inherit"
       >
-        <AccountCircleIcon />
-      </IconButton>
+        <Avatar alt="Upload new avatar" />
+      </ButtonBase>
       <Menu
         id="menu-appbar"
         anchorEl={anchorEl}
