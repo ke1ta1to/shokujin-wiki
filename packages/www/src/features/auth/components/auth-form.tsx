@@ -1,6 +1,9 @@
 "use client";
 
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
+} from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -114,7 +117,7 @@ export function AuthForm({
                   edge="end"
                   tabIndex={-1}
                 >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                 </IconButton>
               </InputAdornment>
             }
@@ -152,7 +155,7 @@ export function AuthForm({
                     edge="end"
                     tabIndex={-1}
                   >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                   </IconButton>
                 </InputAdornment>
               }
