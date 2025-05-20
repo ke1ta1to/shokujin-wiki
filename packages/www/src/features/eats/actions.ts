@@ -4,11 +4,11 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { z } from "zod";
 
 import { db } from "@/db/drizzle";
-import { orders } from "@/db/schema";
+import { eats } from "@/db/schema";
 import { client } from "@/utils/s3/client";
 import { createClient } from "@/utils/supabase/server";
 
-const createOrderSchema = z.object({
+const createEatSchema = z.object({
   name: z.string().min(1),
   content: z.string().min(1),
   image: z
@@ -20,19 +20,19 @@ const createOrderSchema = z.object({
     ),
 });
 
-interface CreateOrderResult
-  extends Partial<z.inferFlattenedErrors<typeof createOrderSchema>> {
+interface CreateEatResult
+  extends Partial<z.inferFlattenedErrors<typeof createEatSchema>> {
   success: boolean;
   message?: string;
 }
 
-export async function createOrder(
-  _prevState: CreateOrderResult,
+export async function createEat(
+  _prevState: CreateEatResult,
   formData: FormData,
-): Promise<CreateOrderResult> {
+): Promise<CreateEatResult> {
   const rawData = Object.fromEntries(formData.entries());
 
-  const parsedData = await createOrderSchema.safeParseAsync(rawData);
+  const parsedData = await createEatSchema.safeParseAsync(rawData);
 
   if (!parsedData.success) {
     return {
@@ -83,7 +83,7 @@ export async function createOrder(
 
   // データベースに保存
   try {
-    await db.insert(orders).values({
+    await db.insert(eats).values({
       name,
       content,
       userId: user.id,

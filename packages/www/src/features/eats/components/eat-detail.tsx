@@ -1,12 +1,12 @@
 import { Avatar, Box, Divider, Stack, Typography } from "@mui/material";
 
-import type { orders } from "@/db/schema";
+import type { eats } from "@/db/schema";
 
-interface OrderDetailProps {
-  order: typeof orders.$inferSelect;
+interface EatDetailProps {
+  eat: typeof eats.$inferSelect;
 }
 
-export function OrderDetail({ order }: OrderDetailProps) {
+export function EatDetail({ eat }: EatDetailProps) {
   // 日付のフォーマット関数
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat("ja-JP", {
@@ -19,7 +19,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
   };
 
   // 画像のURLが存在する場合の処理
-  const hasImages = order.imageUrls && order.imageUrls.length > 0;
+  const hasImages = eat.imageUrls && eat.imageUrls.length > 0;
 
   return (
     <Box>
@@ -28,13 +28,13 @@ export function OrderDetail({ order }: OrderDetailProps) {
         <Avatar />
         <Box>
           <Typography variant="h6" component="h1" fontWeight="bold">
-            {order.name}
+            {eat.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {formatDate(order.createdAt)}
-            {order.updatedAt &&
-              order.updatedAt.getTime() !== order.createdAt.getTime() && (
-                <>更新: {formatDate(order.updatedAt)}</>
+            {formatDate(eat.createdAt)}
+            {eat.updatedAt &&
+              eat.updatedAt.getTime() !== eat.createdAt.getTime() && (
+                <>更新: {formatDate(eat.updatedAt)}</>
               )}
           </Typography>
         </Box>
@@ -48,19 +48,19 @@ export function OrderDetail({ order }: OrderDetailProps) {
           mb: 2,
         }}
       >
-        {order.content}
+        {eat.content}
       </Typography>
 
       {/* 画像 */}
       {hasImages && (
         <Box>
           <Stack spacing={2}>
-            {order.imageUrls.map((imageUrl, index) => (
+            {eat.imageUrls.map((imageUrl, index) => (
               <Box key={index}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={`http://localhost:54321/storage/v1/object/public/images/${imageUrl}`}
-                  alt={`${order.name} - 画像 ${index + 1}`}
+                  alt={`${eat.name} - 画像 ${index + 1}`}
                   style={{
                     width: "100%",
                     maxHeight: 500,
@@ -79,10 +79,10 @@ export function OrderDetail({ order }: OrderDetailProps) {
       {/* 追加情報 */}
       <Box>
         <Typography variant="body2" color="text.secondary">
-          注文ID: {order.id}
+          注文ID: {eat.id}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          ユーザーID: {order.userId}
+          ユーザーID: {eat.userId}
         </Typography>
       </Box>
     </Box>

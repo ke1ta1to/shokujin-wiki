@@ -1,11 +1,11 @@
 {
-  "id": "bf97bc69-8e82-4067-a1f4-8293f433af4d",
+  "id": "d3c0e820-f1ca-477d-ba2d-746b15164e77",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.orders": {
-      "name": "orders",
+    "public.eats": {
+      "name": "eats",
       "schema": "",
       "columns": {
         "id": {
@@ -55,9 +55,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "orders_user_id_users_id_fk": {
-          "name": "orders_user_id_users_id_fk",
-          "tableFrom": "orders",
+        "eats_user_id_users_id_fk": {
+          "name": "eats_user_id_users_id_fk",
+          "tableFrom": "eats",
           "tableTo": "users",
           "schemaTo": "auth",
           "columnsFrom": [

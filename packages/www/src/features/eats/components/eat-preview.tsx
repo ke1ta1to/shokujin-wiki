@@ -1,12 +1,12 @@
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 
-import type { orders } from "@/db/schema";
+import type { eats } from "@/db/schema";
 
-interface OrderPreviewProps {
-  order: typeof orders.$inferSelect;
+interface EatPreviewProps {
+  eat: typeof eats.$inferSelect;
 }
 
-export function OrderPreview({ order }: OrderPreviewProps) {
+export function EatPreview({ eat }: EatPreviewProps) {
   // 日付のフォーマット関数
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat("ja-JP", {
@@ -19,7 +19,7 @@ export function OrderPreview({ order }: OrderPreviewProps) {
   };
 
   // 画像のURLが存在する場合、最初の1つを表示
-  const hasImages = order.imageUrls && order.imageUrls.length > 0;
+  const hasImages = eat.imageUrls && eat.imageUrls.length > 0;
 
   return (
     <Box sx={{ py: 2 }}>
@@ -37,7 +37,7 @@ export function OrderPreview({ order }: OrderPreviewProps) {
               fontWeight="bold"
               lineHeight={1}
             >
-              {order.name}
+              {eat.name}
             </Typography>
             <Typography
               variant="body2"
@@ -45,7 +45,7 @@ export function OrderPreview({ order }: OrderPreviewProps) {
               sx={{ ml: "auto" }}
               whiteSpace="nowrap"
             >
-              {formatDate(order.createdAt)}
+              {formatDate(eat.createdAt)}
             </Typography>
           </Box>
 
@@ -54,7 +54,7 @@ export function OrderPreview({ order }: OrderPreviewProps) {
             variant="body2"
             sx={{ whiteSpace: "pre-line", mb: 2, overflow: "hidden" }}
           >
-            {order.content}
+            {eat.content}
           </Typography>
 
           {/* 画像 */}
@@ -70,8 +70,8 @@ export function OrderPreview({ order }: OrderPreviewProps) {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`http://localhost:54321/storage/v1/object/public/images/${order.imageUrls[0]}`}
-                alt={order.name}
+                src={`http://localhost:54321/storage/v1/object/public/images/${eat.imageUrls[0]}`}
+                alt={eat.name}
                 style={{
                   width: "100%",
                   maxHeight: 300,

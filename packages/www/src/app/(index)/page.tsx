@@ -4,14 +4,11 @@ import NextLink from "next/link";
 
 import { AppLayout } from "@/components/app-layout";
 import { db } from "@/db/drizzle";
-import { orders } from "@/db/schema";
-import { OrderPreview } from "@/features/orders/components/order-preview";
+import { eats } from "@/db/schema";
+import { EatPreview } from "@/features/eats/components/eat-preview";
 
 export default async function IndexPage() {
-  const orderList = await db
-    .select()
-    .from(orders)
-    .orderBy(desc(orders.createdAt));
+  const eatList = await db.select().from(eats).orderBy(desc(eats.createdAt));
   return (
     <AppLayout>
       <Stack
@@ -21,13 +18,13 @@ export default async function IndexPage() {
           margin: "0 auto",
         }}
       >
-        {orderList.map((order) => (
+        {eatList.map((eat) => (
           <NextLink
-            href={`/orders/${order.id}`}
-            key={order.id}
+            href={`/eats/${eat.id}`}
+            key={eat.id}
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            <OrderPreview order={order} />
+            <EatPreview eat={eat} />
           </NextLink>
         ))}
       </Stack>

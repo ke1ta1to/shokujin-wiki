@@ -3,10 +3,10 @@
 import { Box, Button, FormHelperText, Paper, TextField } from "@mui/material";
 import { useActionState } from "react";
 
-import { createOrder } from "../actions";
+import { createEat } from "../actions";
 
-export function CreateOrderForm() {
-  const [state, formAction, pending] = useActionState(createOrder, {
+export function CreateEatForm() {
+  const [state, formAction, pending] = useActionState(createEat, {
     success: true,
   });
 

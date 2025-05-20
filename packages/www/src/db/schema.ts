@@ -4,7 +4,7 @@ import { authUsers } from "drizzle-orm/supabase";
 /**
  * 注文記録
  */
-export const orders = pgTable("orders", {
+export const eats = pgTable("eats", {
   id: serial("id").primaryKey().notNull(),
   userId: uuid("user_id")
     .notNull()
