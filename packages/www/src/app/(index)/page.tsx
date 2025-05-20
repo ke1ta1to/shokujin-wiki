@@ -4,11 +4,12 @@ import NextLink from "next/link";
 
 import { AppLayout } from "@/components/app-layout";
 import { db } from "@/db/drizzle";
-import { eats } from "@/db/schema";
 import { EatPreview } from "@/features/eats/components/eat-preview";
 
 export default async function IndexPage() {
-  const eatList = await db.select().from(eats).orderBy(desc(eats.createdAt));
+  const eatList = await db.query.eats.findMany({
+    orderBy: (e) => [desc(e.createdAt)],
+  });
   return (
     <AppLayout>
       <Stack
