@@ -8,6 +8,8 @@ import { theme } from "@/theme";
 
 import "./globals.css";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "食神Wiki",
 };

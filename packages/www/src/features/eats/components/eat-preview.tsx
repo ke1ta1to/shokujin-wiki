@@ -1,9 +1,9 @@
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 
-import type { eats } from "@/db/schema";
+import type { getEatWithProductById } from "../db";
 
 interface EatPreviewProps {
-  eat: typeof eats.$inferSelect;
+  eat: NonNullable<Awaited<ReturnType<typeof getEatWithProductById>>>;
 }
 
 export function EatPreview({ eat }: EatPreviewProps) {
@@ -37,7 +37,7 @@ export function EatPreview({ eat }: EatPreviewProps) {
               fontWeight="bold"
               lineHeight={1}
             >
-              {eat.name}
+              {eat.product?.name || eat.productNameSnapshot}
             </Typography>
             <Typography
               variant="body2"
@@ -54,7 +54,7 @@ export function EatPreview({ eat }: EatPreviewProps) {
             variant="body2"
             sx={{ whiteSpace: "pre-line", mb: 2, overflow: "hidden" }}
           >
-            {eat.content}
+            {eat.comment}
           </Typography>
 
           {/* 画像 */}
@@ -70,8 +70,8 @@ export function EatPreview({ eat }: EatPreviewProps) {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`http://localhost:54321/storage/v1/object/public/images/${eat.imageUrls[0]}`}
-                alt={eat.name}
+                src={`http://localhost:54321/storage/v1/object/public/images/${eat.imageUrls![0]}`}
+                alt={eat.product?.name || eat.productNameSnapshot}
                 style={{
                   width: "100%",
                   maxHeight: 300,

@@ -1,9 +1,9 @@
 import { Avatar, Box, Divider, Stack, Typography } from "@mui/material";
 
-import type { eats } from "@/db/schema";
+import type { getEatWithProductById } from "../db";
 
 interface EatDetailProps {
-  eat: typeof eats.$inferSelect;
+  eat: NonNullable<Awaited<ReturnType<typeof getEatWithProductById>>>;
 }
 
 export function EatDetail({ eat }: EatDetailProps) {
@@ -28,7 +28,7 @@ export function EatDetail({ eat }: EatDetailProps) {
         <Avatar />
         <Box>
           <Typography variant="h6" component="h1" fontWeight="bold">
-            {eat.name}
+            {eat.product?.name || eat.productNameSnapshot}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {formatDate(eat.createdAt)}
@@ -48,19 +48,19 @@ export function EatDetail({ eat }: EatDetailProps) {
           mb: 2,
         }}
       >
-        {eat.content}
+        {eat.comment}
       </Typography>
 
       {/* 画像 */}
       {hasImages && (
         <Box>
           <Stack spacing={2}>
-            {eat.imageUrls.map((imageUrl, index) => (
+            {eat.imageUrls?.map((imageUrl, index) => (
               <Box key={index}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={`http://localhost:54321/storage/v1/object/public/images/${imageUrl}`}
-                  alt={`${eat.name} - 画像 ${index + 1}`}
+                  alt={`${eat.product?.name || eat.productNameSnapshot} - 画像 ${index + 1}`}
                   style={{
                     width: "100%",
                     maxHeight: 500,
@@ -82,7 +82,7 @@ export function EatDetail({ eat }: EatDetailProps) {
           注文ID: {eat.id}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          ユーザーID: {eat.userId}
+          ユーザーID: {eat.createdBy}
         </Typography>
       </Box>
     </Box>

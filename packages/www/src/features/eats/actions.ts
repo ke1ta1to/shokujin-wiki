@@ -10,7 +10,7 @@ import { createClient } from "@/utils/supabase/server";
 
 const createEatSchema = z.object({
   name: z.string().min(1),
-  content: z.string().min(1),
+  comment: z.string().min(1),
   image: z
     .instanceof(File)
     .optional()
@@ -40,7 +40,7 @@ export async function createEat(
       ...parsedData.error.flatten(),
     };
   }
-  const { name, content, image } = parsedData.data;
+  const { comment, image } = parsedData.data;
 
   const supabase = await createClient();
   const {
@@ -84,12 +84,12 @@ export async function createEat(
   // データベースに保存
   try {
     await db.insert(eats).values({
-      name,
-      content,
-      userId: user.id,
+      comment,
+      createdBy: user.id,
       imageUrls: [imageUrl].filter(
         (url) => z.string().min(1).safeParse(url).success,
       ),
+      productNameSnapshot: "", // TODO
     });
   } catch {
     return {

@@ -42,12 +42,12 @@ export function CreateEatForm() {
           fullWidth
           margin="normal"
           required
-          name="content"
+          name="comment"
           autoComplete="off"
           multiline
           rows={4}
-          error={!!state.fieldErrors?.content}
-          helperText={state.fieldErrors?.content}
+          error={!!state.fieldErrors?.comment}
+          helperText={state.fieldErrors?.comment}
         />
         {/* 画像アップロードボタン */}
         <TextField

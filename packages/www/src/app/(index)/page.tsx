@@ -1,15 +1,13 @@
 import { Divider, Stack } from "@mui/material";
-import { desc } from "drizzle-orm";
 import NextLink from "next/link";
 
 import { AppLayout } from "@/components/app-layout";
-import { db } from "@/db/drizzle";
 import { EatPreview } from "@/features/eats/components/eat-preview";
+import { getEatsWithProduct } from "@/features/eats/db";
 
 export default async function IndexPage() {
-  const eatList = await db.query.eats.findMany({
-    orderBy: (e) => [desc(e.createdAt)],
-  });
+  const eatList = await getEatsWithProduct();
+
   return (
     <AppLayout>
       <Stack
