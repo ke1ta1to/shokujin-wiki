@@ -1,5 +1,6 @@
 import {
   Home as HomeIcon,
+  Restaurant as RestaurantIcon,
   Search as SearchIcon,
   Settings as SettingsIcon,
 } from "@mui/icons-material";
@@ -43,6 +44,11 @@ const actions = [
     label: "検索",
     icon: <SearchIcon />,
     href: "/search",
+  },
+  {
+    label: "商品一覧",
+    icon: <RestaurantIcon />,
+    href: "/products",
   },
   {
     label: "設定",
