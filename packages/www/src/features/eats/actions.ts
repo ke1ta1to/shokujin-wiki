@@ -56,7 +56,6 @@ export async function createEat(
 
   // Storageに画像をアップロード
   let imageUrl = "";
-  console.log(image);
 
   if (image && image.size > 0 && image.name !== "undefined") {
     try {
