@@ -8,16 +8,40 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
-import { useActionState } from "react";
+import type { InferInsertModel } from "drizzle-orm";
+import { useActionState, useEffect } from "react";
 
 import { createProduct } from "../actions";
 
-export function CreateProductForm() {
+import type { products } from "@/db/schema";
+
+interface CreateProductFormProps {
+  onCreate?: (created: InferInsertModel<typeof products>) => void;
+  defaultValues?: {
+    name?: string;
+    price?: number;
+  };
+}
+
+export function CreateProductForm({
+  onCreate,
+  defaultValues,
+}: CreateProductFormProps) {
   const [state, formAction, pending] = useActionState(createProduct, {
-    success: true,
+    status: "pending",
   });
 
-  const error = [...(state.formErrors || []), state.message].join("\n");
+  const error =
+    state.status === "error"
+      ? [...(state?.formErrors || []), state?.message].join("\n")
+      : null;
+
+  useEffect(() => {
+    if (state.status === "success") {
+      // 成功時の処理
+      onCreate?.(state.created);
+    }
+  }, [onCreate, state]);
 
   return (
     <Box maxWidth={400} mx="auto" component="form" action={formAction}>
@@ -39,8 +63,9 @@ export function CreateProductForm() {
           name="name"
           autoComplete="off"
           autoFocus
-          error={!!state.fieldErrors?.name}
-          helperText={state.fieldErrors?.name}
+          error={state.status === "error" && !!state.fieldErrors?.name}
+          helperText={state.status === "error" ? state.fieldErrors?.name : null}
+          defaultValue={defaultValues?.name}
         />
 
         {/* 価格 */}
@@ -62,8 +87,11 @@ export function CreateProductForm() {
               ),
             },
           }}
-          error={!!state.fieldErrors?.price}
-          helperText={state.fieldErrors?.price}
+          error={state.status === "error" && !!state.fieldErrors?.price}
+          helperText={
+            state.status === "error" ? state.fieldErrors?.price : null
+          }
+          defaultValue={defaultValues?.price}
         />
 
         {/* 送信ボタン */}

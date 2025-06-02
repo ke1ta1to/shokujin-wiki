@@ -46,12 +46,8 @@
           "name": "eat_options_eat_id_eats_id_fk",
           "tableFrom": "eat_options",
           "tableTo": "eats",
-          "columnsFrom": [
-            "eat_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["eat_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -59,12 +55,8 @@
           "name": "eat_options_option_id_options_id_fk",
           "tableFrom": "eat_options",
           "tableTo": "options",
-          "columnsFrom": [
-            "option_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["option_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -136,12 +128,8 @@
           "name": "eats_product_id_products_id_fk",
           "tableFrom": "eats",
           "tableTo": "products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["product_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         },
@@ -150,12 +138,8 @@
           "tableFrom": "eats",
           "tableTo": "users",
           "schemaTo": "auth",
-          "columnsFrom": [
-            "createdBy"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["createdBy"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -217,12 +201,8 @@
           "tableFrom": "options",
           "tableTo": "users",
           "schemaTo": "auth",
-          "columnsFrom": [
-            "created_by"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["created_by"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -232,9 +212,7 @@
         "options_name_unique": {
           "name": "options_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       },
       "policies": {},
@@ -304,12 +282,8 @@
           "tableFrom": "products",
           "tableTo": "users",
           "schemaTo": "auth",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         },
@@ -318,12 +292,8 @@
           "tableFrom": "products",
           "tableTo": "users",
           "schemaTo": "auth",
-          "columnsFrom": [
-            "updated_by"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["updated_by"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -333,9 +303,7 @@
         "products_name_unique": {
           "name": "products_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       },
       "policies": {},

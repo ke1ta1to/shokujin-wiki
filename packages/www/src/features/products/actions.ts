@@ -1,5 +1,6 @@
 "use server";
 
+import type { InferInsertModel } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "@/db/drizzle";
@@ -11,11 +12,12 @@ const createProductSchema = z.object({
   price: z.coerce.number().min(0, "価格は0以上である必要があります").optional(),
 });
 
-interface CreateProductResult
-  extends Partial<z.inferFlattenedErrors<typeof createProductSchema>> {
-  success: boolean;
-  message?: string;
-}
+type CreateProductResult =
+  | ({ status: "error"; message?: string } & Partial<
+      z.inferFlattenedErrors<typeof createProductSchema>
+    >)
+  | { status: "success"; created: InferInsertModel<typeof products> }
+  | { status: "pending" };
 
 export async function createProduct(
   _prevState: CreateProductResult,
@@ -27,7 +29,7 @@ export async function createProduct(
 
   if (!parsedData.success) {
     return {
-      success: false,
+      status: "error",
       ...parsedData.error.flatten(),
     };
   }
@@ -41,35 +43,43 @@ export async function createProduct(
 
   if (!user) {
     return {
-      success: false,
+      status: "error",
       message: "ログインしてください",
     };
   }
 
   // データベースに保存
+
+  // 作成したプロダクト
+  let createdProduct: InferInsertModel<typeof products>;
   try {
-    await db.insert(products).values({
-      name,
-      price,
-      userId: user.id,
-      updatedBy: user.id,
-    });
+    createdProduct = await db
+      .insert(products)
+      .values({
+        name,
+        price,
+        userId: user.id,
+        updatedBy: user.id,
+      })
+      .returning()
+      .then((res) => res[0]);
   } catch (error) {
     // ユニーク制約違反のエラーかどうかを判断
     if (error instanceof Error && error.message.includes("duplicate key")) {
       return {
-        success: false,
+        status: "error",
         message: "この商品名はすでに登録されています",
       };
     }
 
     return {
-      success: false,
+      status: "error",
       message: "不明なエラーが発生しました",
     };
   }
 
   return {
-    success: true,
+    status: "success",
+    created: createdProduct,
   };
 }

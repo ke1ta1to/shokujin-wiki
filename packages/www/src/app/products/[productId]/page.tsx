@@ -5,15 +5,15 @@ import { AppLayout } from "@/components/app-layout";
 import { getProductById } from "@/features/products/db";
 
 interface ProductDetailPageProps {
-  params: {
+  params: Promise<{
     productId: string;
-  };
+  }>;
 }
 
 export default async function ProductDetailPage({
   params,
 }: ProductDetailPageProps) {
-  const { productId } = params;
+  const { productId } = await params;
   const product = await getProductById(parseInt(productId));
 
   if (!product) {
