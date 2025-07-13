@@ -1,16 +1,21 @@
 "use client";
 
-import { Button, Paper, TextField } from "@mui/material";
+import { Alert, Button, Paper, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { createClient } from "@/utils/supabase/client";
 
 export function SignUpForm() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const supabase = createClient();
+    setIsLoading(true);
+    setError(null);
 
     const { email, password } = Object.fromEntries(
       new FormData(e.currentTarget),
@@ -34,6 +39,9 @@ export function SignUpForm() {
       const errorStr =
         error instanceof Error ? error.message : "An error occurred";
       console.log(errorStr);
+      setError(errorStr);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -50,6 +58,7 @@ export function SignUpForm() {
         autoFocus
         variant="outlined"
       />
+
       <TextField
         margin="normal"
         required
@@ -61,7 +70,10 @@ export function SignUpForm() {
         autoComplete="new-password"
         variant="outlined"
       />
-      <Button type="submit" fullWidth sx={{ mt: 2 }}>
+
+      {error && <Alert severity="error">{error}</Alert>}
+
+      <Button type="submit" fullWidth sx={{ mt: 2 }} disabled={isLoading}>
         サインアップ
       </Button>
     </Paper>
