@@ -1,5 +1,6 @@
 "use client";
 
+import { Button, Paper, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/client";
@@ -33,10 +34,32 @@ export function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <input name="email" type="email" placeholder="Email" required />
-      <input name="password" type="password" placeholder="Password" required />
-      <button type="submit">Login</button>
-    </form>
+    <Paper component="form" onSubmit={handleLogin} sx={{ padding: 2 }}>
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        id="email"
+        label="メールアドレス"
+        name="email"
+        autoComplete="email"
+        autoFocus
+        variant="outlined"
+      />
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        name="password"
+        label="パスワード"
+        type="password"
+        id="password"
+        autoComplete="current-password"
+        variant="outlined"
+      />
+      <Button type="submit" fullWidth sx={{ mt: 2 }}>
+        ログイン
+      </Button>
+    </Paper>
   );
 }

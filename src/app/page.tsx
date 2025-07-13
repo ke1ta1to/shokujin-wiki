@@ -1,7 +1,6 @@
 import { Button } from "@mui/material";
 import Link from "next/link";
 
-import { LoginForm } from "@/features/auth/components/login-form";
 import { LogoutButton } from "@/features/auth/components/logout-button";
 import { createClient } from "@/utils/supabase/server";
 
@@ -15,7 +14,6 @@ export default async function IndexPage() {
   return (
     <div>
       <h1>Index Page</h1>
-      <LoginForm />
       <Button component={Link} href="/auth/login">
         ログイン
       </Button>
