@@ -1,7 +1,7 @@
 "use client";
 
 import { Alert, Button, Paper, TextField } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import { createClient } from "@/utils/supabase/client";
@@ -10,6 +10,8 @@ export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const continueUrl = searchParams.get("continue") || "/";
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,8 +32,8 @@ export function LoginForm() {
         password,
       });
       if (error) throw error;
-      router.push("/");
       router.refresh();
+      router.push(continueUrl);
     } catch (error) {
       const errorStr =
         error instanceof Error ? error.message : "An error occurred";

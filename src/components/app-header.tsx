@@ -9,7 +9,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import NextLink from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { LogoutButton } from "@/features/auth/components/logout-button";
 
@@ -18,6 +18,20 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ authenticated = false }: AppHeaderProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const handleClickLogin = () => {
+    const continueUrl = `${pathname}?${searchParams.toString()}`;
+    router.push(`/auth/login?continue=${encodeURIComponent(continueUrl)}`);
+  };
+
+  const handleClickSignUp = () => {
+    const continueUrl = `${pathname}?${searchParams.toString()}`;
+    router.push(`/auth/sign-up?continue=${encodeURIComponent(continueUrl)}`);
+  };
+
   return (
     <AppBar position="static" color="default">
       <Toolbar>
@@ -38,14 +52,10 @@ export function AppHeader({ authenticated = false }: AppHeaderProps) {
             <LogoutButton variant="outlined">ログアウト</LogoutButton>
           ) : (
             <>
-              <Button
-                component={NextLink}
-                href="/auth/login"
-                variant="outlined"
-              >
+              <Button onClick={handleClickLogin} variant="outlined">
                 ログイン
               </Button>
-              <Button component={NextLink} href="/auth/sign-up">
+              <Button onClick={handleClickSignUp} variant="contained">
                 サインアップ
               </Button>
             </>
