@@ -4,7 +4,7 @@ import type { ButtonProps } from "@mui/material";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 type LogoutButtonProps = Omit<ButtonProps, "onClick">;
 

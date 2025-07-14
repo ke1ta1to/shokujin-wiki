@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function IndexPage() {
   const supabase = await createClient();

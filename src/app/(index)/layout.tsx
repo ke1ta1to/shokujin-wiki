@@ -1,5 +1,5 @@
 import { AppHeader } from "@/components/app-header";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function IndexLayout({
   children,

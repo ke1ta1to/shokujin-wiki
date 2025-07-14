@@ -4,7 +4,7 @@ import { Alert, Button, Paper, TextField } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
