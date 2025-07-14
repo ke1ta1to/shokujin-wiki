@@ -1,7 +1,7 @@
 import LoginContinueBlock from "@/features/auth/components/login-continue-block";
 import { createClient } from "@/lib/supabase/server";
 
-export default async function AuthorizedLayout({
+export default async function SettingsLayout({
   children,
 }: {
   children: React.ReactNode;
