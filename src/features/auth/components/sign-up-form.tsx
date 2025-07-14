@@ -1,6 +1,17 @@
 "use client";
 
-import { Alert, Button, Paper, TextField } from "@mui/material";
+import {
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
+} from "@mui/icons-material";
+import {
+  Alert,
+  Button,
+  IconButton,
+  InputAdornment,
+  Paper,
+  TextField,
+} from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -9,6 +20,7 @@ import { createClient } from "@/lib/supabase/client";
 export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const continueUrl = searchParams.get("continue") || "/";
@@ -19,11 +31,21 @@ export function SignUpForm() {
     setIsLoading(true);
     setError(null);
 
-    const { email, password } = Object.fromEntries(
+    const { email, password, confirmPassword } = Object.fromEntries(
       new FormData(e.currentTarget),
     );
-    if (typeof email !== "string" || typeof password !== "string") {
+    if (
+      typeof email !== "string" ||
+      typeof password !== "string" ||
+      typeof confirmPassword !== "string"
+    ) {
       throw new Error("Invalid form data");
+    }
+
+    if (password !== confirmPassword) {
+      setError("パスワードが一致しません");
+      setIsLoading(false);
+      return;
     }
 
     try {
@@ -67,10 +89,50 @@ export function SignUpForm() {
         fullWidth
         name="password"
         label="パスワード"
-        type="password"
+        type={showPassword ? "text" : "password"}
         id="password"
         autoComplete="new-password"
         variant="outlined"
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
+        }}
+      />
+
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        name="confirmPassword"
+        label="パスワード確認"
+        type={showPassword ? "text" : "password"}
+        id="confirmPassword"
+        autoComplete="new-password"
+        variant="outlined"
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
+        }}
       />
 
       {error && <Alert severity="error">{error}</Alert>}

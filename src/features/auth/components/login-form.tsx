@@ -1,6 +1,17 @@
 "use client";
 
-import { Alert, Button, Paper, TextField } from "@mui/material";
+import {
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
+} from "@mui/icons-material";
+import {
+  Alert,
+  Button,
+  IconButton,
+  InputAdornment,
+  Paper,
+  TextField,
+} from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -9,6 +20,7 @@ import { createClient } from "@/lib/supabase/client";
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const continueUrl = searchParams.get("continue") || "/";
@@ -64,10 +76,24 @@ export function LoginForm() {
         fullWidth
         name="password"
         label="パスワード"
-        type="password"
+        type={showPassword ? "text" : "password"}
         id="password"
         autoComplete="current-password"
         variant="outlined"
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
+        }}
       />
 
       {error && <Alert severity="error">{error}</Alert>}
