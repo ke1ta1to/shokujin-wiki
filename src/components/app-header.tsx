@@ -13,15 +13,13 @@ import NextLink from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { LogoutButton } from "@/features/auth/components/logout-button";
+import { useUser } from "@/features/auth/hooks/useUser";
 
-interface AppHeaderProps {
-  authenticated?: boolean;
-}
-
-export function AppHeader({ authenticated = false }: AppHeaderProps) {
+export function AppHeader() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { user } = useUser();
 
   const handleClickLogin = () => {
     const continueUrl = `${pathname}?${searchParams.toString()}`;
@@ -54,7 +52,7 @@ export function AppHeader({ authenticated = false }: AppHeaderProps) {
           My Application
         </Typography>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-          {authenticated ? (
+          {user ? (
             <LogoutButton variant="outlined">ログアウト</LogoutButton>
           ) : (
             <>

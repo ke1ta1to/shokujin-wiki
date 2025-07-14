@@ -1,4 +1,4 @@
-import { Container, Link, Typography } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import NextLink from "next/link";
 import { Suspense } from "react";
 
@@ -6,7 +6,7 @@ import { SignUpForm } from "@/features/auth/components/sign-up-form";
 
 export default async function SignUpPage() {
   return (
-    <Container maxWidth="xs" sx={{ mt: 8, mb: 4 }}>
+    <Box mt={8} mb={4} mx="auto" maxWidth={400}>
       <Typography variant="h4" component="h1" gutterBottom align="center">
         サインアップ
       </Typography>
@@ -22,6 +22,6 @@ export default async function SignUpPage() {
         </Link>
         してください。
       </Typography>
-    </Container>
+    </Box>
   );
 }
