@@ -1,3 +1,4 @@
+import prisma from "@/lib/prisma";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function IndexPage() {
@@ -7,11 +8,13 @@ export default async function IndexPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const users = await prisma.user.findMany();
+
   return (
     <div>
       <h1>Index Page</h1>
-
       <pre>{JSON.stringify(user, null, 2)}</pre>
+      <pre>{JSON.stringify(users, null, 2)}</pre>
     </div>
   );
 }

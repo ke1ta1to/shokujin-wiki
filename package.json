@@ -10,7 +10,8 @@
     "lint:fix": "next lint --fix",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prisma": "dotenv -e .env.local -- prisma"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -19,9 +20,11 @@
     "@mui/icons-material": "^7.2.0",
     "@mui/material": "^7.2.0",
     "@mui/material-nextjs": "^7.2.0",
+    "@prisma/client": "6.11.1",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.50.5",
     "next": "^15.3.5",
+    "prisma": "^6.11.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
@@ -31,12 +34,17 @@
     "@types/node": "^24.0.13",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^9.31.0",
     "eslint-config-next": "^15.3.5",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.1.7",
     "prettier": "^3.6.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }
