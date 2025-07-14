@@ -10,24 +10,23 @@ import {
   Typography,
 } from "@mui/material";
 import NextLink from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { LogoutButton } from "@/features/auth/components/logout-button";
 import { useUser } from "@/features/auth/hooks/useUser";
+import { useContinueUrl } from "@/hooks/useContinueUrl";
 
 export function AppHeader() {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const router = useRouter();
   const { user } = useUser();
 
+  const { continueUrl } = useContinueUrl();
+
   const handleClickLogin = () => {
-    const continueUrl = `${pathname}?${searchParams.toString()}`;
     router.push(`/auth/login?continue=${encodeURIComponent(continueUrl)}`);
   };
 
   const handleClickSignUp = () => {
-    const continueUrl = `${pathname}?${searchParams.toString()}`;
     router.push(`/auth/sign-up?continue=${encodeURIComponent(continueUrl)}`);
   };
 
