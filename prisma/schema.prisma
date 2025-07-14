@@ -15,7 +15,46 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+// ユーザー
 model User {
   id     Int    @id @default(autoincrement())
-  authId String @unique
+  authId String @unique // Supabase Auth ID
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Review  Review[]
+  Product Product[]
+}
+
+// 注文記録（投稿）
+model Review {
+  id Int @id @default(autoincrement())
+
+  comment   String
+  imageUrls String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  productId Int?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+
+  name       String
+  price      Int
+  isVerified Boolean @default(false) // 商品が承認済みかどうか
+
+  userId Int?
+  user   User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Review    Review[]
 }
