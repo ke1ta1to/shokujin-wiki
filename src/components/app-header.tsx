@@ -9,6 +9,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import NextLink from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { LogoutButton } from "@/features/auth/components/logout-button";
@@ -44,7 +45,12 @@ export function AppHeader({ authenticated = false }: AppHeaderProps) {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography
+          variant="h6"
+          component={NextLink}
+          href="/"
+          sx={{ flexGrow: 1, textDecoration: "none", color: "inherit" }}
+        >
           My Application
         </Typography>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>

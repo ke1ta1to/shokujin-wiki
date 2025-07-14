@@ -1,5 +1,6 @@
 import { Container, Link, Typography } from "@mui/material";
 import NextLink from "next/link";
+import { Suspense } from "react";
 
 import { SignUpForm } from "@/features/auth/components/sign-up-form";
 
@@ -10,7 +11,9 @@ export default async function SignUpPage() {
         サインアップ
       </Typography>
 
-      <SignUpForm />
+      <Suspense>
+        <SignUpForm />
+      </Suspense>
 
       <Typography variant="body2" sx={{ mt: 2 }}>
         既にアカウントをお持ちの場合は、
