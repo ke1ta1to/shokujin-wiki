@@ -9,7 +9,7 @@ import { createClient } from "@/lib/supabase/client";
 /**
  * 認証状態変更時のユーザー同期を管理するProvider
  */
-export function AuthSyncProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const supabase = createClient();
 

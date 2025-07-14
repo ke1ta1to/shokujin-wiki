@@ -1,5 +1,5 @@
-import { AuthSyncProvider } from "@/features/auth/components/auth-sync-provider";
+import { AuthProvider } from "@/features/auth/components/auth-provider";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-  return <AuthSyncProvider>{children}</AuthSyncProvider>;
+  return <AuthProvider>{children}</AuthProvider>;
 }
