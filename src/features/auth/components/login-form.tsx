@@ -31,6 +31,7 @@ export function LoginForm() {
       });
       if (error) throw error;
       router.push("/");
+      router.refresh();
     } catch (error) {
       const errorStr =
         error instanceof Error ? error.message : "An error occurred";

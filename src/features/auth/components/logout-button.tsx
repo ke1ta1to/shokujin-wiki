@@ -14,7 +14,7 @@ export function LogoutButton(props: LogoutButtonProps) {
   const logout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/");
+    router.refresh();
   };
 
   return <Button {...props} onClick={logout} />;
