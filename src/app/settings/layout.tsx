@@ -1,19 +1,9 @@
-import LoginContinueBlock from "@/features/auth/components/login-continue-block";
-import { createClient } from "@/lib/supabase/server";
+import AuthProtected from "@/features/auth/components/auth-protected";
 
 export default async function SettingsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return <LoginContinueBlock />;
-  }
-
-  return children;
+  return <AuthProtected>{children}</AuthProtected>;
 }
