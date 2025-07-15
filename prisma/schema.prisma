@@ -44,10 +44,11 @@ model Review {
   product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
 }
 
+// 商品
 model Product {
   id Int @id @default(autoincrement())
 
-  name       String
+  name       String  @unique
   price      Int
   isVerified Boolean @default(false) // 商品が承認済みかどうか
 
