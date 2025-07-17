@@ -15,6 +15,9 @@ import { ProductPreviewCard } from "@/features/product/components/product-previe
 import prisma from "@/lib/prisma";
 import { getPaginationParams } from "@/utils/pagination";
 
+const DEFAULT_PAGE_LIMIT = 50;
+const PAGE_OPTIONS = [50, 100, 200];
+
 interface ProductsPageProps {
   searchParams: Promise<{
     page?: string;
@@ -27,7 +30,9 @@ export default async function ProductsPage({
 }: ProductsPageProps) {
   const params = await searchParams;
 
-  const { currentPage, limit, skip, take } = getPaginationParams(params);
+  const { currentPage, limit, skip, take } = getPaginationParams(params, {
+    defaultLimit: DEFAULT_PAGE_LIMIT,
+  });
 
   const [totalCount, products] = await Promise.all([
     prisma.product.count(),
@@ -80,6 +85,7 @@ export default async function ProductsPage({
         totalCount={totalCount}
         currentPage={currentPage}
         limit={limit}
+        limitOptions={PAGE_OPTIONS}
       />
     </Box>
   );
