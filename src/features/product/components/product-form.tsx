@@ -13,7 +13,7 @@ import { createProduct } from "../actions/product-actions";
 
 import type { Product } from "@/generated/prisma";
 
-interface NewProductFormProps {
+interface ProductFormProps {
   onCreate?: (product: Product) => void;
   defaultValues?: {
     name?: string;
@@ -21,10 +21,7 @@ interface NewProductFormProps {
   };
 }
 
-export function NewProductForm({
-  onCreate,
-  defaultValues,
-}: NewProductFormProps) {
+export function ProductForm({ onCreate, defaultValues }: ProductFormProps) {
   const [state, formAction, pending] = useActionState(createProduct, {
     status: "pending",
   });

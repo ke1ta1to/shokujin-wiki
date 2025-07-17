@@ -6,7 +6,7 @@ import { SignUpForm } from "@/features/auth/components/sign-up-form";
 
 export default async function SignUpPage() {
   return (
-    <Box mt={8} mb={4} mx="auto" maxWidth={400}>
+    <Box mt={8} mx="auto" maxWidth={400}>
       <Typography variant="h4" component="h1" gutterBottom align="center">
         サインアップ
       </Typography>

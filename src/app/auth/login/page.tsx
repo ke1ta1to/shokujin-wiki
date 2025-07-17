@@ -6,7 +6,7 @@ import { LoginForm } from "@/features/auth/components/login-form";
 
 export default async function LoginPage() {
   return (
-    <Box mt={8} mb={4} mx="auto" maxWidth={400}>
+    <Box mt={8} mx="auto" maxWidth={400}>
       <Typography variant="h4" component="h1" gutterBottom align="center">
         ログイン
       </Typography>

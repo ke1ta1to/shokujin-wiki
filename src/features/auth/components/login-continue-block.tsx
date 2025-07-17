@@ -14,7 +14,7 @@ export default function LoginContinueBlock() {
   };
 
   return (
-    <Box mt={8} mb={4}>
+    <Box mt={8}>
       <Typography variant="h4" component="h1" gutterBottom align="center">
         続けるにはログインが必要です
       </Typography>

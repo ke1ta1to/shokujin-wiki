@@ -1,4 +1,5 @@
 import { Container } from "@mui/material";
+import { Toaster } from "sonner";
 
 import { AppBottomNavigation } from "./app-bottom-navigation";
 import { AppHeader } from "./app-header";
@@ -11,6 +12,7 @@ export async function AppLayout({ children }: { children: React.ReactNode }) {
       <AppHeader />
       <Container sx={{ paddingBottom: 20 }}>{children}</Container>
       <AppBottomNavigation />
+      <Toaster />
     </AuthProvider>
   );
 }
