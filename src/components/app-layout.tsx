@@ -10,7 +10,7 @@ export async function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
       <AppHeader />
-      <Container sx={{ paddingBottom: 20 }}>{children}</Container>
+      <Container sx={{ paddingBottom: 8, paddingTop: 4 }}>{children}</Container>
       <AppBottomNavigation />
       <Toaster />
     </AuthProvider>
