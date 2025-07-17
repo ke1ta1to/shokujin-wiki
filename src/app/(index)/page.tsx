@@ -1,7 +1,7 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
 
 import { Pagination } from "@/components/pagination";
-import { ReviewItem } from "@/features/review/components/review-item";
+import { ReviewPreview } from "@/features/review/components/review-preview";
 import prisma from "@/lib/prisma";
 import { getPaginationParams } from "@/utils/pagination";
 
@@ -49,7 +49,7 @@ export default async function IndexPage({ searchParams }: IndexPageProps) {
         <Box maxWidth="sm" mx="auto">
           <Stack spacing={1} divider={<Divider />}>
             {reviews.map((review) => (
-              <ReviewItem key={review.id} review={review} />
+              <ReviewPreview key={review.id} review={review} />
             ))}
           </Stack>
         </Box>

@@ -1,18 +1,19 @@
 import { Avatar, Box, Chip, Stack, Typography } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
 import { ja } from "date-fns/locale";
-import Link from "next/link";
+import Image from "next/image";
+import NextLink from "next/link";
 
 import type { Product, Review, User } from "@/generated/prisma";
 
-interface ReviewItemProps {
+interface ReviewPreviewProps {
   review: Review & {
     user: User;
     product?: Product | null;
   };
 }
 
-export function ReviewItem({ review }: ReviewItemProps) {
+export function ReviewPreview({ review }: ReviewPreviewProps) {
   const formattedDate = formatDistanceToNow(new Date(review.createdAt), {
     addSuffix: true,
     locale: ja,
@@ -24,7 +25,7 @@ export function ReviewItem({ review }: ReviewItemProps) {
       <Avatar>{review.user.id}</Avatar>
 
       {/* メインコンテンツ */}
-      <Box sx={{ flex: 1 }}>
+      <Stack sx={{ flex: 1 }} spacing={1}>
         <Stack
           direction="row"
           spacing={2}
@@ -43,12 +44,12 @@ export function ReviewItem({ review }: ReviewItemProps) {
 
           {/* 商品タグ */}
           {review.product && (
-            <Link
+            <NextLink
               href={`/products/${review.product.id}`}
               style={{ textDecoration: "none" }}
             >
               <Chip label={review.product.name} size="small" clickable />
-            </Link>
+            </NextLink>
           )}
         </Stack>
 
@@ -60,19 +61,25 @@ export function ReviewItem({ review }: ReviewItemProps) {
         {/* 画像 */}
         {review.imageUrls.length > 0 && (
           <Box
-            component="img"
-            src={review.imageUrls[0]}
-            alt=""
             sx={{
+              position: "relative",
               width: "100%",
-              maxHeight: 300,
-              objectFit: "cover",
+              height: 300,
               borderRadius: 2,
-              mt: 1,
+              overflow: "hidden",
             }}
-          />
+          >
+            <Image
+              src={review.imageUrls[0]}
+              alt=""
+              fill
+              style={{ objectFit: "cover" }}
+              sizes="(max-width: 600px) 100vw, 600px"
+              priority={false}
+            />
+          </Box>
         )}
-      </Box>
+      </Stack>
     </Stack>
   );
 }

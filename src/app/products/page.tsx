@@ -8,7 +8,7 @@ import {
   Box,
   Divider,
 } from "@mui/material";
-import Link from "next/link";
+import NextLink from "next/link";
 
 import { Pagination } from "@/components/pagination";
 import { ProductPreviewCard } from "@/features/product/components/product-preview-card";
@@ -57,7 +57,7 @@ export default async function ProductsPage({
       </Typography>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
-          <Link href="/products/new">
+          <NextLink href="/products/new">
             <Card sx={{ height: "100%", minHeight: 100 }}>
               <CardActionArea sx={{ height: "100%" }}>
                 <CardContent
@@ -72,7 +72,7 @@ export default async function ProductsPage({
                 </CardContent>
               </CardActionArea>
             </Card>
-          </Link>
+          </NextLink>
         </Grid>
         {products.map((product) => (
           <Grid key={product.id} size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
