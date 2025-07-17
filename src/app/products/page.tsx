@@ -5,22 +5,48 @@ import {
   CardContent,
   Grid,
   Typography,
+  Box,
+  Divider,
 } from "@mui/material";
 import Link from "next/link";
 
+import { Pagination } from "@/components/pagination";
 import { ProductPreviewCard } from "@/features/product/components/product-preview-card";
 import prisma from "@/lib/prisma";
+import { getPaginationParams } from "@/utils/pagination";
 
-export default async function ProductsPage() {
-  const products = await prisma.product.findMany({
-    include: {
-      _count: {
-        select: { Review: true },
+interface ProductsPageProps {
+  searchParams: Promise<{
+    page?: string;
+    limit?: string;
+  }>;
+}
+
+export default async function ProductsPage({
+  searchParams,
+}: ProductsPageProps) {
+  const params = await searchParams;
+
+  const { currentPage, limit, skip, take } = getPaginationParams(params);
+
+  const [totalCount, products] = await Promise.all([
+    prisma.product.count(),
+    prisma.product.findMany({
+      skip,
+      take,
+      include: {
+        _count: {
+          select: { Review: true },
+        },
       },
-    },
-  });
+      orderBy: {
+        createdAt: "desc",
+      },
+    }),
+  ]);
+
   return (
-    <>
+    <Box>
       <Typography variant="h4" component="h1" gutterBottom align="center">
         商品一覧
       </Typography>
@@ -49,6 +75,12 @@ export default async function ProductsPage() {
           </Grid>
         ))}
       </Grid>
-    </>
+      <Divider sx={{ my: 4 }} />
+      <Pagination
+        totalCount={totalCount}
+        currentPage={currentPage}
+        limit={limit}
+      />
+    </Box>
   );
 }
