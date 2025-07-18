@@ -4,6 +4,7 @@ import { Pagination } from "@/components/pagination";
 import { CreateReviewForm } from "@/features/review/components/create-review-form";
 import { ReviewPreview } from "@/features/review/components/review-preview";
 import prisma from "@/lib/prisma";
+import { createClient } from "@/lib/supabase/server";
 import { getPaginationParams } from "@/utils/pagination";
 
 const DEFAULT_REVIEW_LIMIT = 20;
@@ -38,13 +39,19 @@ export default async function IndexPage({ searchParams }: IndexPageProps) {
     }),
   ]);
 
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <>
-      <Box maxWidth="sm" mx="auto" mb={4}>
-        <CreateReviewForm />
-      </Box>
-
-      <Divider />
+      {user != null && (
+        <Box maxWidth="sm" mx="auto">
+          <CreateReviewForm />
+          <Divider sx={{ mt: 4 }} />
+        </Box>
+      )}
 
       {reviews.length === 0 ? (
         <Box py={8} textAlign="center">

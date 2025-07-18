@@ -8,18 +8,23 @@ import {
   FormHelperText,
   TextField,
   Typography,
+  createFilterOptions,
 } from "@mui/material";
+import type { FilterOptionsState } from "@mui/material/useAutocomplete";
 import {
   useActionState,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
 
 import { createReview, searchProducts } from "../actions/review-actions";
 
-import type { Review } from "@/generated/prisma";
+import { CreateProductDialog } from "./create-product-dialog";
+
+import type { Product, Review } from "@/generated/prisma";
 import { formatPrice } from "@/utils/format-price";
 
 interface ReviewFormProps {
@@ -35,7 +40,14 @@ type ProductOption = {
   id: number;
   name: string;
   price: number;
+  inputValue?: string; // freeSoloで新しい商品を追加する場合
 };
+
+type ProductOptionWithInput = ProductOption & {
+  inputValue: string;
+};
+
+const filter = createFilterOptions<ProductOption>();
 
 export function ReviewForm({ onCreate, defaultValues }: ReviewFormProps) {
   const [state, formAction, pending] = useActionState(createReview, {
@@ -50,6 +62,10 @@ export function ReviewForm({ onCreate, defaultValues }: ReviewFormProps) {
   const [productInputValue, setProductInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  // 商品作成ダイアログの状態
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [newProductName, setNewProductName] = useState("");
 
   const error =
     state.status === "error"
@@ -125,6 +141,82 @@ export function ReviewForm({ onCreate, defaultValues }: ReviewFormProps) {
     };
   }, []);
 
+  // 商品作成ダイアログのハンドラー
+  const handleCloseDialog = useCallback(() => {
+    setDialogOpen(false);
+    setNewProductName("");
+  }, []);
+
+  // AutoCompleteコールバック関数
+  const getOptionLabel = useCallback((option: ProductOption | string) => {
+    // for example value selected with enter, right from the input
+    if (typeof option === "string") {
+      return option;
+    }
+    if (option.inputValue) {
+      return option.inputValue;
+    }
+    return option.name;
+  }, []);
+
+  const renderOption = useCallback(
+    (
+      props: React.HTMLAttributes<HTMLLIElement> & {
+        key: React.Key;
+      },
+      option: ProductOption,
+    ) => {
+      const { key, ...optionProps } = props;
+      const isNewProduct = Boolean(option.inputValue);
+
+      return (
+        <Box key={key} component="li" {...optionProps}>
+          <Typography variant="body1" flex={1}>
+            {option.name}
+          </Typography>
+          {!isNewProduct && (
+            <Typography variant="body2" color="text.secondary">
+              {formatPrice(option.price)}
+            </Typography>
+          )}
+        </Box>
+      );
+    },
+    [],
+  );
+
+  const filterOptions = useMemo(
+    () =>
+      (options: ProductOption[], params: FilterOptionsState<ProductOption>) => {
+        const filtered = filter(options, params);
+
+        if (params.inputValue && params.inputValue.trim() !== "") {
+          const addNewOption: ProductOptionWithInput = {
+            inputValue: params.inputValue,
+            name: `「${params.inputValue}」を追加`,
+            id: -1, // 仮のID
+            price: 0, // 仮の価格
+          };
+          filtered.push(addNewOption);
+        }
+
+        return filtered;
+      },
+    [],
+  );
+
+  const handleProductCreated = useCallback((product: Product) => {
+    // 新しく作成された商品を選択状態にする
+    const newProductOption: ProductOption = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+    };
+    setSelectedProduct(newProductOption);
+    setProductOptions((prev) => [newProductOption, ...prev]);
+    setProductInputValue(product.name);
+  }, []);
+
   return (
     <Box component="form" action={formAction}>
       {/* 全体のエラー表示 */}
@@ -142,29 +234,33 @@ export function ReviewForm({ onCreate, defaultValues }: ReviewFormProps) {
         onClose={handleClose}
         value={selectedProduct}
         onChange={(_, newValue) => {
-          setSelectedProduct(newValue);
+          if (typeof newValue === "string") {
+            // timeout to avoid instant validation of the dialog's form.
+            setTimeout(() => {
+              setDialogOpen(true);
+              setNewProductName(newValue);
+            });
+          } else if (newValue && newValue.inputValue) {
+            setDialogOpen(true);
+            setNewProductName(newValue.inputValue);
+          } else {
+            setSelectedProduct(newValue);
+          }
         }}
         inputValue={productInputValue}
         onInputChange={(_, newInputValue) => {
           setProductInputValue(newInputValue);
         }}
         options={productOptions}
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={getOptionLabel}
         loading={loading}
         autoHighlight
-        renderOption={(props, option) => {
-          const { key, ...optionProps } = props;
-          return (
-            <Box key={key} component="li" {...optionProps}>
-              <Typography variant="body1" flex={1}>
-                {option.name}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {formatPrice(option.price)}
-              </Typography>
-            </Box>
-          );
-        }}
+        freeSolo
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
+        filterOptions={filterOptions}
+        renderOption={renderOption}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -193,7 +289,6 @@ export function ReviewForm({ onCreate, defaultValues }: ReviewFormProps) {
         isOptionEqualToValue={(option, value) => option.id === value.id}
         noOptionsText={loading ? "読み込み中..." : "商品が見つかりません"}
         loadingText="商品を読み込んでいます..."
-        filterOptions={(x) => x} // サーバー側でフィルタリングするため、クライアント側のフィルタリングを無効化
       />
 
       {/* productIdのhidden input */}
@@ -246,6 +341,14 @@ export function ReviewForm({ onCreate, defaultValues }: ReviewFormProps) {
       >
         {pending ? "送信中..." : "送信"}
       </Button>
+
+      {/* 商品作成ダイアログ */}
+      <CreateProductDialog
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        productName={newProductName}
+        onProductCreated={handleProductCreated}
+      />
     </Box>
   );
 }

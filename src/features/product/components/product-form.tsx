@@ -1,10 +1,10 @@
 "use client";
 
 import {
+  Box,
   Button,
   FormHelperText,
   InputAdornment,
-  Paper,
   TextField,
 } from "@mui/material";
 import { useActionState, useEffect } from "react";
@@ -39,7 +39,7 @@ export function ProductForm({ onCreate, defaultValues }: ProductFormProps) {
   }, [onCreate, state]);
 
   return (
-    <Paper sx={{ p: 2 }} component="form" action={formAction}>
+    <Box component="form" action={formAction}>
       {/* 全体のエラー表示 */}
       {!!error && (
         <FormHelperText error sx={{ whiteSpace: "pre-line" }}>
@@ -97,6 +97,6 @@ export function ProductForm({ onCreate, defaultValues }: ProductFormProps) {
       >
         {pending ? "送信中..." : "送信"}
       </Button>
-    </Paper>
+    </Box>
   );
 }
