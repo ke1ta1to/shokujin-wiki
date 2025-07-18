@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "../hooks/useUser";
+import { useUser } from "../hooks/use-user";
 
 import LoginContinueBlock from "./login-continue-block";
 

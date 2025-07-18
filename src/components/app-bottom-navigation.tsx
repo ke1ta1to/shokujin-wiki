@@ -10,7 +10,7 @@ import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import NextLink from "next/link";
 import type { ReactNode } from "react";
 
-import { useUser } from "@/features/auth/hooks/useUser";
+import { useUser } from "@/features/auth/hooks/use-user";
 
 export function AppBottomNavigation() {
   const { user } = useUser();

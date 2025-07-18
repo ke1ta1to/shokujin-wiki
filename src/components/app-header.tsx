@@ -13,8 +13,8 @@ import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 
 import { LogoutButton } from "@/features/auth/components/logout-button";
-import { useUser } from "@/features/auth/hooks/useUser";
-import { useContinueUrl } from "@/hooks/useContinueUrl";
+import { useUser } from "@/features/auth/hooks/use-user";
+import { useContinueUrl } from "@/hooks/use-continue-url";
 
 export function AppHeader() {
   const router = useRouter();

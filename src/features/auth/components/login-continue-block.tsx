@@ -3,7 +3,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-import { useContinueUrl } from "@/hooks/useContinueUrl";
+import { useContinueUrl } from "@/hooks/use-continue-url";
 
 export default function LoginContinueBlock() {
   const router = useRouter();
