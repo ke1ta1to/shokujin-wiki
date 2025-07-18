@@ -23,8 +23,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Review  Review[]
-  Product Product[]
+  Review             Review[]
+  Product            Product[]
+  ProductDescription ProductDescription[]
 }
 
 // 注文記録（投稿）
@@ -57,5 +58,23 @@ model Product {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Review    Review[]
+
+  Review             Review[]
+  ProductDescription ProductDescription?
+}
+
+// 商品説明文
+model ProductDescription {
+  id Int @id @default(autoincrement())
+
+  content String // マークダウン形式の説明文
+
+  productId Int     @unique
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  lastEditedUserId Int? // 最後に編集したユーザー
+  lastEditedUser   User? @relation(fields: [lastEditedUserId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
