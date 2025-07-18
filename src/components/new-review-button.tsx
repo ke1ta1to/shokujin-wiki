@@ -1,25 +1,37 @@
+"use client";
+
 import { Add as AddIcon } from "@mui/icons-material";
 import { Box, Fab } from "@mui/material";
-import NextLink from "next/link";
+import { useState } from "react";
+
+import { CreateReviewDialog } from "@/features/review/components/create-review-dialog";
 
 export function NewReviewButton() {
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <Box
-      sx={{
-        position: "fixed",
-        bottom: 72,
-        right: 16,
-        paddingBottom: "env(safe-area-inset-bottom)",
-      }}
-    >
-      <Fab
-        component={NextLink}
-        color="primary"
-        aria-label="レビュー登録"
-        href="/reviews/new"
+    <>
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 72,
+          right: 16,
+          paddingBottom: "env(safe-area-inset-bottom)",
+        }}
       >
-        <AddIcon />
-      </Fab>
-    </Box>
+        <Fab color="primary" aria-label="レビュー登録" onClick={handleOpen}>
+          <AddIcon />
+        </Fab>
+      </Box>
+      <CreateReviewDialog open={open} onClose={handleClose} />
+    </>
   );
 }
