@@ -3,13 +3,13 @@ import {
   Box,
   Card,
   CardContent,
-  Chip,
   Paper,
   Stack,
   Typography,
 } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
 import { ja } from "date-fns/locale";
+import Image from "next/image";
 
 import type { Product, User } from "@/generated/prisma";
 import { formatPrice } from "@/utils/format-price";
@@ -18,9 +18,10 @@ interface ProductDetailProps {
   product: Product & {
     user: User | null;
   };
+  latestImageUrl: string | null;
 }
 
-export function ProductDetail({ product }: ProductDetailProps) {
+export function ProductDetail({ product, latestImageUrl }: ProductDetailProps) {
   const formattedDate = formatDistanceToNow(new Date(product.createdAt), {
     addSuffix: true,
     locale: ja,
@@ -37,18 +38,40 @@ export function ProductDetail({ product }: ProductDetailProps) {
       {/* 画像セクション */}
       <Paper
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          position: "relative",
           height: { xs: 300, md: 400 },
           width: { xs: "100%", md: 400 },
           bgcolor: "grey.100",
           flexShrink: 0,
+          overflow: "hidden",
         }}
       >
-        <Typography variant="body1" color="text.secondary">
-          画像準備中
-        </Typography>
+        {latestImageUrl ? (
+          <Image
+            src={latestImageUrl}
+            alt={product.name}
+            fill
+            style={{ objectFit: "cover" }}
+            sizes="(max-width: 900px) 100vw, 400px"
+          />
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
+            }}
+          >
+            <Typography variant="body1" color="text.secondary">
+              画像がありません
+              <br />
+              写真付きのレビューを投稿すると
+              <br />
+              ここに表示されます
+            </Typography>
+          </Box>
+        )}
       </Paper>
 
       <Box flex={1}>
@@ -94,7 +117,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                     : "削除されたユーザー"}
                 </Typography>
               </Box>
-              <Box>
+              {/* <Box>
                 <Typography variant="subtitle2" color="text.secondary">
                   ステータス
                 </Typography>
@@ -110,7 +133,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                     <Chip label="未認証" size="small" />
                   )}
                 </Box>
-              </Box>
+              </Box> */}
             </Stack>
           </CardContent>
         </Card>

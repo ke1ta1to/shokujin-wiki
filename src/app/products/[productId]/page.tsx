@@ -19,34 +19,72 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const product = await prisma.product.findUnique({
-    where: { id: productIdNumber },
-    include: {
-      user: true,
-      Review: {
+  // 商品情報とレビューを別々に取得して最適化
+  const [product, reviews, latestReviewWithImage, totalReviewCount] =
+    await Promise.all([
+      prisma.product.findUnique({
+        where: { id: productIdNumber },
+        include: {
+          user: true,
+        },
+      }),
+      prisma.review.findMany({
+        where: { productId: productIdNumber },
         include: {
           user: true,
         },
         orderBy: {
           createdAt: "desc",
         },
-      },
-    },
-  });
+        take: 50, // 最大50件に制限
+      }),
+      // 最新の画像付きレビューから画像URLのみ取得
+      prisma.review.findFirst({
+        where: {
+          productId: productIdNumber,
+          imageUrls: {
+            isEmpty: false,
+          },
+        },
+        select: {
+          imageUrls: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+      // レビューの総数を取得
+      prisma.review.count({
+        where: { productId: productIdNumber },
+      }),
+    ]);
 
   if (!product) {
     notFound();
   }
 
+  // 最初の画像URLを取得
+  const latestImageUrl = latestReviewWithImage?.imageUrls[0] || null;
+
   return (
     <>
-      <ProductDetail product={product} />
+      <ProductDetail product={product} latestImageUrl={latestImageUrl} />
       <Divider sx={{ my: 4 }} />
       <Box maxWidth="sm" mx="auto">
         <Typography variant="h5" component="h2" gutterBottom>
-          レビュー ({product.Review.length}件)
+          レビュー ({totalReviewCount}件)
         </Typography>
-        <ReviewList reviews={product.Review} />
+        <ReviewList reviews={reviews} />
+        {totalReviewCount > 50 && (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            align="center"
+            sx={{ mt: 2 }}
+          >
+            最新の50件を表示しています
+          </Typography>
+        )}
       </Box>
     </>
   );
