@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 
 import type { Product } from "@/generated/prisma";
+import { formatPrice } from "@/utils/format-price";
 
 interface ProductPreviewCardProps {
   product: Product & {
@@ -22,13 +23,6 @@ interface ProductPreviewCardProps {
 }
 
 export function ProductPreviewCard({ product }: ProductPreviewCardProps) {
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("ja-JP", {
-      style: "currency",
-      currency: "JPY",
-    }).format(price);
-  };
-
   return (
     <Card>
       <CardActionArea>

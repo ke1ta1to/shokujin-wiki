@@ -1,6 +1,7 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
 
 import { Pagination } from "@/components/pagination";
+import { CreateReviewForm } from "@/features/review/components/create-review-form";
 import { ReviewPreview } from "@/features/review/components/review-preview";
 import prisma from "@/lib/prisma";
 import { getPaginationParams } from "@/utils/pagination";
@@ -39,6 +40,12 @@ export default async function IndexPage({ searchParams }: IndexPageProps) {
 
   return (
     <>
+      <Box maxWidth="sm" mx="auto" mb={4}>
+        <CreateReviewForm />
+      </Box>
+
+      <Divider />
+
       {reviews.length === 0 ? (
         <Box py={8} textAlign="center">
           <Typography variant="body1" color="text.secondary">
