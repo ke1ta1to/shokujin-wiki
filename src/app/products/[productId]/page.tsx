@@ -68,7 +68,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <>
-      <ProductDetail product={product} latestImageUrl={latestImageUrl} />
+      <Box sx={{ overflow: "hidden" }}>
+        <Box
+          sx={{
+            float: { xs: "none", md: "left" },
+            mb: 2,
+            mr: { xs: 0, md: 2 },
+          }}
+        >
+          <ProductDetail product={product} latestImageUrl={latestImageUrl} />
+        </Box>
+        <Box>{/* 文 */}</Box>
+      </Box>
       <Divider sx={{ my: 4 }} />
       <Box maxWidth="sm" mx="auto">
         <Typography variant="h5" component="h2" gutterBottom>

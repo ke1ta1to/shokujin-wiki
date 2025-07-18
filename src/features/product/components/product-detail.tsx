@@ -30,7 +30,7 @@ export function ProductDetail({ product, latestImageUrl }: ProductDetailProps) {
   return (
     <Stack
       direction={{
-        sm: "column",
+        xs: "column",
         md: "row",
       }}
       spacing={3}
@@ -61,6 +61,7 @@ export function ProductDetail({ product, latestImageUrl }: ProductDetailProps) {
               alignItems: "center",
               justifyContent: "center",
               height: "100%",
+              p: 2,
             }}
           >
             <Typography variant="body1" color="text.secondary">
