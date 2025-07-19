@@ -23,9 +23,11 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Review             Review[]
-  Product            Product[]
-  ProductDescription ProductDescription[]
+  Review  Review[]
+  Product Product[]
+
+  // 記事関連
+  articles Article[]
 }
 
 // 注文記録（投稿）
@@ -58,23 +60,40 @@ model Product {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Review    Review[]
 
-  Review             Review[]
-  ProductDescription ProductDescription?
+  // 記事との関連
+  articles ArticleProduct[]
 }
 
-// 商品説明文
-model ProductDescription {
+// 記事
+model Article {
   id Int @id @default(autoincrement())
 
-  content String // マークダウン形式の説明文
+  title       String // 記事タイトル
+  slug        String  @unique // URLパス用（例: "ramen-special-guide"）
+  content     String // マークダウン形式の本文
+  isPublished Boolean @default(false) // 公開状態
 
-  productId Int     @unique
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-
-  lastEditedUserId Int? // 最後に編集したユーザー
-  lastEditedUser   User? @relation(fields: [lastEditedUserId], references: [id], onDelete: SetNull)
+  userId Int // 作成者
+  user   User @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // 商品との関連（多対多）
+  products ArticleProduct[]
+
+  @@index([slug])
+}
+
+// 記事と商品の中間テーブル
+model ArticleProduct {
+  articleId Int
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, productId])
 }
