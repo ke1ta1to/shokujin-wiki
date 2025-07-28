@@ -180,8 +180,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </Paper>
         )}
 
-        <Stack spacing={2}>
-          <Box component="pre" sx={{ whiteSpace: "pre-wrap" }} flex={1}>
+        <Stack spacing={2} flex={1}>
+          <Box component="pre" sx={{ whiteSpace: "pre-wrap" }}>
             {article.content}
           </Box>
 
