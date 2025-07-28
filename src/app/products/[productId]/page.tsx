@@ -111,7 +111,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <Box>
       <Stack spacing={4} alignItems="center">
-        <ProductDetail product={product} latestImageUrl={latestImageUrl} />
+        <ProductDetail
+          product={product}
+          latestImageUrl={latestImageUrl}
+          direction="row"
+        />
 
         <Stack spacing={3} alignItems="center" textAlign="center">
           <DescriptionIcon sx={{ fontSize: 64, color: "text.secondary" }} />

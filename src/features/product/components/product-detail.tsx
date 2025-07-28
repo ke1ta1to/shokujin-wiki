@@ -19,28 +19,28 @@ interface ProductDetailProps {
     user: User | null;
   };
   latestImageUrl: string | null;
+  direction?: "row" | "column";
 }
 
-export function ProductDetail({ product, latestImageUrl }: ProductDetailProps) {
+export function ProductDetail({
+  product,
+  latestImageUrl,
+  direction = "column",
+}: ProductDetailProps) {
   const formattedDate = formatDistanceToNow(new Date(product.createdAt), {
     addSuffix: true,
     locale: ja,
   });
 
   return (
-    <Stack
-      direction={{
-        xs: "column",
-        lg: "row",
-      }}
-      spacing={3}
-    >
+    <Stack direction={direction} spacing={3}>
       {/* 画像セクション */}
       <Paper
         sx={{
           position: "relative",
           height: { xs: 300, md: 200 },
           width: { xs: "100%", md: 200 },
+          maxWidth: "100%",
           bgcolor: "grey.100",
           flexShrink: 0,
           overflow: "hidden",

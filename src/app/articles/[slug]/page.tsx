@@ -116,14 +116,21 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </Typography>
       </Stack>
 
-      <Box component="pre" sx={{ whiteSpace: "pre-wrap" }}>
+      <Box
+        display="flex"
+        flexDirection={{ xs: "column", md: "row-reverse" }}
+        gap={2}
+        alignItems="start"
+      >
         {article.mainProduct && (
           <Paper
             sx={{
-              float: { xs: "none", md: "right" },
-              mb: 2,
-              ml: { xs: 0, md: 2 },
               p: 2,
+              flexShrink: 0,
+              width: {
+                xs: "100%",
+                md: 250,
+              },
             }}
           >
             <Stack spacing={2}>
@@ -172,27 +179,32 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </Stack>
           </Paper>
         )}
-        {article.content}
-      </Box>
 
-      {article.mainProduct && mainProductReviews && (
-        <Box id="reviews-section" maxWidth="sm" width="100%" alignSelf="center">
-          <Typography variant="h5" component="h3" gutterBottom>
-            レビュー ({mainProductReviewCount}件)
-          </Typography>
-          <ReviewList reviews={mainProductReviews} />
-          {mainProductReviewCount > 50 && (
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              align="center"
-              sx={{ mt: 2 }}
-            >
-              最新の50件を表示しています
-            </Typography>
+        <Stack spacing={2}>
+          <Box component="pre" sx={{ whiteSpace: "pre-wrap" }} flex={1}>
+            {article.content}
+          </Box>
+
+          {article.mainProduct && mainProductReviews && (
+            <Box id="reviews-section">
+              <Typography variant="h5" component="h3" gutterBottom>
+                レビュー ({mainProductReviewCount}件)
+              </Typography>
+              <ReviewList reviews={mainProductReviews} />
+              {mainProductReviewCount > 50 && (
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  align="center"
+                  sx={{ mt: 2 }}
+                >
+                  最新の50件を表示しています
+                </Typography>
+              )}
+            </Box>
           )}
-        </Box>
-      )}
+        </Stack>
+      </Box>
     </Stack>
   );
 }
