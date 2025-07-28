@@ -12,6 +12,13 @@ export const theme = createTheme({
     secondary: grey,
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        html: {
+          scrollBehavior: "smooth",
+        },
+      },
+    },
     MuiPaper: {
       defaultProps: {
         variant: "outlined",
@@ -36,7 +43,7 @@ export const theme = createTheme({
     },
     MuiContainer: {
       defaultProps: {
-        maxWidth: false,
+        maxWidth: "lg",
       },
     },
   },

@@ -31,7 +31,7 @@ export function ProductDetail({ product, latestImageUrl }: ProductDetailProps) {
     <Stack
       direction={{
         xs: "column",
-        md: "row",
+        lg: "row",
       }}
       spacing={3}
     >
@@ -39,11 +39,12 @@ export function ProductDetail({ product, latestImageUrl }: ProductDetailProps) {
       <Paper
         sx={{
           position: "relative",
-          height: { xs: 300, md: 400 },
-          width: { xs: "100%", md: 400 },
+          height: { xs: 300, md: 200 },
+          width: { xs: "100%", md: 200 },
           bgcolor: "grey.100",
           flexShrink: 0,
           overflow: "hidden",
+          alignSelf: { xs: "center", lg: "start" },
         }}
       >
         {latestImageUrl ? (
