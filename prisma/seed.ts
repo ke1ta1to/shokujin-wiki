@@ -169,6 +169,7 @@ const articleData: Array<{
   isPublished: boolean;
   userAuthId: string;
   relatedProducts: string[]; // 商品名の配列
+  isMainArticleFor?: string; // この記事がメイン記事となる商品名
 }> = [
   {
     title: "当店人気No.1！特製ラーメンの魅力を徹底解説",
@@ -226,6 +227,7 @@ const articleData: Array<{
     isPublished: true,
     userAuthId: "auth-user-001",
     relatedProducts: ["特製ラーメン", "チャーハン"],
+    isMainArticleFor: "特製ラーメン", // 特製ラーメンのメイン記事
   },
   {
     title: "【完全保存版】当店の餃子が美味しい5つの理由",
@@ -286,6 +288,7 @@ const articleData: Array<{
     isPublished: true,
     userAuthId: "auth-user-002",
     relatedProducts: ["餃子（6個）"],
+    isMainArticleFor: "餃子（6個）", // 餃子のメイン記事
   },
   {
     title: "スパイスカレーの奥深い世界へようこそ",
@@ -339,6 +342,78 @@ const articleData: Array<{
     isPublished: false, // 下書き
     userAuthId: "auth-user-003",
     relatedProducts: ["ハンバーガーセット"],
+  },
+  {
+    title: "食材へのこだわり〜地産地消の取り組み〜",
+    slug: "local-ingredients-commitment",
+    content: `# 食材へのこだわり〜地産地消の取り組み〜
+
+## はじめに
+
+当店では、地元の農家さんや漁師さんと協力し、新鮮で安全な食材を使用しています。
+
+## 野菜
+
+### 契約農家
+
+- 田中農園：キャベツ、白菜、ネギ
+- 山田ファーム：トマト、きゅうり、ピーマン
+- 鈴木農場：じゃがいも、にんじん、玉ねぎ
+
+毎朝6時に収穫したばかりの野菜が届きます。
+
+## 肉類
+
+### 国産へのこだわり
+
+すべての肉類は国産を使用。特に豚肉は、ストレスの少ない環境で育てられた銘柄豚を厳選しています。
+
+- 豚肉：○○県産ブランド豚
+- 鶏肉：△△地鶏
+- 牛肉：国産黒毛和牛
+
+## 魚介類
+
+地元漁港から直送される新鮮な魚介類を使用。その日の朝に水揚げされたものだけを仕入れています。
+
+## まとめ
+
+食材一つひとつにこだわることで、お客様に安心・安全で美味しい料理をご提供できると信じています。`,
+    isPublished: true,
+    userAuthId: "auth-user-004",
+    relatedProducts: [], // 商品に紐づかない記事
+  },
+  {
+    title: "当店の歴史〜創業から現在まで〜",
+    slug: "restaurant-history",
+    content: `# 当店の歴史〜創業から現在まで〜
+
+## 1985年 - 創業
+
+小さな屋台から始まった当店。創業者の「本当に美味しいラーメンを作りたい」という想いからスタートしました。
+
+## 1990年 - 初の実店舗オープン
+
+常連のお客様に支えられ、ついに実店舗をオープン。10席からのスタートでした。
+
+## 2000年 - メニューの拡充
+
+ラーメンだけでなく、餃子、チャーハンなど定番メニューを追加。
+
+## 2010年 - リニューアル
+
+店舗を全面改装。席数も30席に拡大し、より多くのお客様をお迎えできるようになりました。
+
+## 2020年 - 新たな挑戦
+
+コロナ禍を乗り越え、テイクアウトメニューも充実。新しい時代のニーズに対応しています。
+
+## 現在
+
+創業から約40年。変わらぬ味を守りながら、新しい挑戦も続けています。これからも地域の皆様に愛される店を目指して。`,
+    isPublished: true,
+    userAuthId: "auth-user-005",
+    relatedProducts: [], // 商品に紐づかない記事
   },
 ];
 
@@ -503,6 +578,23 @@ async function main() {
       }
 
       articles.push(upsertedArticle);
+
+      // この記事をメイン記事として設定する商品がある場合
+      if (article.isMainArticleFor) {
+        const mainProduct = await prisma.product.findFirst({
+          where: { name: article.isMainArticleFor },
+        });
+
+        if (mainProduct) {
+          await prisma.product.update({
+            where: { id: mainProduct.id },
+            data: { mainArticleId: upsertedArticle.id },
+          });
+          console.log(
+            `Set article "${article.title}" as main article for product "${article.isMainArticleFor}"`,
+          );
+        }
+      }
     }
     console.log(`Upserted ${articles.length} articles`);
 

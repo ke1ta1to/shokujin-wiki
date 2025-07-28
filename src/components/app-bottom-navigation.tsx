@@ -5,6 +5,7 @@ import {
   Restaurant as RestaurantIcon,
   Search as SearchIcon,
   Settings as SettingsIcon,
+  Article as ArticleIcon,
 } from "@mui/icons-material";
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import NextLink from "next/link";
@@ -62,6 +63,11 @@ const actions = [
     label: "商品一覧",
     icon: <RestaurantIcon />,
     href: "/products",
+  },
+  {
+    label: "記事",
+    icon: <ArticleIcon />,
+    href: "/articles",
   },
   {
     label: "設定",

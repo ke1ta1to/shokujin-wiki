@@ -58,11 +58,15 @@ model Product {
   userId Int?
   user   User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
+  // メイン記事（1対1の関係）
+  mainArticleId Int?     @unique
+  mainArticle   Article? @relation("ProductMainArticle", fields: [mainArticleId], references: [id], onDelete: SetNull)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Review    Review[]
 
-  // 記事との関連
+  // 記事との関連（多対多）
   articles ArticleProduct[]
 }
 
@@ -80,6 +84,9 @@ model Article {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // この記事をメイン記事として持つ商品（1対1）
+  mainProduct Product? @relation("ProductMainArticle")
 
   // 商品との関連（多対多）
   products ArticleProduct[]
