@@ -19,6 +19,7 @@ interface ProductPreviewCardProps {
     _count?: {
       Review: number;
     };
+    mainArticle?: { id: number } | null;
   };
 }
 
@@ -39,7 +40,10 @@ export function ProductPreviewCard({ product }: ProductPreviewCardProps) {
                 variant="h6"
                 component="h3"
                 noWrap
-                sx={{ overflow: "hidden" }}
+                sx={{
+                  overflow: "hidden",
+                  color: !product.mainArticle ? "error.main" : undefined,
+                }}
               >
                 {product.name}
               </Typography>

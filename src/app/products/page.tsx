@@ -44,6 +44,9 @@ export default async function ProductsPage({
         _count: {
           select: { Review: true },
         },
+        mainArticle: {
+          select: { id: true },
+        },
       },
       orderBy: {
         createdAt: "desc",
