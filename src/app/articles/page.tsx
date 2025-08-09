@@ -83,7 +83,7 @@ export default async function ArticlesPage({
         記事一覧
       </Typography>
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
+        <Grid size={{ xs: 12, md: 6, xl: 4 }}>
           <NextLink href="/articles/new">
             <Card sx={{ height: "100%", minHeight: 200 }}>
               <CardActionArea sx={{ height: "100%" }}>
@@ -102,7 +102,7 @@ export default async function ArticlesPage({
           </NextLink>
         </Grid>
         {articles.map((article) => (
-          <Grid key={article.id} size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
+          <Grid key={article.id} size={{ xs: 12, md: 6, xl: 4 }}>
             <Link
               href={`/articles/${article.slug}`}
               style={{ textDecoration: "none" }}
