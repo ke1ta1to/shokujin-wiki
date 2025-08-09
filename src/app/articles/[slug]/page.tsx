@@ -1,7 +1,8 @@
-import { Box, Divider, Paper, Stack, Typography, Link } from "@mui/material";
+import { Box, Divider, Link, Paper, Stack, Typography } from "@mui/material";
 import NextLink from "next/link";
 import { notFound } from "next/navigation";
 
+import { ArticleMarkdownContent } from "@/features/article/components/article-markdown-content";
 import { ProductDetail } from "@/features/product/components/product-detail";
 import { ProductPreviewCardCompact } from "@/features/product/components/product-preview-card-compact";
 import { ReviewList } from "@/features/review/components/review-list";
@@ -181,9 +182,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         )}
 
         <Stack spacing={2} flex={1}>
-          <Box component="pre" sx={{ whiteSpace: "pre-wrap" }}>
-            {article.content}
-          </Box>
+          <ArticleMarkdownContent content={article.content} />
 
           {article.mainProduct && mainProductReviews && (
             <Box id="reviews-section">
