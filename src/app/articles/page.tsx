@@ -1,4 +1,14 @@
-import { Grid, Typography, Box, Divider } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
+import {
+  Grid,
+  Typography,
+  Box,
+  Divider,
+  Card,
+  CardActionArea,
+  CardContent,
+} from "@mui/material";
+import NextLink from "next/link";
 import Link from "next/link";
 
 import { Pagination } from "@/components/pagination";
@@ -73,8 +83,26 @@ export default async function ArticlesPage({
         記事一覧
       </Typography>
       <Grid container spacing={2}>
+        <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
+          <NextLink href="/articles/new">
+            <Card sx={{ height: "100%", minHeight: 200 }}>
+              <CardActionArea sx={{ height: "100%" }}>
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                  }}
+                >
+                  <AddIcon fontSize="large" />
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </NextLink>
+        </Grid>
         {articles.map((article) => (
-          <Grid key={article.id} size={{ xs: 12, md: 6 }}>
+          <Grid key={article.id} size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
             <Link
               href={`/articles/${article.slug}`}
               style={{ textDecoration: "none" }}

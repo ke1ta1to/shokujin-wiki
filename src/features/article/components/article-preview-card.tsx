@@ -30,7 +30,7 @@ export function ArticlePreviewCard({ article }: ArticlePreviewCardProps) {
     <Card>
       <CardActionArea>
         <Box sx={{ display: "flex" }}>
-          <CardContent sx={{ flex: 1 }}>
+          <CardContent sx={{ flex: 1, height: 200 }}>
             <Stack spacing={2}>
               <Typography variant="h6" component="h3">
                 {article.title}
@@ -81,7 +81,7 @@ export function ArticlePreviewCard({ article }: ArticlePreviewCardProps) {
           {article.mainProductImageUrl && (
             <CardMedia
               component="img"
-              sx={{ width: 160 }}
+              sx={{ width: 160, height: 200 }}
               image={article.mainProductImageUrl}
               alt={article.title}
             />
