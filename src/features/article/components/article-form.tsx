@@ -5,15 +5,22 @@ import {
   Button,
   FormControlLabel,
   FormHelperText,
+  Grid,
+  Paper,
   Switch,
+  Tab,
+  Tabs,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { useActionState, useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { createArticle, generateSlug } from "../actions/article-actions";
 
+import { ArticleMarkdownContent } from "./article-markdown-content";
 import { ProductSelect } from "./product-select";
 
 import type { Article } from "@/generated/prisma";
@@ -39,8 +46,13 @@ export function ArticleForm({ onCreate, defaultValues }: ArticleFormProps) {
     status: "pending",
   });
 
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+
   const [title, setTitle] = useState(defaultValues?.title || "");
   const [slug, setSlug] = useState(defaultValues?.slug || "");
+  const [content, setContent] = useState(defaultValues?.content || "");
+  const [tabValue, setTabValue] = useState(0);
   const [isPublished, setIsPublished] = useState(
     defaultValues?.isPublished || false,
   );
@@ -151,25 +163,162 @@ export function ArticleForm({ onCreate, defaultValues }: ArticleFormProps) {
       />
 
       {/* 本文 */}
-      <TextField
-        label="本文"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        required
-        name="content"
-        multiline
-        minRows={10}
-        maxRows={20}
-        autoComplete="off"
-        error={state.status === "error" && !!state.fieldErrors?.content}
-        helperText={
-          state.status === "error"
-            ? state.fieldErrors?.content?.[0]
-            : "マークダウン形式で記述できます"
-        }
-        defaultValue={defaultValues?.content}
-      />
+      <Box sx={{ mt: 2, mb: 2 }}>
+        <Typography variant="subtitle1" gutterBottom>
+          本文 *
+        </Typography>
+        {isDesktop ? (
+          // PC: 横並びレイアウト
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Paper variant="outlined">
+                <Box
+                  sx={{
+                    p: 2,
+                    borderBottom: 1,
+                    borderColor: "divider",
+                    bgcolor: "grey.50",
+                  }}
+                >
+                  <Typography variant="body2" fontWeight={600}>
+                    編集
+                  </Typography>
+                </Box>
+                <Box>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    required
+                    name="content"
+                    multiline
+                    minRows={15}
+                    maxRows={25}
+                    autoComplete="off"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    error={
+                      state.status === "error" && !!state.fieldErrors?.content
+                    }
+                    helperText={
+                      state.status === "error"
+                        ? state.fieldErrors?.content?.[0]
+                        : "マークダウン形式で記述できます"
+                    }
+                    placeholder="入力してください"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          border: "none",
+                        },
+                      },
+                    }}
+                  />
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Paper variant="outlined">
+                <Box
+                  sx={{
+                    p: 2,
+                    borderBottom: 1,
+                    borderColor: "divider",
+                    bgcolor: "grey.50",
+                  }}
+                >
+                  <Typography variant="body2" fontWeight={600}>
+                    プレビュー
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    minHeight: 400,
+                    maxHeight: 600,
+                    overflowY: "auto",
+                    p: 2,
+                    bgcolor: "background.paper",
+                    borderRadius: 1,
+                  }}
+                >
+                  {content ? (
+                    <ArticleMarkdownContent content={content} />
+                  ) : (
+                    <Typography color="text.secondary">
+                      プレビューする内容がありません
+                    </Typography>
+                  )}
+                </Box>
+              </Paper>
+            </Grid>
+          </Grid>
+        ) : (
+          // スマホ: タブレイアウト
+          <Paper variant="outlined" sx={{ borderRadius: 1 }}>
+            <Tabs
+              value={tabValue}
+              onChange={(_, newValue) => setTabValue(newValue)}
+              variant="fullWidth"
+              sx={{
+                borderBottom: 1,
+                borderColor: "divider",
+              }}
+            >
+              <Tab label="編集" />
+              <Tab label="プレビュー" />
+            </Tabs>
+            <Box>
+              {tabValue === 0 ? (
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  required
+                  name="content"
+                  multiline
+                  minRows={10}
+                  maxRows={20}
+                  autoComplete="off"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  error={
+                    state.status === "error" && !!state.fieldErrors?.content
+                  }
+                  helperText={
+                    state.status === "error"
+                      ? state.fieldErrors?.content?.[0]
+                      : "マークダウン形式で記述できます"
+                  }
+                  placeholder="入力してください"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        border: "none",
+                      },
+                    },
+                  }}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    minHeight: 280,
+                    p: 1,
+                    bgcolor: "background.paper",
+                    borderRadius: 1,
+                    overflowX: "auto",
+                  }}
+                >
+                  {content ? (
+                    <ArticleMarkdownContent content={content} />
+                  ) : (
+                    <Typography color="text.secondary">
+                      プレビューする内容がありません
+                    </Typography>
+                  )}
+                </Box>
+              )}
+            </Box>
+          </Paper>
+        )}
+      </Box>
 
       {/* メイン商品 */}
       <Box mt={3} mb={2}>
