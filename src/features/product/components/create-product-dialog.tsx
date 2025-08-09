@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
+import { Close as CloseIcon } from "@mui/icons-material";
+import { Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import { useCallback } from "react";
 
 import { ProductForm } from "./product-form";
@@ -35,16 +30,20 @@ export function CreateProductDialog({
   );
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      maxWidth="xs"
-      fullWidth
-      slotProps={{
-        backdrop: { style: { backgroundColor: "rgba(0, 0, 0, 0.3)" } },
-      }}
-    >
+    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
       <DialogTitle>新しい商品を作成</DialogTitle>
+      <IconButton
+        aria-label="close"
+        onClick={onClose}
+        sx={(theme) => ({
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: theme.palette.grey[500],
+        })}
+      >
+        <CloseIcon />
+      </IconButton>
       <DialogContent>
         <ProductForm
           onCreate={handleCreate}
@@ -53,9 +52,6 @@ export function CreateProductDialog({
           }}
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>キャンセル</Button>
-      </DialogActions>
     </Dialog>
   );
 }

@@ -22,8 +22,7 @@ import {
 
 import { createReview, searchProducts } from "../actions/review-actions";
 
-import { CreateProductDialog } from "./create-product-dialog";
-
+import { CreateProductDialog } from "@/features/product/components/create-product-dialog";
 import type { Product, Review } from "@/generated/prisma";
 import { formatPrice } from "@/utils/format-price";
 
@@ -346,7 +345,7 @@ export function ReviewForm({ onCreate, defaultValues }: ReviewFormProps) {
       <CreateProductDialog
         open={dialogOpen}
         onClose={handleCloseDialog}
-        productName={newProductName}
+        defaultName={newProductName}
         onProductCreated={handleProductCreated}
       />
     </Box>
