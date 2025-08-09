@@ -130,7 +130,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </Typography>
 
           {user ? (
-            <NextLink href="/articles/new" style={{ textDecoration: "none" }}>
+            <NextLink
+              href={`/articles/new?productId=${product.id}`}
+              style={{ textDecoration: "none" }}
+            >
               <Button
                 variant="contained"
                 size="large"

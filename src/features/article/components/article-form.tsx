@@ -38,6 +38,7 @@ interface ArticleFormProps {
     slug?: string;
     content?: string;
     isPublished?: boolean;
+    mainProduct?: ProductOption | null;
   };
 }
 
@@ -56,7 +57,9 @@ export function ArticleForm({ onCreate, defaultValues }: ArticleFormProps) {
   const [isPublished, setIsPublished] = useState(
     defaultValues?.isPublished || false,
   );
-  const [mainProduct, setMainProduct] = useState<ProductOption | null>(null);
+  const [mainProduct, setMainProduct] = useState<ProductOption | null>(
+    defaultValues?.mainProduct || null,
+  );
   const [relatedProducts, setRelatedProducts] = useState<ProductOption[]>([]);
   const [slugGenerated, setSlugGenerated] = useState(false);
   const [generatingSlug, setGeneratingSlug] = useState(false);
