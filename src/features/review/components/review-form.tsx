@@ -6,14 +6,12 @@ import { useActionState, useEffect, useState } from "react";
 import type { ReviewActionResult } from "../actions/review-actions";
 
 import { ProductSelect } from "@/features/product/components/product-select";
-import type { Review } from "@/generated/prisma";
+import type { Product, Review } from "@/generated/prisma";
 
 interface ReviewFormProps {
   onCreate?: (review: Review) => void;
-  defaultValues?: {
-    comment?: string;
-    productId?: number;
-    imageUrl?: string;
+  defaultValues?: Review & {
+    product: Product | null;
   };
   action: Parameters<typeof useActionState<ReviewActionResult, FormData>>[0];
 }
@@ -34,7 +32,13 @@ export function ReviewForm({
   });
 
   const [selectedProduct, setSelectedProduct] = useState<ProductOption | null>(
-    null,
+    defaultValues?.product != null
+      ? {
+          id: defaultValues.product.id,
+          name: defaultValues.product.name,
+          price: defaultValues.product.price,
+        }
+      : null,
   );
 
   const error =
@@ -45,9 +49,14 @@ export function ReviewForm({
   useEffect(() => {
     if (state.status === "success") {
       // 成功時の処理
-      onCreate?.(state.created);
-      // フォームをリセット
-      setSelectedProduct(null);
+      const review = state.created || state.updated;
+      if (review) {
+        onCreate?.(review);
+      }
+      // 作成モードの場合のみフォームをリセット
+      if (state.created) {
+        setSelectedProduct(null);
+      }
     }
   }, [onCreate, state]);
 
@@ -104,7 +113,7 @@ export function ReviewForm({
         helperText={
           state.status === "error" ? state.fieldErrors?.imageUrl : null
         }
-        defaultValue={defaultValues?.imageUrl}
+        defaultValue={defaultValues?.imageUrls?.[0]}
       />
 
       {/* 送信ボタン */}
@@ -116,7 +125,7 @@ export function ReviewForm({
         disabled={pending || !selectedProduct}
         sx={{ mt: 2 }}
       >
-        {pending ? "送信中..." : "送信"}
+        {pending ? "送信中..." : defaultValues?.comment ? "更新" : "送信"}
       </Button>
     </Box>
   );
