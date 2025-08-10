@@ -1,8 +1,8 @@
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 
 import { Pagination } from "@/components/pagination";
 import { CreateReviewForm } from "@/features/review/components/create-review-form";
-import { ReviewPreview } from "@/features/review/components/review-preview";
+import { ReviewList } from "@/features/review/components/review-list";
 import prisma from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { getPaginationParams } from "@/utils/pagination";
@@ -53,21 +53,10 @@ export default async function IndexPage({ searchParams }: IndexPageProps) {
         </Box>
       )}
 
-      {reviews.length === 0 ? (
-        <Box py={8} textAlign="center">
-          <Typography variant="body1" color="text.secondary">
-            レビューがありません
-          </Typography>
-        </Box>
-      ) : (
-        <Box maxWidth="sm" mx="auto">
-          <Stack spacing={1} divider={<Divider />}>
-            {reviews.map((review) => (
-              <ReviewPreview key={review.id} review={review} />
-            ))}
-          </Stack>
-        </Box>
-      )}
+      <Box maxWidth="sm" mx="auto">
+        <ReviewList reviews={reviews} />
+      </Box>
+
       <Divider sx={{ my: 4 }} />
 
       <Pagination

@@ -1,4 +1,7 @@
+"use client";
+
 import { Box, Divider, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 import { ReviewPreview } from "./review-preview";
 
@@ -11,6 +14,12 @@ interface ReviewListProps {
 }
 
 export function ReviewList({ reviews }: ReviewListProps) {
+  const router = useRouter();
+
+  const handleReviewClick = (reviewId: number) => {
+    router.push(`/reviews/${reviewId}`);
+  };
+
   if (reviews.length === 0) {
     return (
       <Box sx={{ py: 4, textAlign: "center" }}>
@@ -22,7 +31,13 @@ export function ReviewList({ reviews }: ReviewListProps) {
   return (
     <Stack divider={<Divider />}>
       {reviews.map((review) => (
-        <ReviewPreview key={review.id} review={review} />
+        <Box
+          key={review.id}
+          onClick={() => void handleReviewClick(review.id)}
+          sx={{ cursor: "pointer" }}
+        >
+          <ReviewPreview review={review} />
+        </Box>
       ))}
     </Stack>
   );

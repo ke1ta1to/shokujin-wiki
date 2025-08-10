@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar, Box, Chip, Stack, Typography } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
 import { ja } from "date-fns/locale";
@@ -47,6 +49,7 @@ export function ReviewPreview({ review }: ReviewPreviewProps) {
             <NextLink
               href={`/products/${review.product.id}`}
               style={{ textDecoration: "none" }}
+              onClick={(e) => void e.stopPropagation()}
             >
               <Chip label={review.product.name} size="small" clickable />
             </NextLink>

@@ -9,7 +9,6 @@ import {
   Divider,
 } from "@mui/material";
 import NextLink from "next/link";
-import Link from "next/link";
 
 import { Pagination } from "@/components/pagination";
 import { ProductPreviewCard } from "@/features/product/components/product-preview-card";
@@ -80,12 +79,12 @@ export default async function ProductsPage({
         </Grid>
         {products.map((product) => (
           <Grid key={product.id} size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
-            <Link
+            <NextLink
               href={`/products/${product.id}`}
               style={{ textDecoration: "none" }}
             >
               <ProductPreviewCard product={product} />
-            </Link>
+            </NextLink>
           </Grid>
         ))}
       </Grid>
