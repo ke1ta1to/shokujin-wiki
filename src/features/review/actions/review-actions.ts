@@ -87,33 +87,3 @@ export async function createReview(
     };
   }
 }
-
-// 商品検索用のアクション
-export async function searchProducts(query: string) {
-  try {
-    const products = await prisma.product.findMany({
-      where:
-        query.length > 0
-          ? {
-              name: {
-                contains: query,
-                mode: "insensitive",
-              },
-            }
-          : undefined,
-      select: {
-        id: true,
-        name: true,
-        price: true,
-      },
-      take: 20, // 上限を20件に設定
-      orderBy: {
-        name: "asc",
-      },
-    });
-
-    return products;
-  } catch {
-    return [];
-  }
-}

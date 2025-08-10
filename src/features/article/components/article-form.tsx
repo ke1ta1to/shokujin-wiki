@@ -18,10 +18,10 @@ import {
 import { useActionState, useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
+import { ProductSelect } from "../../product/components/product-select";
 import { createArticle, generateSlug } from "../actions/article-actions";
 
 import { ArticleMarkdownContent } from "./article-markdown-content";
-import { ProductSelect } from "./product-select";
 
 import type { Article } from "@/generated/prisma";
 
