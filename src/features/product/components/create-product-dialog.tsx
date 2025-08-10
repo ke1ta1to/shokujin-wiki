@@ -4,7 +4,7 @@ import { Close as CloseIcon } from "@mui/icons-material";
 import { Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import { useCallback } from "react";
 
-import { ProductForm } from "./product-form";
+import { CreateProductForm } from "./create-product-form";
 
 import type { Product } from "@/generated/prisma";
 
@@ -45,11 +45,9 @@ export function CreateProductDialog({
         <CloseIcon />
       </IconButton>
       <DialogContent>
-        <ProductForm
+        <CreateProductForm
           onCreate={handleCreate}
-          defaultValues={{
-            name: defaultName,
-          }}
+          defaultValues={{ name: defaultName }}
         />
       </DialogContent>
     </Dialog>

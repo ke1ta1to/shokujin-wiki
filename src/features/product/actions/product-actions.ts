@@ -12,7 +12,7 @@ const createProductSchema = z.object({
   price: z.coerce.number().min(0, "価格は0以上である必要があります"),
 });
 
-type CreateProductResult =
+export type ProductActionResult =
   | ({ status: "error"; message?: string } & Partial<
       z.inferFlattenedErrors<typeof createProductSchema>
     >)
@@ -20,9 +20,9 @@ type CreateProductResult =
   | { status: "pending" };
 
 export async function createProduct(
-  _prevState: CreateProductResult,
+  _prevState: ProductActionResult,
   formData: FormData,
-): Promise<CreateProductResult> {
+): Promise<ProductActionResult> {
   const rawData = Object.fromEntries(formData.entries());
 
   const parsedData = await createProductSchema.safeParseAsync(rawData);

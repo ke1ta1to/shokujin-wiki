@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useActionState, useEffect } from "react";
 
-import { createProduct } from "../actions/product-actions";
+import type { ProductActionResult } from "../actions/product-actions";
 
 import type { Product } from "@/generated/prisma";
 
@@ -19,10 +19,15 @@ interface ProductFormProps {
     name?: string;
     price?: number;
   };
+  action: Parameters<typeof useActionState<ProductActionResult, FormData>>[0];
 }
 
-export function ProductForm({ onCreate, defaultValues }: ProductFormProps) {
-  const [state, formAction, pending] = useActionState(createProduct, {
+export function ProductForm({
+  onCreate,
+  defaultValues,
+  action,
+}: ProductFormProps) {
+  const [state, formAction, pending] = useActionState(action, {
     status: "pending",
   });
 
