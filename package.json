@@ -10,6 +10,7 @@
     "lint:fix": "next lint --fix",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
+    "check-types": "tsc --noEmit",
     "prepare": "husky",
     "prisma": "dotenv -e .env.local -- prisma"
   },
