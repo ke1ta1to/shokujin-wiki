@@ -1,66 +1,40 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-import type { Review } from "@/generated/prisma";
+import type { Review, User } from "@/generated/prisma";
+import { PrismaClientKnownRequestError } from "@/generated/prisma/runtime/library";
 import prisma from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 
-const createReviewSchema = z.object({
-  comment: z.string().min(1, "コメントを入力してください"),
-  productId: z.coerce.number().min(1, "商品を選択してください"),
-  imageUrl: z.string().optional(),
-});
-
-const updateReviewSchema = z.object({
+const reviewSchema = z.object({
   comment: z.string().min(1, "コメントを入力してください"),
   productId: z.coerce.number().min(1, "商品を選択してください"),
   imageUrl: z.string().optional(),
 });
 
 export type ReviewActionResult =
-  | ({ status: "error"; message?: string } & {
-      fieldErrors?: {
-        comment?: string[];
-        productId?: string[];
-        imageUrl?: string[];
-      };
-      formErrors?: string[];
-    })
+  | ({ status: "error"; message?: string } & Partial<
+      z.inferFlattenedErrors<typeof reviewSchema>
+    >)
   | { status: "success"; created?: Review; updated?: Review }
   | { status: "pending" };
 
-export async function createReview(
-  _prevState: ReviewActionResult,
-  formData: FormData,
-): Promise<ReviewActionResult> {
-  const rawData = Object.fromEntries(formData.entries());
-
-  console.log(rawData);
-
-  const parsedData = await createReviewSchema.safeParseAsync(rawData);
-
-  if (!parsedData.success) {
-    const { fieldErrors, formErrors } = parsedData.error.flatten();
-    return {
-      status: "error",
-      fieldErrors,
-      formErrors,
-    };
-  }
-
-  const { comment, productId, imageUrl } = parsedData.data;
-
+// 認証とユーザー取得の共通処理
+/**
+ * ユーザーの認証を行い、DBからユーザー情報を取得します。
+ * @throws エラーが発生した場合
+ * @returns 認証されたユーザー情報
+ */
+async function authenticateUser(): Promise<{ dbUser: User }> {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return {
-      status: "error",
-      message: "ログインしてください",
-    };
+    throw new Error("ログインしてください");
   }
 
   const dbUser = await prisma.user.findUnique({
@@ -68,15 +42,75 @@ export async function createReview(
   });
 
   if (!dbUser) {
+    throw new Error("ユーザーが見つかりません");
+  }
+
+  return { dbUser };
+}
+
+// Prismaエラーハンドリングの共通化
+function handlePrismaError(error: unknown): ReviewActionResult {
+  if (error instanceof PrismaClientKnownRequestError) {
+    if (error.code === "P2002") {
+      return {
+        status: "error",
+        message: "このレビューはすでに登録されています",
+      };
+    }
+    if (error.code === "P2003") {
+      return {
+        status: "error",
+        message: "指定された商品が存在しません",
+      };
+    }
+  }
+
+  return {
+    status: "error",
+    message: "不明なエラーが発生しました",
+  };
+}
+
+export async function createReview(
+  _prevState: ReviewActionResult,
+  formData: FormData,
+): Promise<ReviewActionResult> {
+  const rawData = Object.fromEntries(formData.entries());
+
+  const parsedData = await reviewSchema.safeParseAsync(rawData);
+
+  if (!parsedData.success) {
     return {
       status: "error",
-      message: "ユーザーが見つかりません",
+      ...parsedData.error.flatten(),
     };
   }
 
-  // データベースに保存
+  const { comment, productId, imageUrl } = parsedData.data;
+
+  // 認証チェック
+  let authResult: { dbUser: User };
   try {
-    const createdReview = await prisma.review.create({
+    authResult = await authenticateUser();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return {
+        status: "error",
+        message: error.message,
+      };
+    }
+    return {
+      status: "error",
+      message: "不明なエラーが発生しました",
+    };
+  }
+
+  const dbUser = authResult.dbUser;
+
+  // レビュー作成処理
+  let createdReview: Review;
+  try {
+    createdReview = await prisma.review.create({
       data: {
         comment,
         imageUrls: imageUrl ? [imageUrl] : [],
@@ -88,17 +122,19 @@ export async function createReview(
         product: true,
       },
     });
-
-    return {
-      status: "success",
-      created: createdReview,
-    };
-  } catch {
-    return {
-      status: "error",
-      message: "レビューの作成に失敗しました",
-    };
+  } catch (error) {
+    return handlePrismaError(error);
   }
+
+  // キャッシュの再検証
+  revalidatePath("/");
+  revalidatePath(`/products/${productId}`);
+  revalidatePath(`/reviews/${createdReview.id}`);
+
+  return {
+    status: "success",
+    created: createdReview,
+  };
 }
 
 export async function updateReview(
@@ -108,46 +144,40 @@ export async function updateReview(
 ): Promise<ReviewActionResult> {
   const rawData = Object.fromEntries(formData.entries());
 
-  const parsedData = await updateReviewSchema.safeParseAsync(rawData);
+  const parsedData = await reviewSchema.safeParseAsync(rawData);
 
   if (!parsedData.success) {
-    const { fieldErrors, formErrors } = parsedData.error.flatten();
     return {
       status: "error",
-      fieldErrors,
-      formErrors,
+      ...parsedData.error.flatten(),
     };
   }
 
   const { comment, productId, imageUrl } = parsedData.data;
 
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
+  // 認証チェック
+  let authResult: { dbUser: User };
+  try {
+    authResult = await authenticateUser();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return {
+        status: "error",
+        message: error.message,
+      };
+    }
     return {
       status: "error",
-      message: "ログインしてください",
+      message: "不明なエラーが発生しました",
     };
   }
 
-  const dbUser = await prisma.user.findUnique({
-    where: { authId: user.id },
-  });
-
-  if (!dbUser) {
-    return {
-      status: "error",
-      message: "ユーザーが見つかりません",
-    };
-  }
+  const dbUser = authResult.dbUser;
 
   // レビューの存在確認と所有者チェック
   const existingReview = await prisma.review.findUnique({
     where: { id: reviewId },
-    select: { userId: true },
+    select: { userId: true, productId: true },
   });
 
   if (!existingReview) {
@@ -164,9 +194,10 @@ export async function updateReview(
     };
   }
 
-  // データベースを更新
+  // レビュー更新処理
+  let updatedReview: Review;
   try {
-    const updatedReview = await prisma.review.update({
+    updatedReview = await prisma.review.update({
       where: { id: reviewId },
       data: {
         comment,
@@ -178,15 +209,21 @@ export async function updateReview(
         product: true,
       },
     });
-
-    return {
-      status: "success",
-      updated: updatedReview,
-    };
-  } catch {
-    return {
-      status: "error",
-      message: "レビューの更新に失敗しました",
-    };
+  } catch (error) {
+    return handlePrismaError(error);
   }
+
+  // キャッシュの再検証
+  revalidatePath("/");
+  revalidatePath(`/reviews/${reviewId}`);
+  // 元の商品ページも再検証
+  if (existingReview.productId !== productId) {
+    revalidatePath(`/products/${existingReview.productId}`);
+  }
+  revalidatePath(`/products/${productId}`);
+
+  return {
+    status: "success",
+    updated: updatedReview,
+  };
 }
