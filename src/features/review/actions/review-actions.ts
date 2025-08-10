@@ -12,7 +12,7 @@ const createReviewSchema = z.object({
   imageUrl: z.string().optional(),
 });
 
-type CreateReviewResult =
+export type ReviewActionResult =
   | ({ status: "error"; message?: string } & Partial<
       z.inferFlattenedErrors<typeof createReviewSchema>
     >)
@@ -20,9 +20,9 @@ type CreateReviewResult =
   | { status: "pending" };
 
 export async function createReview(
-  _prevState: CreateReviewResult,
+  _prevState: ReviewActionResult,
   formData: FormData,
-): Promise<CreateReviewResult> {
+): Promise<ReviewActionResult> {
   const rawData = Object.fromEntries(formData.entries());
 
   console.log(rawData);

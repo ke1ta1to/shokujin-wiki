@@ -29,7 +29,7 @@ const createArticleSchema = z.object({
   }, z.array(z.number())),
 });
 
-type CreateArticleResult =
+export type ArticleActionResult =
   | ({ status: "error"; message?: string } & Partial<
       z.inferFlattenedErrors<typeof createArticleSchema>
     >)
@@ -37,9 +37,9 @@ type CreateArticleResult =
   | { status: "pending" };
 
 export async function createArticle(
-  _prevState: CreateArticleResult,
+  _prevState: ArticleActionResult,
   formData: FormData,
-): Promise<CreateArticleResult> {
+): Promise<ArticleActionResult> {
   const rawData = Object.fromEntries(formData.entries());
 
   const parsedData = await createArticleSchema.safeParseAsync(rawData);

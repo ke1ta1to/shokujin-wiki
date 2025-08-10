@@ -3,7 +3,7 @@
 import { Box, Button, FormHelperText, TextField } from "@mui/material";
 import { useActionState, useEffect, useState } from "react";
 
-import { createReview } from "../actions/review-actions";
+import type { ReviewActionResult } from "../actions/review-actions";
 
 import { ProductSelect } from "@/features/product/components/product-select";
 import type { Review } from "@/generated/prisma";
@@ -15,6 +15,7 @@ interface ReviewFormProps {
     productId?: number;
     imageUrl?: string;
   };
+  action: Parameters<typeof useActionState<ReviewActionResult, FormData>>[0];
 }
 
 type ProductOption = {
@@ -23,8 +24,12 @@ type ProductOption = {
   price: number;
 };
 
-export function ReviewForm({ onCreate, defaultValues }: ReviewFormProps) {
-  const [state, formAction, pending] = useActionState(createReview, {
+export function ReviewForm({
+  onCreate,
+  defaultValues,
+  action,
+}: ReviewFormProps) {
+  const [state, formAction, pending] = useActionState(action, {
     status: "pending",
   });
 

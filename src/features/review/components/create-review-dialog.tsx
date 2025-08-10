@@ -9,27 +9,28 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
+import type { ComponentProps } from "react";
 import { useCallback } from "react";
-import { toast } from "sonner";
 
-import { ReviewForm } from "./review-form";
+import { CreateReviewForm } from "./create-review-form";
 
 interface CreateReviewDialogProps {
   open: boolean;
   onClose: () => void;
+  defaultValues?: ComponentProps<typeof CreateReviewForm>["defaultValues"];
 }
 
-export function CreateReviewDialog({ open, onClose }: CreateReviewDialogProps) {
-  const router = useRouter();
+export function CreateReviewDialog({
+  open,
+  onClose,
+  defaultValues,
+}: CreateReviewDialogProps) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleCreate = useCallback(() => {
-    toast(`レビューを投稿しました。`);
-    router.refresh();
     onClose();
-  }, [router, onClose]);
+  }, [onClose]);
 
   return (
     <Dialog
@@ -54,7 +55,10 @@ export function CreateReviewDialog({ open, onClose }: CreateReviewDialogProps) {
         <CloseIcon />
       </IconButton>
       <DialogContent>
-        <ReviewForm onCreate={handleCreate} />
+        <CreateReviewForm
+          onCreate={handleCreate}
+          defaultValues={defaultValues}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -19,7 +19,8 @@ import { useActionState, useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { ProductSelect } from "../../product/components/product-select";
-import { createArticle, generateSlug } from "../actions/article-actions";
+import { generateSlug } from "../actions/article-actions";
+import type { ArticleActionResult } from "../actions/article-actions";
 
 import { ArticleMarkdownContent } from "./article-markdown-content";
 
@@ -40,10 +41,15 @@ interface ArticleFormProps {
     isPublished?: boolean;
     mainProduct?: ProductOption | null;
   };
+  action: Parameters<typeof useActionState<ArticleActionResult, FormData>>[0];
 }
 
-export function ArticleForm({ onCreate, defaultValues }: ArticleFormProps) {
-  const [state, formAction, pending] = useActionState(createArticle, {
+export function ArticleForm({
+  onCreate,
+  defaultValues,
+  action,
+}: ArticleFormProps) {
+  const [state, formAction, pending] = useActionState(action, {
     status: "pending",
   });
 
