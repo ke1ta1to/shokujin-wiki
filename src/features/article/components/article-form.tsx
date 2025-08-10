@@ -19,8 +19,8 @@ import { useActionState, useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { ProductSelect } from "../../product/components/product-select";
-import { generateSlug } from "../actions/article-actions";
 import type { ArticleActionResult } from "../actions/article-actions";
+import { generateSlug } from "../actions/article-actions";
 
 import { ArticleMarkdownContent } from "./article-markdown-content";
 
@@ -40,6 +40,7 @@ interface ArticleFormProps {
     content?: string;
     isPublished?: boolean;
     mainProduct?: ProductOption | null;
+    relatedProducts?: ProductOption[];
   };
   action: Parameters<typeof useActionState<ArticleActionResult, FormData>>[0];
 }
@@ -66,7 +67,9 @@ export function ArticleForm({
   const [mainProduct, setMainProduct] = useState<ProductOption | null>(
     defaultValues?.mainProduct || null,
   );
-  const [relatedProducts, setRelatedProducts] = useState<ProductOption[]>([]);
+  const [relatedProducts, setRelatedProducts] = useState<ProductOption[]>(
+    defaultValues?.relatedProducts || [],
+  );
   const [slugGenerated, setSlugGenerated] = useState(false);
   const [generatingSlug, setGeneratingSlug] = useState(false);
 
@@ -405,7 +408,11 @@ export function ArticleForm({
         disabled={pending}
         sx={{ mt: 2 }}
       >
-        {pending ? "作成中..." : "記事を作成"}
+        {pending
+          ? "保存中..."
+          : defaultValues?.title
+            ? "記事を更新"
+            : "記事を作成"}
       </Button>
     </Box>
   );

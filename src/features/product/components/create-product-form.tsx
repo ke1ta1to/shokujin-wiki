@@ -10,7 +10,7 @@ import { ProductForm } from "./product-form";
 import type { Product } from "@/generated/prisma";
 
 interface CreateProductFormProps {
-  onCreate: (product: Product) => void;
+  onCreate?: (product: Product) => void;
   defaultValues?: ComponentProps<typeof ProductForm>["defaultValues"];
   notify?: boolean;
 }

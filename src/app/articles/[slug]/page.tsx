@@ -1,4 +1,13 @@
-import { Box, Divider, Link, Paper, Stack, Typography } from "@mui/material";
+import { Edit as EditIcon } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Divider,
+  Link,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import NextLink from "next/link";
 import { notFound } from "next/navigation";
 
@@ -7,6 +16,7 @@ import { ProductDetail } from "@/features/product/components/product-detail";
 import { ProductPreviewCardCompact } from "@/features/product/components/product-preview-card-compact";
 import { ReviewList } from "@/features/review/components/review-list";
 import prisma from "@/lib/prisma";
+import { createClient } from "@/lib/supabase/server";
 
 interface ArticlePageProps {
   params: Promise<{
@@ -16,6 +26,19 @@ interface ArticlePageProps {
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
+
+  // 現在のユーザーを取得
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let currentDbUser = null;
+  if (user) {
+    currentDbUser = await prisma.user.findUnique({
+      where: { authId: user.id },
+    });
+  }
 
   const article = await prisma.article.findUnique({
     where: { slug, isPublished: true },
@@ -105,11 +128,32 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     ]),
   );
 
+  // ログインしていれば誰でも編集可能
+  const canEdit = !!currentDbUser;
+
   return (
     <Stack spacing={2}>
-      <Typography variant="h4" component="h1">
-        {article.title}
-      </Typography>
+      <Box
+        display="flex"
+        alignItems="center"
+        gap={2}
+        justifyContent="space-between"
+      >
+        <Typography variant="h4" component="h1">
+          {article.title}
+        </Typography>
+        {canEdit && (
+          <Button
+            component={NextLink}
+            href={`/articles/${slug}/edit`}
+            variant="outlined"
+            startIcon={<EditIcon />}
+            size="small"
+          >
+            編集
+          </Button>
+        )}
+      </Box>
 
       <Stack direction="row" spacing={2}>
         <Typography variant="body2" color="text.secondary">

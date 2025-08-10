@@ -14,7 +14,7 @@ export default async function NewArticlePage({
   const productId = params.productId ? parseInt(params.productId, 10) : null;
 
   // productIdが指定されている場合は商品情報を取得
-  const defaultProduct =
+  const defaultMainProduct =
     productId && !isNaN(productId)
       ? await prisma.product.findUnique({
           where: { id: productId },
@@ -28,7 +28,11 @@ export default async function NewArticlePage({
         記事作成
       </Typography>
       <Box maxWidth={800} mx="auto">
-        <CreateArticleForm defaultProduct={defaultProduct} />
+        <CreateArticleForm
+          defaultValues={{
+            mainProduct: defaultMainProduct,
+          }}
+        />
       </Box>
     </Box>
   );

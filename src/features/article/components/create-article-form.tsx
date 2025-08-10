@@ -9,18 +9,16 @@ import { ArticleForm } from "./article-form";
 
 import type { Article } from "@/generated/prisma";
 
-type ProductOption = NonNullable<
-  ComponentProps<typeof ArticleForm>["defaultValues"]
->["mainProduct"];
-
 interface CreateArticleFormProps {
-  defaultProduct?: ProductOption | null;
+  defaultValues?: NonNullable<
+    ComponentProps<typeof ArticleForm>["defaultValues"]
+  >;
   onCreate?: (article: Article) => void;
   notify?: boolean;
 }
 
 export function CreateArticleForm({
-  defaultProduct,
+  defaultValues,
   onCreate,
   notify = true,
 }: CreateArticleFormProps) {
@@ -35,9 +33,7 @@ export function CreateArticleForm({
     <ArticleForm
       onCreate={handleCreate}
       action={createArticle}
-      defaultValues={{
-        mainProduct: defaultProduct,
-      }}
+      defaultValues={defaultValues}
     />
   );
 }
