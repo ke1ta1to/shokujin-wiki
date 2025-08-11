@@ -1,6 +1,6 @@
 # 開発コマンド一覧
 
-## 開発環境
+## 基本コマンド（ルートディレクトリから実行）
 
 ```bash
 # 開発サーバー起動（ユーザーが別ターミナルで実行）
@@ -13,11 +13,14 @@ pnpm build
 pnpm start
 ```
 
-## コード品質チェック（タスク完了時に実行）
+## コード品質チェック
 
 ```bash
 # TypeScript型チェック
 pnpm check-types
+
+# ESLintチェック（エラー表示）
+pnpm lint
 
 # ESLint実行（自動修正付き）
 pnpm lint:fix
@@ -25,43 +28,32 @@ pnpm lint:fix
 # Prettierフォーマット
 pnpm format
 
-# ESLintチェック（修正なし）
-pnpm lint
-
-# Prettierチェック（修正なし）
+# Prettierチェック（CIで使用）
 pnpm format:check
 ```
 
-## データベース関連
+## Prisma関連（packages/webディレクトリから実行）
 
 ```bash
-# Prismaコマンド実行（.env.local使用）
-pnpm prisma [command]
-
 # データベースマイグレーション
 pnpm prisma migrate dev
 
 # Prismaクライアント生成
 pnpm prisma generate
 
+# Prisma Studio起動
+pnpm prisma studio
+
 # データベースシード実行
 pnpm prisma db seed
-
-# Prisma Studio起動（データベース管理UI）
-pnpm prisma studio
 ```
 
-## Gitフック（Husky）
+## Git hooks
 
-pre-commitフック:
+pre-commitで自動実行：
 
-1. `pnpm check-types` - TypeScript型チェック
-2. `pnpm lint` - ESLintチェック
-3. `pnpm format:check` - Prettierチェック
+1. pnpm check-types
+2. pnpm lint
+3. pnpm format:check
 
-## システムコマンド（Darwin）
-
-- `ls` - ファイル一覧
-- `cd` - ディレクトリ移動
-- `git` - バージョン管理
-- `grep` / `rg` (ripgrep) - ファイル内検索
+エラーがある場合はコミットがブロックされるため、事前に修正が必要

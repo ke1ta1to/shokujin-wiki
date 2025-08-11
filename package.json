@@ -6,6 +6,7 @@
     "build": "pnpm --filter @repo/web build",
     "start": "pnpm --filter @repo/web start",
     "lint": "pnpm --recursive lint",
+    "lint:fix": "pnpm --recursive lint --fix",
     "check-types": "pnpm --recursive check-types",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
