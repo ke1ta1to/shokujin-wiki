@@ -1,0 +1,20 @@
+{
+  "name": "shokujin-wiki",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @repo/web dev",
+    "build": "pnpm --filter @repo/web build",
+    "start": "pnpm --filter @repo/web start",
+    "lint": "pnpm --recursive lint",
+    "check-types": "pnpm --recursive check-types",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2"
+  },
+  "packageManager": "pnpm@10.14.0"
+}
