@@ -1,56 +1,21 @@
 {
   "name": "shokujin-wiki",
-  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
+    "dev": "pnpm --filter @repo/web dev",
+    "build": "pnpm --filter @repo/web build",
+    "start": "pnpm --filter @repo/web start",
+    "lint": "pnpm --recursive lint",
+    "lint:fix": "pnpm --recursive lint --fix",
+    "check-types": "pnpm --recursive check-types",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "check-types": "tsc --noEmit",
-    "prepare": "husky",
-    "prisma": "dotenv -e .env.local -- prisma"
-  },
-  "dependencies": {
-    "@emotion/cache": "^11.14.0",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^7.2.0",
-    "@mui/material": "^7.2.0",
-    "@mui/material-nextjs": "^7.2.0",
-    "@prisma/client": "6.12.0",
-    "@supabase/ssr": "^0.6.1",
-    "@supabase/supabase-js": "^2.50.5",
-    "date-fns": "^4.1.0",
-    "next": "^15.3.5",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-markdown": "^10.1.0",
-    "remark-gfm": "^4.0.1",
-    "sonner": "^2.0.6",
-    "zod": "^4.0.5"
+    "prepare": "husky"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
-    "@next/eslint-plugin-next": "^15.3.5",
-    "@types/node": "^24.0.13",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
-    "dotenv-cli": "^8.0.0",
-    "eslint": "^9.31.0",
-    "eslint-config-next": "^15.3.5",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.1.7",
     "prettier": "^3.6.2",
-    "prisma": "^6.12.0",
-    "tsx": "^4.20.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
-  }
+  "packageManager": "pnpm@10.14.0"
 }

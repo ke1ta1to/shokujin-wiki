@@ -4,68 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-食神Wiki - 食品レビューと記事管理のWebアプリケーション
+**食神Wiki** - 食品レビューと記事管理のWebアプリケーション
 
-- Next.js 15 + TypeScript + Material-UI v7 + Supabase Auth + Prisma ORM
-- Server Actions による API 実装（API Routes 不使用）
-- パッケージマネージャー: pnpm
-
-## 必要なコマンド
-
-### 開発環境
-
-```bash
-# 開発サーバー起動（ユーザーが別ターミナルで実行）
-pnpm dev
-
-# 本番ビルド
-pnpm build
-
-# 本番サーバー起動
-pnpm start
-```
-
-### コード品質チェック
-
-```bash
-# TypeScript型チェック
-pnpm check-types
-
-# ESLint実行（自動修正付き）
-pnpm lint:fix
-
-# Prettierフォーマット
-pnpm format
-
-# ESLintチェック（修正なし）
-pnpm lint
-
-# Prettierチェック（修正なし）
-pnpm format:check
-```
-
-### データベース
-
-```bash
-# Prismaコマンド実行（.env.local使用）
-pnpm prisma [command]
-
-# データベースマイグレーション
-pnpm prisma migrate dev
-
-# Prismaクライアント生成
-pnpm prisma generate
-
-# データベースシード実行
-pnpm prisma db seed
-
-# Prisma Studio起動（データベース管理UI）
-pnpm prisma studio
-```
-
-## アーキテクチャ
-
-### 主要技術スタック
+### 技術スタック
 
 - **フレームワーク**: Next.js 15.3.5 (App Router) + React 19.1.0
 - **言語**: TypeScript 5.8.3
@@ -73,7 +14,7 @@ pnpm prisma studio
 - **認証**: Supabase Auth + SSR 0.6.1
 - **データベース**: PostgreSQL + Prisma ORM 6.12.0
 - **バリデーション**: Zod 4.0.5
-- **フォント**: Noto Sans JP
+- **パッケージマネージャー**: pnpm workspace（モノレポ構成）
 
 ### データモデル
 
@@ -101,50 +42,86 @@ Review (レビュー)
 └── imageUrls[] - 画像（商品画像として利用）
 ```
 
-### ディレクトリ構成
+## 開発コマンド
 
-```
-src/
-├── app/              # Next.js App Router
-│   ├── (index)/      # トップページグループ（FAB付き）
-│   ├── products/     # 商品関連
-│   ├── articles/     # 記事関連
-│   ├── reviews/      # レビュー関連
-│   ├── auth/         # 認証関連
-│   └── settings/     # 設定（認証保護）
-├── features/         # 機能別実装
-│   ├── auth/         # 認証（actions/components）
-│   ├── product/      # 商品（actions/components）
-│   ├── review/       # レビュー（actions/components）
-│   └── article/      # 記事（actions/components）
-├── components/       # 共通コンポーネント
-├── lib/              # ライブラリ設定
-│   ├── supabase/     # Supabase設定（server/client）
-│   └── prisma.ts     # Prismaクライアント
-├── utils/            # ユーティリティ
-├── generated/prisma/ # Prisma生成ファイル
-└── theme.ts          # MUIテーマ設定
+### 基本操作
+
+```bash
+# 開発サーバー起動（ユーザーが別ターミナルで実行）
+pnpm dev
+
+# 本番ビルド
+pnpm build
+
+# 本番サーバー起動
+pnpm start
 ```
 
-### 認証システム
+### コード品質チェック（タスク完了時に実行）
 
-**Supabase Auth + Prisma統合**：
+```bash
+# TypeScript型チェック
+pnpm check-types
 
-1. Supabase Authで認証処理
-2. Prismaでユーザーデータ管理（authIdで連携）
-3. ミドルウェアでセッション管理（`src/middleware.ts`）
-4. `AuthProtected`コンポーネントで保護
+# ESLint実行（自動修正付き）
+# インポート順序エラーや軽微なESLintエラーを自動修正
+pnpm lint:fix
 
-### 環境変数（.env.local）
+# Prettierフォーマット
+pnpm format
+
+# ESLintチェック（修正なし）
+pnpm lint
+
+# Prettierチェック（修正なし）
+pnpm format:check
+```
+
+### データベース操作
+
+```bash
+# packages/webディレクトリから実行
+cd packages/web
+
+# データベースマイグレーション
+pnpm prisma migrate dev
+
+# Prismaクライアント生成
+pnpm prisma generate
+
+# データベースシード実行
+pnpm prisma db seed
+
+# Prisma Studio起動（データベース管理UI）
+pnpm prisma studio
+```
+
+## アーキテクチャ
+
+### ディレクトリ構造
 
 ```
-DATABASE_URL=                    # Prisma接続用
-DIRECT_URL=                      # Prismaダイレクト接続用
-NEXT_PUBLIC_SUPABASE_URL=        # Supabase URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY=   # Supabase公開キー
+packages/web/src/
+├── app/          # App Router（ページ・レイアウト）
+├── features/     # 機能別実装
+│   ├── auth/     # 認証
+│   ├── product/  # 商品管理
+│   ├── review/   # レビュー
+│   ├── article/  # 記事
+│   └── s3/       # ファイルアップロード
+├── components/   # 共通コンポーネント
+├── lib/          # 外部ライブラリ設定
+└── utils/        # ユーティリティ
 ```
 
-## コーディング規則
+### 機能別ディレクトリ構成
+
+各featureは以下の構成：
+
+- `components/` - UIコンポーネント
+- `actions/` - Server Actions
+
+## コーディング規約
 
 ### Server Actions（API Routes不使用）
 
@@ -193,7 +170,6 @@ export async function createItemAction(
     });
     return { status: "success", message: "作成しました" };
   } catch (error) {
-    // 4. エラーハンドリング
     return { status: "error", message: "エラーが発生しました" };
   }
 }
@@ -291,6 +267,51 @@ type ProductWithReviews = Prisma.ProductGetPayload<{
 }>;
 ```
 
+### TypeScript
+
+- 型インポート時は`type`キーワード使用
+- Zodでバリデーションスキーマ定義
+
+### ファイル命名
+
+- コンポーネント: kebab-case（例: `product-form.tsx`）
+- Server Actions: kebab-case（例: `product-actions.ts`）
+- hooks: `use-*.ts`
+- ページ: `page.tsx`（App Router規約）
+- レイアウト: `layout.tsx`（App Router規約）
+
+### インポート順序（ESLintで自動整理）
+
+1. 外部ライブラリ
+2. 内部モジュール（@/で始まる）
+3. 相対パス
+   ※グループ間に空行、アルファベット順
+   ※`pnpm lint:fix`実行で自動修正される
+
+## 重要な注意事項
+
+### Git hooks
+
+pre-commitで自動実行されるため、コミット前にエラーがないことを確認：
+
+- 型チェック
+- リント
+- フォーマットチェック
+
+### 環境変数
+
+`.env.local`に以下が必要：
+
+- `DATABASE_URL` - PostgreSQL接続文字列
+- `DIRECT_URL` - Prisma用直接接続
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabaseアノンキー
+
+### Prisma
+
+- スキーマ変更時は必ず`pnpm prisma generate`実行
+- 生成されたクライアントは`src/generated/prisma/`に配置
+
 ## 重要な仕様
 
 ### 商品画像の扱い
@@ -312,25 +333,11 @@ const imageUrl = latestImage?.imageUrls[0] || null;
 - `/products/[id]` → mainArticleがあれば `/articles/[slug]` へ301リダイレクト
 - `/articles/[slug]` → 公開記事（`isPublished: true`）のみ表示
 
-### pre-commitフック（Husky）
+### 認証システム
 
-コミット前に自動実行：
+**Supabase Auth + Prisma統合**：
 
-1. `pnpm check-types` - TypeScript型チェック
-2. `pnpm lint` - ESLintチェック
-3. `pnpm format:check` - Prettierチェック
-
-### MUI MCP活用
-
-複雑なMUIコンポーネント実装時は、MCPツールで最新ベストプラクティスを確認：
-
-- `mcp__mui__useMuiDocs` - ドキュメントインデックス取得
-- `mcp__mui__fetchDocs` - 特定ページ取得
-
-### ファイル命名規則
-
-- コンポーネント: `kebab-case.tsx`
-- Server Actions: `*-actions.ts`
-- hooks: `use-*.ts`
-- ページ: `page.tsx`（App Router規約）
-- レイアウト: `layout.tsx`（App Router規約）
+1. Supabase Authで認証処理
+2. Prismaでユーザーデータ管理（authIdで連携）
+3. ミドルウェアでセッション管理（`src/middleware.ts`）
+4. `AuthProtected`コンポーネントで保護
