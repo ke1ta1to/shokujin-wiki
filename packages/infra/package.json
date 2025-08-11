@@ -8,13 +8,15 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "aws-cdk-lib": "^2.210.0",
     "constructs": "^10.4.2"
   },
   "devDependencies": {
+    "@tsconfig/node22": "^22.0.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.2.1",
     "aws-cdk": "^2.1024.0",
