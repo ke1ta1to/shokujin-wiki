@@ -8,12 +8,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### 技術スタック
 
+#### Webアプリケーション（packages/web）
+
 - **フレームワーク**: Next.js 15.3.5 (App Router) + React 19.1.0
 - **言語**: TypeScript 5.8.3
 - **UI**: Material-UI 7.2.0 + Emotion
 - **認証**: Supabase Auth + SSR 0.6.1
 - **データベース**: PostgreSQL + Prisma ORM 6.12.0
 - **バリデーション**: Zod 4.0.5
+
+#### インフラストラクチャ（packages/infra）
+
+- **IaC**: AWS CDK 2.210.0
+- **言語**: TypeScript
+- **テスト**: Jest + ts-jest
+
+#### 共通
+
 - **パッケージマネージャー**: pnpm workspace（モノレポ構成）
 
 ### データモデル
@@ -96,22 +107,59 @@ pnpm prisma db seed
 pnpm prisma studio
 ```
 
+### AWS CDK操作（インフラストラクチャ）
+
+```bash
+# packages/infraディレクトリから実行
+cd packages/infra
+
+# CDKビルド
+pnpm build
+
+# TypeScript型チェック
+pnpm check-types
+
+# ESLint実行（自動修正付き）
+pnpm lint:fix
+
+# テスト実行
+pnpm test
+
+# CDKデプロイ
+pnpm cdk deploy
+
+# CDK差分確認
+pnpm cdk diff
+
+# CDKスタック一覧
+pnpm cdk list
+
+# CDK合成（CloudFormationテンプレート生成）
+pnpm cdk synth
+```
+
 ## アーキテクチャ
 
 ### ディレクトリ構造
 
 ```
-packages/web/src/
-├── app/          # App Router（ページ・レイアウト）
-├── features/     # 機能別実装
-│   ├── auth/     # 認証
-│   ├── product/  # 商品管理
-│   ├── review/   # レビュー
-│   ├── article/  # 記事
-│   └── s3/       # ファイルアップロード
-├── components/   # 共通コンポーネント
-├── lib/          # 外部ライブラリ設定
-└── utils/        # ユーティリティ
+packages/
+├── web/                  # Webアプリケーション
+│   └── src/
+│       ├── app/          # App Router（ページ・レイアウト）
+│       ├── features/     # 機能別実装
+│       │   ├── auth/     # 認証
+│       │   ├── product/  # 商品管理
+│       │   ├── review/   # レビュー
+│       │   ├── article/  # 記事
+│       │   └── s3/       # ファイルアップロード
+│       ├── components/   # 共通コンポーネント
+│       ├── lib/          # 外部ライブラリ設定
+│       └── utils/        # ユーティリティ
+└── infra/                # インフラストラクチャ
+    ├── bin/              # CDKアプリケーションエントリポイント
+    ├── lib/              # CDKスタック定義
+    └── test/             # CDKテスト
 ```
 
 ### 機能別ディレクトリ構成
