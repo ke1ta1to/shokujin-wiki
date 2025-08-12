@@ -1,6 +1,6 @@
-# 開発コマンド一覧
+# 推奨コマンド
 
-## 基本コマンド（ルートディレクトリから実行）
+## 開発コマンド（ルートディレクトリ）
 
 ```bash
 # 開発サーバー起動（ユーザーが別ターミナルで実行）
@@ -11,16 +11,9 @@ pnpm build
 
 # 本番サーバー起動
 pnpm start
-```
 
-## コード品質チェック
-
-```bash
 # TypeScript型チェック
 pnpm check-types
-
-# ESLintチェック（エラー表示）
-pnpm lint
 
 # ESLint実行（自動修正付き）
 pnpm lint:fix
@@ -28,32 +21,63 @@ pnpm lint:fix
 # Prettierフォーマット
 pnpm format
 
-# Prettierチェック（CIで使用）
+# ESLintチェック（修正なし）
+pnpm lint
+
+# Prettierチェック（修正なし）
 pnpm format:check
 ```
 
-## Prisma関連（packages/webディレクトリから実行）
+## Webアプリケーション（packages/web）
 
 ```bash
+cd packages/web
+
 # データベースマイグレーション
 pnpm prisma migrate dev
 
 # Prismaクライアント生成
 pnpm prisma generate
 
-# Prisma Studio起動
-pnpm prisma studio
-
 # データベースシード実行
 pnpm prisma db seed
+
+# Prisma Studio起動
+pnpm prisma studio
 ```
 
-## Git hooks
+## インフラストラクチャ（packages/infra）
 
-pre-commitで自動実行：
+```bash
+cd packages/infra
 
-1. pnpm check-types
-2. pnpm lint
-3. pnpm format:check
+# CDKビルド
+pnpm build
 
-エラーがある場合はコミットがブロックされるため、事前に修正が必要
+# TypeScript型チェック
+pnpm check-types
+
+# ESLint実行（自動修正付き）
+pnpm lint:fix
+
+# テスト実行
+pnpm test
+
+# CDKデプロイ
+pnpm cdk deploy
+
+# CDK差分確認
+pnpm cdk diff
+
+# CDKスタック一覧
+pnpm cdk list
+
+# CDK合成（CloudFormationテンプレート生成）
+pnpm cdk synth
+```
+
+## タスク完了時の必須チェック
+
+1. `pnpm check-types` - TypeScript型チェック
+2. `pnpm lint:fix` - ESLint自動修正
+3. `pnpm format` - Prettierフォーマット
