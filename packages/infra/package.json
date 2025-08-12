@@ -1,0 +1,32 @@
+{
+  "name": "@repo/infra",
+  "version": "0.1.0",
+  "bin": {
+    "shokujin-wiki": "bin/shokujin-wiki.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.210.0",
+    "constructs": "^10.4.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@tsconfig/node22": "^22.0.2",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.2.1",
+    "aws-cdk": "^2.1024.0",
+    "eslint": "^9.33.0",
+    "jest": "^30.0.5",
+    "ts-jest": "^29.4.1",
+    "ts-node": "^10.9.2",
+    "typescript-eslint": "^8.39.1"
+  }
+}
