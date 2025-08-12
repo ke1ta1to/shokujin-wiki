@@ -2,7 +2,7 @@
   "name": "@repo/infra",
   "version": "0.1.0",
   "bin": {
-    "infra": "bin/infra.js"
+    "shokujin-wiki": "bin/shokujin-wiki.js"
   },
   "scripts": {
     "build": "tsc",
