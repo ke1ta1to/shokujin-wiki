@@ -27,9 +27,8 @@ export class ShokujinWikiResourceStack extends cdk.Stack {
       autoDeleteObjects: !isProduction,
       cors: [
         {
-          allowedMethods: [s3.HttpMethods.PUT, s3.HttpMethods.POST],
+          allowedMethods: [s3.HttpMethods.POST],
           allowedOrigins: ["*"],
-          allowedHeaders: ["*"],
         },
       ],
     });
