@@ -37,5 +37,6 @@ export async function uploadAssets(
     throw new Error("アップロードキーが見つかりません");
   }
 
-  return `${presignedPost.url}/${key}`;
+  const baseUrl = process.env.NEXT_PUBLIC_UPLOADED_CLOUDFRONT_URL as string;
+  return `${baseUrl}/${key}`;
 }

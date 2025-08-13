@@ -16,7 +16,7 @@ export async function createPresignedUrl(
 ): Promise<PresignedPost> {
   const client = createClient();
   const { url, fields } = await createPresignedPost(client, {
-    Bucket: process.env.S3_BUCKET_NAME as string,
+    Bucket: process.env.AWS_S3_BUCKET_NAME as string,
     Key: key,
     Conditions: [
       ["content-length-range", 0, 20 * 1024 * 1024], // 最大20MB

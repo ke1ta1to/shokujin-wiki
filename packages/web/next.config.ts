@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
               hostname: "**",
             },
           ]
-        : [],
+        : [new URL(process.env.NEXT_PUBLIC_UPLOADED_CLOUDFRONT_URL as string)],
   },
   serverExternalPackages: ["@supabase/supabase-js"],
 };
