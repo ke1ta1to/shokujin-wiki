@@ -1,4 +1,5 @@
 import { Box, Divider } from "@mui/material";
+import { Suspense } from "react";
 
 import { Pagination } from "@/components/pagination";
 import { CreateReviewForm } from "@/features/review/components/create-review-form";
@@ -59,12 +60,14 @@ export default async function IndexPage({ searchParams }: IndexPageProps) {
 
       <Divider sx={{ my: 4 }} />
 
-      <Pagination
-        totalCount={totalCount}
-        currentPage={currentPage}
-        limit={limit}
-        limitOptions={REVIEW_LIMIT_OPTIONS}
-      />
+      <Suspense>
+        <Pagination
+          totalCount={totalCount}
+          currentPage={currentPage}
+          limit={limit}
+          limitOptions={REVIEW_LIMIT_OPTIONS}
+        />
+      </Suspense>
     </>
   );
 }
