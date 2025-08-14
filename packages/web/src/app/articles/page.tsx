@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import NextLink from "next/link";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { Pagination } from "@/components/pagination";
 import { ArticlePreviewCard } from "@/features/article/components/article-preview-card";
@@ -125,12 +126,14 @@ export default async function ArticlesPage({
       {totalCount > 0 && (
         <>
           <Divider sx={{ my: 4 }} />
-          <Pagination
-            totalCount={totalCount}
-            currentPage={currentPage}
-            limit={limit}
-            limitOptions={PAGE_OPTIONS}
-          />
+          <Suspense>
+            <Pagination
+              totalCount={totalCount}
+              currentPage={currentPage}
+              limit={limit}
+              limitOptions={PAGE_OPTIONS}
+            />
+          </Suspense>
         </>
       )}
     </Box>

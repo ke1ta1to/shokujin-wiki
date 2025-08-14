@@ -9,6 +9,7 @@ import {
   Divider,
 } from "@mui/material";
 import NextLink from "next/link";
+import { Suspense } from "react";
 
 import { Pagination } from "@/components/pagination";
 import { ProductPreviewCard } from "@/features/product/components/product-preview-card";
@@ -89,12 +90,14 @@ export default async function ProductsPage({
         ))}
       </Grid>
       <Divider sx={{ my: 4 }} />
-      <Pagination
-        totalCount={totalCount}
-        currentPage={currentPage}
-        limit={limit}
-        limitOptions={PAGE_OPTIONS}
-      />
+      <Suspense>
+        <Pagination
+          totalCount={totalCount}
+          currentPage={currentPage}
+          limit={limit}
+          limitOptions={PAGE_OPTIONS}
+        />
+      </Suspense>
     </Box>
   );
 }

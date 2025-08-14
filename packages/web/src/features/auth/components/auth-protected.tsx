@@ -1,5 +1,7 @@
 "use client";
 
+import { Suspense } from "react";
+
 import { useUser } from "../hooks/use-user";
 
 import LoginContinueBlock from "./login-continue-block";
@@ -12,7 +14,11 @@ export default function AuthProtected({
   const { user } = useUser();
 
   if (!user) {
-    return <LoginContinueBlock />;
+    return (
+      <Suspense>
+        <LoginContinueBlock />
+      </Suspense>
+    );
   }
 
   return <>{children}</>;
