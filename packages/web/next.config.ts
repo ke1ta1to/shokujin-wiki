@@ -5,15 +5,15 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns:
       process.env.NODE_ENV === "development"
-        ? [
+        ? [{ protocol: "https", hostname: "**" }]
+        : [
             {
               protocol: "https",
-              hostname: "**",
+              hostname: process.env
+                .NEXT_PUBLIC_UPLOADED_CLOUDFRONT_DOMAIN as string,
             },
-          ]
-        : [new URL(process.env.NEXT_PUBLIC_UPLOADED_CLOUDFRONT_URL as string)],
+          ],
   },
-  serverExternalPackages: ["@supabase/supabase-js"],
 };
 
 export default nextConfig;
