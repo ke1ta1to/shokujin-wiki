@@ -89,6 +89,18 @@
     "@aws-cdk/s3-notifications:addS3TrustKeyPolicyForSnsSubscriptions": true,
     "@aws-cdk/aws-ec2:requirePrivateSubnetsForEgressOnlyInternetGateway": true,
     "@aws-cdk/aws-s3:publicAccessBlockedByDefault": true,
-    "@aws-cdk/aws-lambda:useCdkManagedLogGroup": true
+    "@aws-cdk/aws-lambda:useCdkManagedLogGroup": true,
+    "production": {
+      "environment": "Production",
+      "createLambda": true
+    },
+    "staging": {
+      "environment": "Staging",
+      "createLambda": true
+    },
+    "development": {
+      "environment": "Development",
+      "createLambda": false
+    }
   }
 }

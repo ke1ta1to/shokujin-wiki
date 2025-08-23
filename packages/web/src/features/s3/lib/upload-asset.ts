@@ -37,5 +37,5 @@ export async function uploadAssets(
     throw new Error("アップロードキーが見つかりません");
   }
 
-  return `https://${process.env.NEXT_PUBLIC_UPLOADED_CLOUDFRONT_DOMAIN}/${key}`;
+  return `/${key}`;
 }

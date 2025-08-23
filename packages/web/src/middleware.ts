@@ -1,8 +1,14 @@
 import type { NextRequest } from "next/server";
 
+import { verifyCloudFrontOrigin } from "./lib/cloudfront/verify-origin";
 import { updateSession } from "./lib/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
+  const originVerifyResponse = verifyCloudFrontOrigin(request);
+  if (originVerifyResponse) {
+    return originVerifyResponse; // 403を返す
+  }
+
   return await updateSession(request);
 }
 

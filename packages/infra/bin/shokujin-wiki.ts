@@ -1,22 +1,17 @@
 #!/usr/bin/env node
 import * as cdk from "aws-cdk-lib";
-import { ShokujinWikiResourceStack } from "../lib/shokujin-wiki-resource-stack";
+import { ShokujinWikiAppStack } from "../lib/shokujin-wiki-app-stack";
 
 const app = new cdk.App();
-// new ShokujinWikiAppStack(app, "ShokujinWikiStack", {
-//   env: {
-//     account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION
-//   },
-// });
 
-// new ShokujinWikiResourceStack(app, "ProductionShokujinWikiResourceStack", {
-//   environment: "production"
-// });
+const environment =
+  (app.node.tryGetContext("environment") as string) || "development";
 
-// new ShokujinWikiResourceStack(app, "StagingShokujinWikiResourceStack", {
-//   environment: "staging"
-// });
+const envConfig = app.node.tryGetContext(environment);
 
-new ShokujinWikiResourceStack(app, "DevelopmentShokujinWikiResourceStack", {
-  environment: "development",
+console.log(JSON.stringify({ environment, envConfig }, null, 2));
+
+new ShokujinWikiAppStack(app, `ShokujinWikiAppStack${envConfig.environment}`, {
+  environment: envConfig.environment,
+  createLambda: envConfig.createLambda,
 });

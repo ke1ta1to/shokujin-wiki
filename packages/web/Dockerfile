@@ -25,6 +25,7 @@ RUN pnpm --filter @repo/web prisma generate \
 FROM base AS runner
 WORKDIR /app
 
+COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.0 /lambda-adapter /opt/extensions/lambda-adapter
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
