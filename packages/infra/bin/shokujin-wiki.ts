@@ -1,22 +1,32 @@
 #!/usr/bin/env node
 import * as cdk from "aws-cdk-lib";
-import { ShokujinWikiResourceStack } from "../lib/shokujin-wiki-resource-stack";
+
+import z from "zod";
+import { ShokujinWikiAppStack } from "../lib/shokujin-wiki-app-stack";
+import { ShokujinWikiStack } from "../lib/shokujin-wiki-stack";
 
 const app = new cdk.App();
-// new ShokujinWikiAppStack(app, "ShokujinWikiStack", {
-//   env: {
-//     account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION
-//   },
-// });
 
-// new ShokujinWikiResourceStack(app, "ProductionShokujinWikiResourceStack", {
-//   environment: "production"
-// });
+const mode = app.node.tryGetContext("mode") || "app";
 
-// new ShokujinWikiResourceStack(app, "StagingShokujinWikiResourceStack", {
-//   environment: "staging"
-// });
+if (mode === "app") {
+  const environmentSchema = z.enum(["development", "production"]);
+  const environment = app.node.tryGetContext("environment");
+  if (!environmentSchema.safeParse(environment).success) {
+    throw new Error(
+      'Invalid environment. Please specify "-c environment=development" or "-c environment=production".',
+    );
+  }
 
-new ShokujinWikiResourceStack(app, "DevelopmentShokujinWikiResourceStack", {
-  environment: "development",
-});
+  new ShokujinWikiAppStack(
+    app,
+    `ShokujinWikiAppStack${capitalize(environment)}`,
+    { environment },
+  );
+} else if (mode === "default") {
+  new ShokujinWikiStack(app, "ShokujinWikiStack");
+}
+
+function capitalize(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
