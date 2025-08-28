@@ -38,5 +38,5 @@ jobs:
           version: latest
       - run: supabase --experimental branches get "$GITHUB_HEAD_REF" -o env >> $GITHUB_ENV
       - run: |
-          pnpm ci --frozen-lockfile
+          pnpm ci
           pnpm -F @repo/web prisma migrate deploy
