@@ -40,3 +40,6 @@ jobs:
       - run: |
           pnpm install --frozen-lockfile
           pnpm -F @repo/web prisma migrate deploy
+        env:
+          POSTGRES_PRISMA_URL: $POSTGRES_PRISMA_URL
+          POSTGRES_URL_NON_POOLING: $POSTGRES_URL_NON_POOLING
