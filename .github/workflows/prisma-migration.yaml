@@ -41,6 +41,11 @@ jobs:
       - run: |
           export POSTGRES_PRISMA_URL=$POSTGRES_URL
           export POSTGRES_URL_NON_POOLING=$(echo $POSTGRES_URL | sed 's/:6543\//:5432\//')
-          echo $POSTGRES_PRISMA_URL
-          echo $POSTGRES_URL_NON_POOLING
-          pnpm -F @repo/web exec prisma migrate deploy
+      - name: Send Discord Notification
+        run: |
+          MESSAGE="env: $(echo $POSTGRES_URL_NON_POOLING)"
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d "{\"content\": \"$MESSAGE\"}" \
+            ${{ secrets.DISCORD_WEBHOOK }}
+      - run: pnpm -F @repo/web exec prisma migrate deploy
