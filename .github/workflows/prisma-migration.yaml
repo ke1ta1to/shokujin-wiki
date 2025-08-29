@@ -36,9 +36,10 @@ jobs:
       - uses: supabase/setup-cli@v1
         with:
           version: latest
-      - run: supabase --experimental branches get "$GITHUB_HEAD_REF" -o env >> $GITHUB_ENV
+      - run: |
+          POSTGRES_URL=$(supabase --experimental branches get "$GITHUB_HEAD_REF" -o env | grep 'POSTGRES_URL=' | cut -d'=' -f2- | sed 's/"//g')
+          echo "POSTGRES_PRISMA_URL=$POSTGRES_URL" >> $GITHUB_ENV
+          echo "POSTGRES_URL_NON_POOLING=$(echo $POSTGRES_URL | sed 's/:6543\//:5432\//')" >> $GITHUB_ENV
       - run: pnpm install --frozen-lockfile
       - run: |
-          export POSTGRES_PRISMA_URL=$(echo $POSTGRES_URL | sed 's/"//g')
-          export POSTGRES_URL_NON_POOLING=$(echo $POSTGRES_URL | sed 's/"//g' | sed 's/:6543\//:5432\//')
           pnpm -F @repo/web exec prisma migrate deploy
