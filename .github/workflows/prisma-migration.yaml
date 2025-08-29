@@ -37,9 +37,6 @@ jobs:
         with:
           version: latest
       - run: supabase --experimental branches get "$GITHUB_HEAD_REF" -o env >> $GITHUB_ENV
-      - run: |
-          echo "---- Supabase ENV variables ----"
-          env | grep POSTGRES_URL | cut -d'=' -f1
       - run: pnpm install --frozen-lockfile
       - run: pnpm -F @repo/web exec prisma migrate deploy
         env:
