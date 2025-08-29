@@ -37,6 +37,9 @@ jobs:
         with:
           version: latest
       - run: supabase --experimental branches get "$GITHUB_HEAD_REF" -o env >> $GITHUB_ENV
+      - run: psql "$DATABASE_URL" -c "SELECT 1;"
+        env:
+          DATABASE_URL: ${{ secrets.DB_URL_NON_POOLING }}
       - run: pnpm install --frozen-lockfile
       - run: pnpm -F @repo/web exec prisma migrate deploy
         env:
