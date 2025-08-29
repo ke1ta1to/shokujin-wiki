@@ -1,4 +1,5 @@
 import { Box, Divider } from "@mui/material";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { Pagination } from "@/components/pagination";
@@ -7,6 +8,10 @@ import { ReviewList } from "@/features/review/components/review-list";
 import prisma from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { getPaginationParams } from "@/utils/pagination";
+
+export const metadata: Metadata = {
+  title: "レビュー",
+};
 
 const DEFAULT_REVIEW_LIMIT = 20;
 const REVIEW_LIMIT_OPTIONS = [10, 20, 50, 100] as const;
