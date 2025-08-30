@@ -3,10 +3,10 @@
 ## ルートディレクトリ
 
 - `/packages/` - モノレポのパッケージディレクトリ
-  - `/packages/web/` - メインのNext.jsアプリケーション
+  - `/packages/www/` - メインのNext.jsアプリケーション
   - `/packages/infra/` - AWS CDKインフラストラクチャ
 
-## packages/web/src/の構成
+## packages/www/src/の構成
 
 - `/app/` - Next.js App Routerのページとルーティング
 - `/features/` - 機能別実装
@@ -29,6 +29,6 @@
 
 ## その他の重要ファイル
 
-- `packages/web/prisma/` - Prismaスキーマとマイグレーション
+- `packages/www/prisma/` - Prismaスキーマとマイグレーション
 - `.husky/` - Git hooks設定（pre-commit）
 - `.mcp.json` - MCP（Model Context Protocol）サーバー設定

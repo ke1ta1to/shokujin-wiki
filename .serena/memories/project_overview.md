@@ -15,4 +15,4 @@
 
 ## モノレポ構成
 
-pnpm workspaceを使用したモノレポ構成で、現在はwebパッケージ（@repo/web）のみ存在。
+pnpm workspaceを使用したモノレポ構成で、現在はwebパッケージ（@repo/www）のみ存在。

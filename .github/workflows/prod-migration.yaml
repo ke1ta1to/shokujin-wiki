@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
       - run: pnpm install --frozen-lockfile
-      - run: pnpm -F @repo/web exec prisma migrate deploy
+      - run: pnpm -F @repo/www exec prisma migrate deploy
         env:
           POSTGRES_PRISMA_URL: ${{ secrets.PROD_POSTGRES_PRISMA_URL }}
           POSTGRES_URL_NON_POOLING: ${{ secrets.PROD_POSTGRES_URL_NON_POOLING }}

@@ -8,14 +8,14 @@
 # 依存関係インストール
 pnpm install
 
-# 環境変数設定（packages/web/.env.local）
+# 環境変数設定（packages/www/.env.local）
 DATABASE_URL=postgresql://...
 DIRECT_URL=postgresql://...
 NEXT_PUBLIC_SUPABASE_URL=https://...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 
 # データベース初期化
-cd packages/web
+cd packages/www
 pnpm prisma migrate dev
 pnpm prisma generate
 ```
@@ -34,7 +34,7 @@ pnpm format       # フォーマット
 
 ## 技術スタック
 
-### Webアプリケーション（packages/web）
+### Webアプリケーション（packages/www）
 
 - Next.js 15.3.5 (App Router) + React 19
 - TypeScript 5.8.3
@@ -56,7 +56,7 @@ pnpm format       # フォーマット
 ```
 shokujin-wiki/
 ├── packages/
-│   ├── web/                      # Next.jsアプリケーション
+│   ├── www/                      # Next.jsアプリケーション
 │   │   ├── prisma/
 │   │   │   └── schema.prisma     # データベーススキーマ
 │   │   └── src/

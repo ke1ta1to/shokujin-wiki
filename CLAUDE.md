@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### 技術スタック
 
-#### Webアプリケーション（packages/web）
+#### Webアプリケーション（packages/www）
 
 - **フレームワーク**: Next.js 15.3.5 (App Router) + React 19.1.0
 - **言語**: TypeScript 5.8.3
@@ -91,8 +91,8 @@ pnpm format:check
 ### データベース操作
 
 ```bash
-# packages/webディレクトリから実行
-cd packages/web
+# packages/wwwディレクトリから実行
+cd packages/www
 
 # データベースマイグレーション
 pnpm prisma migrate dev
@@ -144,7 +144,7 @@ pnpm cdk synth
 
 ```
 packages/
-├── web/                  # Webアプリケーション
+├── www/                  # Webアプリケーション
 │   └── src/
 │       ├── app/          # App Router（ページ・レイアウト）
 │       ├── features/     # 機能別実装

@@ -28,10 +28,10 @@ pnpm lint
 pnpm format:check
 ```
 
-## Webアプリケーション（packages/web）
+## Webアプリケーション（packages/www）
 
 ```bash
-cd packages/web
+cd packages/www
 
 # データベースマイグレーション
 pnpm prisma migrate dev

@@ -2,9 +2,9 @@
   "name": "shokujin-wiki",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter @repo/web dev",
-    "build": "pnpm --filter @repo/web build",
-    "start": "pnpm --filter @repo/web start",
+    "dev": "pnpm --filter @repo/www dev",
+    "build": "pnpm --filter @repo/www build",
+    "start": "pnpm --filter @repo/www start",
     "lint": "pnpm --recursive lint",
     "lint:fix": "pnpm --recursive lint:fix",
     "check-types": "pnpm --recursive check-types",

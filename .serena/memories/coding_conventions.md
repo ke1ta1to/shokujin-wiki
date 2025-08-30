@@ -41,7 +41,7 @@
 ## ディレクトリ構成
 
 ```
-packages/web/src/features/  # 機能別実装
+packages/www/src/features/  # 機能別実装
   auth/
     actions/   # Server Actions
     components/  # UI Components

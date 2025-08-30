@@ -41,4 +41,4 @@ jobs:
           echo "POSTGRES_PRISMA_URL=$POSTGRES_URL" >> $GITHUB_ENV
           echo "POSTGRES_URL_NON_POOLING=$(echo $POSTGRES_URL | sed 's/:6543\//:5432\//')" >> $GITHUB_ENV
       - run: pnpm install --frozen-lockfile
-      - run: pnpm -F @repo/web exec prisma migrate deploy
+      - run: pnpm -F @repo/www exec prisma migrate deploy
