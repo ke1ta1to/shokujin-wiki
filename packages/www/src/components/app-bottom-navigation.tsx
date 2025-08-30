@@ -14,11 +14,11 @@ import type { ReactNode } from "react";
 import { useUser } from "@/features/auth/hooks/use-user";
 
 export function AppBottomNavigation() {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
 
   const fixedActions = actions.filter((action) => {
     if (action.authenticated) {
-      return user !== null;
+      return user !== null || isLoading;
     }
     return true;
   });
@@ -41,6 +41,7 @@ export function AppBottomNavigation() {
             icon={action.icon}
             component={NextLink}
             href={action.href}
+            prefetch
           />
         ))}
       </BottomNavigation>

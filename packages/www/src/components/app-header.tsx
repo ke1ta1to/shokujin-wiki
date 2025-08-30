@@ -18,7 +18,7 @@ import { useContinueUrl } from "@/hooks/use-continue-url";
 
 export function AppHeader() {
   const router = useRouter();
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
 
   const { continueUrl } = useContinueUrl();
 
@@ -31,27 +31,33 @@ export function AppHeader() {
   };
 
   return (
-    <AppBar position="static" color="default">
-      <Toolbar>
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2 }}
-        >
+    <AppBar
+      position="static"
+      color="transparent"
+      sx={{ borderTop: 4, borderColor: "primary.main" }}
+    >
+      <Toolbar sx={{ overflowX: "scroll" }}>
+        <IconButton size="large" edge="start" color="inherit" aria-label="menu">
           <MenuIcon />
         </IconButton>
         <Typography
           variant="h6"
           component={NextLink}
           href="/"
-          sx={{ flexGrow: 1, textDecoration: "none", color: "inherit" }}
+          sx={{
+            flexGrow: 1,
+            textDecoration: "none",
+            color: "inherit",
+            mr: 2,
+            flexShrink: 0,
+          }}
         >
-          My Application
+          食神Wiki
         </Typography>
-        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-          {user ? (
+        <Box
+          sx={{ display: "flex", gap: 1, alignItems: "center", flexShrink: 0 }}
+        >
+          {user || isLoading ? (
             <LogoutButton variant="outlined">ログアウト</LogoutButton>
           ) : (
             <>
