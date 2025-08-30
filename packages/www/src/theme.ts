@@ -46,6 +46,13 @@ export const theme = createTheme({
         maxWidth: "lg",
       },
     },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          borderWidth: 0,
+        },
+      },
+    },
   },
   shape: {
     borderRadius: 2,
