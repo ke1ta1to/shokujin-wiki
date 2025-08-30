@@ -48,7 +48,7 @@ export function AppHeader() {
           href="/"
           sx={{ flexGrow: 1, textDecoration: "none", color: "inherit" }}
         >
-          My Application
+          食神Wiki
         </Typography>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           {user ? (
