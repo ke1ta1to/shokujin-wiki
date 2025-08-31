@@ -11,9 +11,9 @@ export default function AuthProtected({
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
 
-  if (!user) {
+  if (!user && !isLoading) {
     return (
       <Suspense>
         <LoginContinueBlock />
