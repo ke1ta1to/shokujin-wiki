@@ -9,6 +9,7 @@ import {
 } from "@mui/icons-material";
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import NextLink from "next/link";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { useUser } from "@/features/auth/hooks/use-user";
@@ -23,6 +24,8 @@ export function AppBottomNavigation() {
     return true;
   });
 
+  const pathname = usePathname();
+
   return (
     <Paper
       sx={{
@@ -33,7 +36,7 @@ export function AppBottomNavigation() {
         paddingBottom: "env(safe-area-inset-bottom)",
       }}
     >
-      <BottomNavigation showLabels>
+      <BottomNavigation showLabels value={true}>
         {fixedActions.map((action) => (
           <BottomNavigationAction
             key={action.label}
@@ -42,6 +45,7 @@ export function AppBottomNavigation() {
             component={NextLink}
             href={action.href}
             prefetch
+            value={pathname === action.href}
           />
         ))}
       </BottomNavigation>
