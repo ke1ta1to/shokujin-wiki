@@ -12,7 +12,6 @@ import {
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 
-import { LogoutButton } from "@/features/auth/components/logout-button";
 import { useUser } from "@/features/auth/hooks/use-user";
 import { useContinueUrl } from "@/hooks/use-continue-url";
 
@@ -57,9 +56,7 @@ export function AppHeader() {
         <Box
           sx={{ display: "flex", gap: 1, alignItems: "center", flexShrink: 0 }}
         >
-          {user || isLoading ? (
-            <LogoutButton variant="outlined">ログアウト</LogoutButton>
-          ) : (
+          {!user && !isLoading && (
             <>
               <Button onClick={handleClickLogin} variant="outlined">
                 ログイン
