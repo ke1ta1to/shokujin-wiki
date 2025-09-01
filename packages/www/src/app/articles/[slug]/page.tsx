@@ -132,7 +132,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const canEdit = !!currentDbUser;
 
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} maxWidth="md" mx="auto">
       <Box
         display="flex"
         alignItems="center"
@@ -238,7 +238,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </Paper>
         )}
 
-        <Stack spacing={2} flex={1}>
+        <Stack spacing={2} flex={1} width="100%">
           <ArticleMarkdownContent content={article.content} />
 
           {article.mainProduct && mainProductReviews && (
