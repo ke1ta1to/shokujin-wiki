@@ -35,7 +35,7 @@ export function AppHeader() {
       color="transparent"
       sx={{ borderTop: 4, borderColor: "primary.main" }}
     >
-      <Toolbar sx={{ overflowX: "scroll" }}>
+      <Toolbar sx={{ overflowX: "auto" }}>
         <IconButton size="large" edge="start" color="inherit" aria-label="menu">
           <MenuIcon />
         </IconButton>
