@@ -2,6 +2,7 @@ import {
   CheckCircleOutline as CheckCircleOutlineIcon,
   Create as CreateIcon,
   Description as DescriptionIcon,
+  Edit as EditIcon,
 } from "@mui/icons-material";
 import {
   Box,
@@ -111,11 +112,29 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <Box>
       <Stack spacing={4} alignItems="center">
-        <ProductDetail
-          product={product}
-          latestImageUrl={latestImageUrl}
-          direction="row"
-        />
+        <Box sx={{ width: "100%", position: "relative" }}>
+          <ProductDetail
+            product={product}
+            latestImageUrl={latestImageUrl}
+            direction="row"
+          />
+          {user && (
+            <Box sx={{ position: "absolute", top: 0, right: 0 }}>
+              <NextLink
+                href={`/products/${product.id}/edit`}
+                style={{ textDecoration: "none" }}
+              >
+                <Button
+                  variant="outlined"
+                  size="small"
+                  startIcon={<EditIcon />}
+                >
+                  編集
+                </Button>
+              </NextLink>
+            </Box>
+          )}
+        </Box>
 
         <Stack spacing={3} alignItems="center" textAlign="center">
           <DescriptionIcon sx={{ fontSize: 64, color: "text.secondary" }} />

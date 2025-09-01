@@ -39,7 +39,10 @@ export function ProductForm({
   useEffect(() => {
     if (state.status === "success") {
       // 成功時の処理
-      onCreate?.(state.created);
+      const product = state.created || state.updated;
+      if (product) {
+        onCreate?.(product);
+      }
     }
   }, [onCreate, state]);
 

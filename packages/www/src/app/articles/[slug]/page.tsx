@@ -184,6 +184,19 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 latestImageUrl={latestImageUrl}
               />
 
+              {user && (
+                <Button
+                  href={`/products/${article.mainProduct.id}/edit`}
+                  style={{ textDecoration: "none" }}
+                  component={NextLink}
+                  variant="outlined"
+                  size="small"
+                  startIcon={<EditIcon />}
+                >
+                  編集
+                </Button>
+              )}
+
               {article.products.filter(
                 ({ product }) => product.id !== article.mainProduct?.id,
               ).length > 0 && (

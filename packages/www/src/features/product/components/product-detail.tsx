@@ -1,4 +1,3 @@
-import { Verified as VerifiedIcon } from "@mui/icons-material";
 import {
   Box,
   Card,
@@ -90,9 +89,9 @@ export function ProductDetail({
               <Typography variant="h4" component="h1">
                 {product.name}
               </Typography>
-              {product.isVerified && (
+              {/* {product.isVerified && (
                 <VerifiedIcon color="primary" fontSize="medium" />
-              )}
+              )} */}
             </Stack>
             <Typography variant="body2" color="text.secondary">
               {formattedDate}に投稿
@@ -106,7 +105,7 @@ export function ProductDetail({
         </Stack>
 
         {/* 商品詳細カード */}
-        <Card sx={{ mt: 3, width: "fit-content" }}>
+        <Card sx={{ mt: 3 }}>
           <CardContent>
             <Stack spacing={2}>
               <Box>
@@ -119,23 +118,6 @@ export function ProductDetail({
                     : "削除されたユーザー"}
                 </Typography>
               </Box>
-              {/* <Box>
-                <Typography variant="subtitle2" color="text.secondary">
-                  ステータス
-                </Typography>
-                <Box sx={{ mt: 0.5 }}>
-                  {product.isVerified ? (
-                    <Chip
-                      label="認証済み"
-                      color="primary"
-                      size="small"
-                      icon={<VerifiedIcon />}
-                    />
-                  ) : (
-                    <Chip label="未認証" size="small" />
-                  )}
-                </Box>
-              </Box> */}
             </Stack>
           </CardContent>
         </Card>
