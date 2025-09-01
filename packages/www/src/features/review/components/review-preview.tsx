@@ -7,6 +7,7 @@ import Image from "next/image";
 import NextLink from "next/link";
 
 import type { Product, Review, User } from "@/generated/prisma";
+import { rgbDataURL } from "@/utils/rgb-data-url";
 
 interface ReviewPreviewProps {
   review: Review & {
@@ -79,6 +80,8 @@ export function ReviewPreview({ review }: ReviewPreviewProps) {
               style={{ objectFit: "cover" }}
               sizes="(max-width: 600px) 100vw, 600px"
               priority={false}
+              placeholder="blur"
+              blurDataURL={rgbDataURL(250, 250, 250)}
             />
           </Box>
         )}
