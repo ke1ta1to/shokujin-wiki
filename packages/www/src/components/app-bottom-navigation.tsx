@@ -1,11 +1,10 @@
 "use client";
 
 import {
+  Article as ArticleIcon,
   Home as HomeIcon,
   Restaurant as RestaurantIcon,
-  Search as SearchIcon,
   Settings as SettingsIcon,
-  Article as ArticleIcon,
 } from "@mui/icons-material";
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import NextLink from "next/link";
@@ -44,7 +43,6 @@ export function AppBottomNavigation() {
             icon={action.icon}
             component={NextLink}
             href={action.href}
-            prefetch
             value={pathname === action.href}
           />
         ))}
@@ -58,11 +56,6 @@ const actions = [
     label: "ホーム",
     icon: <HomeIcon />,
     href: "/",
-  },
-  {
-    label: "検索",
-    icon: <SearchIcon />,
-    href: "/search",
   },
   {
     label: "商品一覧",
