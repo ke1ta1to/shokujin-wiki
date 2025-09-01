@@ -43,7 +43,6 @@ export function AppBottomNavigation() {
             icon={action.icon}
             component={NextLink}
             href={action.href}
-            prefetch
             value={pathname === action.href}
           />
         ))}
