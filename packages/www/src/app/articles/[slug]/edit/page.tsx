@@ -1,4 +1,4 @@
-import { Container, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { notFound, redirect } from "next/navigation";
 
 import { EditArticleForm } from "@/features/article/components/edit-article-form";
@@ -52,11 +52,11 @@ export default async function EditArticlePage({
   }
 
   return (
-    <Container maxWidth="md">
+    <>
       <Typography variant="h4" component="h1" gutterBottom>
         記事を編集
       </Typography>
       <EditArticleForm article={article} />
-    </Container>
+    </>
   );
 }

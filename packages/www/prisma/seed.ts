@@ -7,18 +7,23 @@ const prisma = new PrismaClient();
 const userData: Prisma.UserCreateInput[] = [
   {
     authId: "auth-user-001",
+    name: "田中太郎",
   },
   {
     authId: "auth-user-002",
+    name: "山田花子",
   },
   {
     authId: "auth-user-003",
+    name: "佐藤次郎",
   },
   {
     authId: "auth-user-004",
+    name: "鈴木美香",
   },
   {
     authId: "auth-user-005",
+    name: "高橋健一",
   },
 ];
 

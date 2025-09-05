@@ -22,10 +22,17 @@ export function ReviewPreview({ review }: ReviewPreviewProps) {
     locale: ja,
   });
 
+  // ユーザー名の表示（nameがあればname、なければユーザーID）
+  const displayName = review.user.name || `ユーザー${review.user.id}`;
+  const avatarText =
+    review.user.name && review.user.name.trim().length > 0
+      ? review.user.name.trim()[0]
+      : review.user.id.toString()[0];
+
   return (
     <Stack direction="row" spacing={2} py={2}>
       {/* アバター */}
-      <Avatar>{review.user.id}</Avatar>
+      <Avatar>{avatarText}</Avatar>
 
       {/* メインコンテンツ */}
       <Stack sx={{ flex: 1 }} spacing={1}>
@@ -38,7 +45,7 @@ export function ReviewPreview({ review }: ReviewPreviewProps) {
           {/* ヘッダー */}
           <Stack direction="row" spacing={1} alignItems="center">
             <Typography variant="subtitle2" fontWeight="bold">
-              ユーザー{review.user.id}
+              {displayName}
             </Typography>
             <Typography variant="caption" color="text.secondary">
               {formattedDate}
