@@ -5,8 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider      = "prisma-client-js"
-  output        = "../src/generated/prisma"
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -17,8 +17,9 @@ datasource db {
 
 // ユーザー
 model User {
-  id     Int    @id @default(autoincrement())
-  authId String @unique // Supabase Auth ID
+  id     Int     @id @default(autoincrement())
+  authId String  @unique // Supabase Auth ID
+  name   String? // ユーザー名（オプショナル）
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
