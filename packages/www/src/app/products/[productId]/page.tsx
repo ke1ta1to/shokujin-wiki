@@ -69,7 +69,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
       where: { id: productIdNumber },
       include: {
         mainArticle: true,
-        user: true,
         _count: {
           select: { Review: true },
         },

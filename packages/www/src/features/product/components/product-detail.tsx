@@ -1,22 +1,13 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
 import { ja } from "date-fns/locale";
 import Image from "next/image";
 
-import type { Product, User } from "@/generated/prisma";
+import type { Product } from "@/generated/prisma";
 import { formatPrice } from "@/utils/format-price";
 
 interface ProductDetailProps {
-  product: Product & {
-    user: User | null;
-  };
+  product: Product;
   latestImageUrl: string | null;
   direction?: "row" | "column";
 }
@@ -103,24 +94,6 @@ export function ProductDetail({
             {formatPrice(product.price)}
           </Typography>
         </Stack>
-
-        {/* 商品詳細カード */}
-        <Card sx={{ mt: 3 }}>
-          <CardContent>
-            <Stack spacing={2}>
-              <Box>
-                <Typography variant="subtitle2" color="text.secondary">
-                  作成者
-                </Typography>
-                <Typography variant="body1">
-                  {product.user
-                    ? `ユーザー${product.user.id}`
-                    : "削除されたユーザー"}
-                </Typography>
-              </Box>
-            </Stack>
-          </CardContent>
-        </Card>
       </Box>
     </Stack>
   );

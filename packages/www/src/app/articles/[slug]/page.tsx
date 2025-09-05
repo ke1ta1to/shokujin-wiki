@@ -46,7 +46,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       user: true,
       mainProduct: {
         include: {
-          user: true,
           _count: {
             select: { Review: true },
           },
@@ -155,7 +154,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         )}
       </Box>
 
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Typography variant="body2" color="text.secondary">
+          作成者: {article.user.name?.trim() || `ユーザー${article.user.id}`}
+        </Typography>
         <Typography variant="body2" color="text.secondary">
           {new Date(article.createdAt).toLocaleString("ja-JP")}
         </Typography>
