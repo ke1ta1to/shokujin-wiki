@@ -4,6 +4,7 @@ on: workflow_dispatch
 
 jobs:
   migrate:
+    environment: Production
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
