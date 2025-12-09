@@ -1,4 +1,0 @@
-pnpm-lock.yaml
-pnpm-workspace.yaml
-packages/www/src/generated
-packages/infra/cdk.out
