@@ -1,0 +1,7 @@
+{
+  "name": "shokujin-wiki",
+  "scripts": {},
+  "author": "Keita Ito <contact@keitaito.net> (https://keitaito.net/)",
+  "license": "MIT",
+  "packageManager": "pnpm@10.23.0"
+}
