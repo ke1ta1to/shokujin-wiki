@@ -1,14 +1,19 @@
 import { zValidator } from "@hono/zod-validator";
+import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import { Hono } from "hono";
 import { z } from "zod";
 
-const app = new Hono();
+import { reviewsTable } from "../db/schema.js";
 
-app.get("/", (c) => {
-  const reviews = [
-    { id: 1, comment: "hello" },
-    { id: 2, comment: "world" },
-  ];
+export interface Variables {
+  db: NodePgDatabase;
+}
+
+const app = new Hono<{ Variables: Variables }>();
+
+app.get("/", async (c) => {
+  const db = c.get("db");
+  const reviews = await db.select().from(reviewsTable);
   return c.json(reviews);
 });
 
@@ -16,9 +21,14 @@ const createReviewSchema = z.object({
   comment: z.string().min(1).nullable(),
 });
 
-app.post("/", zValidator("json", createReviewSchema), (c) => {
+app.post("/", zValidator("json", createReviewSchema), async (c) => {
+  const db = c.get("db");
   const data = c.req.valid("json");
-  return c.json({ id: 3, comment: data.comment }, 201);
+
+  const insertedReview = (
+    await db.insert(reviewsTable).values({ comment: data.comment }).returning()
+  )[0];
+  return c.json(insertedReview, 201);
 });
 
 export default app;

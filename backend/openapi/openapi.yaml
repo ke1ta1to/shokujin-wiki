@@ -11,7 +11,7 @@ servers:
   - url: /
 
 paths:
-  /reviews:
+  /api/reviews:
     get:
       summary: Get Reviews
       operationId: get_reviews
