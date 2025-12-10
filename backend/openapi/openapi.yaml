@@ -1,0 +1,89 @@
+openapi: 3.1.0
+
+info:
+  title: Shokujin Wiki API
+  version: 1.0.0
+  license:
+    name: MIT
+    url: "https://opensource.org/license/mit/"
+
+servers:
+  - url: /
+
+paths:
+  /reviews:
+    get:
+      summary: Get Reviews
+      operationId: get_reviews
+      security: []
+      tags:
+        - review
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Review"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+    post:
+      summary: Create Review
+      operationId: create_review
+      security: []
+      tags:
+        - review
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                comment:
+                  type:
+                    - string
+                    - "null"
+              required:
+                - comment
+
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+components:
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  schemas:
+    Review:
+      properties:
+        id:
+          type: number
+        comment:
+          type:
+            - string
+            - "null"
+      required:
+        - id
+        - comment
+    Error:
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+tags:
+  - name: review
+    description: Operations related to reviews

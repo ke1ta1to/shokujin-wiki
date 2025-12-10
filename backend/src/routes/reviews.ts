@@ -5,17 +5,20 @@ import { z } from "zod";
 const app = new Hono();
 
 app.get("/", (c) => {
-  const reviews = [{ name: "hello" }, { name: "world" }];
+  const reviews = [
+    { id: 1, comment: "hello" },
+    { id: 2, comment: "world" },
+  ];
   return c.json(reviews);
 });
 
 const createReviewSchema = z.object({
-  name: z.string().min(1),
+  comment: z.string().min(1).nullable(),
 });
 
 app.post("/", zValidator("json", createReviewSchema), (c) => {
   const data = c.req.valid("json");
-  return c.json({ message: `Review for ${data.name} created successfully.` });
+  return c.json({ id: 3, comment: data.comment }, 201);
 });
 
 export default app;
