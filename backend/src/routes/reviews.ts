@@ -1,12 +1,12 @@
 import { zValidator } from "@hono/zod-validator";
-import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import { Hono } from "hono";
 import { z } from "zod";
 
 import { reviewsTable } from "../db/schema.js";
+import type { AppDb } from "../index.js";
 
 export interface Variables {
-  db: NodePgDatabase;
+  db: AppDb;
 }
 
 const app = new Hono<{ Variables: Variables }>();

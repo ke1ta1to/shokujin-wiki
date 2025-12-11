@@ -41,6 +41,9 @@ importers:
 
   backend:
     dependencies:
+      '@electric-sql/pglite':
+        specifier: ^0.3.14
+        version: 0.3.14
       '@hono/node-server':
         specifier: ^1.19.6
         version: 1.19.7(hono@4.10.8)
@@ -52,7 +55,10 @@ importers:
         version: 17.2.3
       drizzle-orm:
         specifier: ^0.45.0
-        version: 0.45.0(@types/pg@8.15.6)(pg@8.16.3)
+        version: 0.45.0(@electric-sql/pglite@0.3.14)(@types/pg@8.15.6)(pg@8.16.3)
+      drizzle-seed:
+        specifier: ^0.3.1
+        version: 0.3.1(drizzle-orm@0.45.0(@electric-sql/pglite@0.3.14)(@types/pg@8.15.6)(pg@8.16.3))
       hono:
         specifier: ^4.10.8
         version: 4.10.8
@@ -77,6 +83,9 @@ packages:
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
+
+  '@electric-sql/pglite@0.3.14':
+    resolution: {integrity: sha512-3DB258dhqdsArOI1fIt7cb9RpUOgcDg5hXWVgVHAeqVQ/qxtFy605QKs4gx6mFq3jWsSPqDN8TgSEsqC3OfV9Q==}
 
   '@emnapi/core@1.7.1':
     resolution: {integrity: sha512-o1uhUASyo921r2XtHYOHy7gdkGLge8ghBEQHMWmyJFoXlpU58kIrhhN3w26lpQb6dspetweapMn2CSNwQ8I4wg==}
@@ -1184,6 +1193,14 @@ packages:
       sqlite3:
         optional: true
 
+  drizzle-seed@0.3.1:
+    resolution: {integrity: sha512-F/0lgvfOAsqlYoHM/QAGut4xXIOXoE5VoAdv2FIl7DpGYVXlAzKuJO+IphkKUFK3Dz+rFlOsQLnMNrvoQ0cx7g==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.4'
+    peerDependenciesMeta:
+      drizzle-orm:
+        optional: true
+
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
@@ -1800,6 +1817,9 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
+  pure-rand@6.1.0:
+    resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
+
   reflect.getprototypeof@1.0.10:
     resolution: {integrity: sha512-00o4I+DVrefhv+nX0ulyi3biSHCPDe+yLv5o/p6d/UVlirijB8E16FtfwSAi4g3tcqrQ4lRAqQSoFEZJehYEcw==}
     engines: {node: '>= 0.4'}
@@ -2137,6 +2157,8 @@ packages:
 snapshots:
 
   '@drizzle-team/brocli@0.10.2': {}
+
+  '@electric-sql/pglite@0.3.14': {}
 
   '@emnapi/core@1.7.1':
     dependencies:
@@ -2933,10 +2955,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.45.0(@types/pg@8.15.6)(pg@8.16.3):
+  drizzle-orm@0.45.0(@electric-sql/pglite@0.3.14)(@types/pg@8.15.6)(pg@8.16.3):
     optionalDependencies:
+      '@electric-sql/pglite': 0.3.14
       '@types/pg': 8.15.6
       pg: 8.16.3
+
+  drizzle-seed@0.3.1(drizzle-orm@0.45.0(@electric-sql/pglite@0.3.14)(@types/pg@8.15.6)(pg@8.16.3)):
+    dependencies:
+      pure-rand: 6.1.0
+    optionalDependencies:
+      drizzle-orm: 0.45.0(@electric-sql/pglite@0.3.14)(@types/pg@8.15.6)(pg@8.16.3)
 
   dunder-proto@1.0.1:
     dependencies:
@@ -3695,6 +3724,8 @@ snapshots:
   prettier@3.7.4: {}
 
   punycode@2.3.1: {}
+
+  pure-rand@6.1.0: {}
 
   reflect.getprototypeof@1.0.10:
     dependencies:

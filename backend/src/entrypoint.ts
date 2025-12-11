@@ -1,8 +1,13 @@
 import "dotenv/config";
 import { serve } from "@hono/node-server";
 
-import app from "./index.js";
+import { createApp } from "./index.js";
 
-serve({ fetch: app.fetch, port: 3000 }, (info) => {
-  console.log(`Server is running on http://localhost:${info.port}`);
-});
+function start() {
+  const app = createApp();
+  serve({ fetch: app.fetch, port: 3000 }, (info) => {
+    console.log(`Server is running on http://localhost:${info.port}`);
+  });
+}
+
+start();
