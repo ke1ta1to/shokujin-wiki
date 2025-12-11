@@ -1,9 +1,0 @@
-{
-  "extends": "@tsconfig/node22/tsconfig.json",
-  "compilerOptions": {
-    "experimentalDecorators": true,
-    "strictPropertyInitialization": false,
-    "isolatedModules": true
-  },
-  "exclude": ["node_modules", "cdk.out"]
-}
