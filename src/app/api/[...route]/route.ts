@@ -11,6 +11,10 @@ const helloSchema = z.object({
   name: z.string().min(1).max(100),
 });
 
+export const createReviewSchema = z.object({
+  content: z.string().min(1).max(500).nullable(),
+});
+
 export interface Variables {
   db: ReturnType<typeof drizzle>;
 }
@@ -36,15 +40,17 @@ const app = new Hono<{ Variables: Variables }>()
     const reviews = await db.select().from(reviewsTable);
     return c.json({ reviews });
   })
-  .get("/create-review", async (c) => {
+  .post("/reviews", zValidator("json", createReviewSchema), async (c) => {
     const db = c.get("db");
-    const newReview = await db
+    const { content } = c.req.valid("json");
+    const result = await db
       .insert(reviewsTable)
-      .values({ content: "This is a sample review." })
+      .values({ content })
       .returning();
-    return c.json({ review: newReview });
+    return c.json({ review: result[0] });
   });
 
 export const GET = handle(app);
+export const POST = handle(app);
 
 export type AppType = typeof app;

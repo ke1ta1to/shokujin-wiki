@@ -1,21 +1,43 @@
 "use client";
 
 import { hc } from "hono/client";
+import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 
 import type { AppType } from "@/app/api/[...route]/route";
 
 export function RpcSample() {
-  const [message, setMessage] = useState<string | null>(null);
+  const [reviews, setReviews] = useState<string | null>(null);
+
   useEffect(() => {
     (async () => {
       const client = hc<AppType>("/");
-      const res = await client.api.hello.$get({ query: { name: "Shokujin" } });
+      const res = await client.api.reviews.$get();
       if (res.ok) {
         const data = await res.json();
-        setMessage(data.message);
+        setReviews(JSON.stringify(data.reviews, null, 2));
       }
     })();
   }, []);
-  return <div>RPC Sample Component: {message}</div>;
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+    const client = hc<AppType>("/");
+    await client.api.reviews.$post({
+      json: { content: data.content as string },
+    });
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <textarea name="content" rows={4} cols={50} />
+        <br />
+        <button type="submit">Submit Review</button>
+      </form>
+      <pre>{reviews}</pre>
+    </div>
+  );
 }
