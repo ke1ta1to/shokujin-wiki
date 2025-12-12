@@ -10,7 +10,7 @@ export function RpcSample() {
   useEffect(() => {
     (async () => {
       const client = hc<AppType>("/");
-      const res = await client.api.hello.$get();
+      const res = await client.api.hello.$get({ query: { name: "Shokujin" } });
       if (res.ok) {
         const data = await res.json();
         setMessage(data.message);
