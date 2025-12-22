@@ -40,7 +40,7 @@ app.get("/:id", zValidator("param", getReviewParamSchema), async (c) => {
     .from(reviewsTable)
     .where(eq(reviewsTable.id, id))
     .limit(1);
-  if (!review) {
+  if (review.length === 0) {
     return c.json({ message: "Review not found" }, 404);
   }
   return c.json(review[0], 200);
