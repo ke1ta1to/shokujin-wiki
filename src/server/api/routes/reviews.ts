@@ -1,6 +1,10 @@
 import { zValidator } from "@hono/zod-validator";
+import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import z from "zod";
+
+import db from "@/server/db";
+import { reviewsTable } from "@/server/db/schema";
 
 const app = new Hono();
 
@@ -12,16 +16,34 @@ const createReviewSchema = z.object({
 
 app.post("/", zValidator("json", createReviewSchema), async (c) => {
   const { comment } = c.req.valid("json");
-  return c.json(
-    { message: "Review created successfully", review: { comment } },
-    201,
-  );
+  const review = await db.insert(reviewsTable).values({ comment }).returning();
+  return c.json(review, 201);
 });
 
 // GET /reviews
 
-app.get("/", (c) => {
-  return c.json({ message: "Hello from the Reviews route!" });
+app.get("/", async (c) => {
+  const reviews = await db.select().from(reviewsTable);
+  return c.json(reviews, 200);
+});
+
+// GET /reviews/:id
+
+const getReviewParamSchema = z.object({
+  id: z.coerce.number().int(),
+});
+
+app.get("/:id", zValidator("param", getReviewParamSchema), async (c) => {
+  const { id } = c.req.valid("param");
+  const review = await db
+    .select()
+    .from(reviewsTable)
+    .where(eq(reviewsTable.id, id))
+    .limit(1);
+  if (!review) {
+    return c.json({ message: "Review not found" }, 404);
+  }
+  return c.json(review[0], 200);
 });
 
 // PATCH /reviews/:id
@@ -41,10 +63,15 @@ app.patch(
   async (c) => {
     const { id } = c.req.valid("param");
     const { comment } = c.req.valid("json");
-    return c.json(
-      { message: `Review ${id} updated successfully`, review: { comment } },
-      200,
-    );
+    const updatedReview = await db
+      .update(reviewsTable)
+      .set({ comment })
+      .where(eq(reviewsTable.id, id))
+      .returning();
+    if (updatedReview.length === 0) {
+      return c.json({ message: "Review not found" }, 404);
+    }
+    return c.json(updatedReview[0], 200);
   },
 );
 
@@ -56,7 +83,14 @@ const deleteReviewParamSchema = z.object({
 
 app.delete("/:id", zValidator("param", deleteReviewParamSchema), async (c) => {
   const { id } = c.req.valid("param");
-  return c.json({ message: `Review ${id} deleted successfully` }, 200);
+  const deletedReview = await db
+    .delete(reviewsTable)
+    .where(eq(reviewsTable.id, id))
+    .returning();
+  if (deletedReview.length === 0) {
+    return c.json({ message: "Review not found" }, 404);
+  }
+  return c.body(null, 204);
 });
 
 export default app;
