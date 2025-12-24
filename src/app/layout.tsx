@@ -1,4 +1,7 @@
 import type { ReactNode } from "react";
+
+import { AppLayout } from "@/components/layouts/app-layout";
+
 import "./globals.css";
 
 export interface RootLayoutProps {
@@ -10,7 +13,9 @@ export default function RootLayout(props: RootLayoutProps) {
 
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body>
+        <AppLayout>{children}</AppLayout>
+      </body>
     </html>
   );
 }
