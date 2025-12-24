@@ -1,3 +1,9 @@
+import { SignInForm } from "@/features/auth/components/sign-in-form";
+
 export function HomeContent() {
-  return <div>Welcome to the Home Page!</div>;
+  return (
+    <div>
+      <SignInForm />
+    </div>
+  );
 }
