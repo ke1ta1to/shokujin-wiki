@@ -1,0 +1,145 @@
+openapi: 3.1.0
+info:
+  title: Shokujin Wiki API
+  version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: /api
+
+paths:
+  /reviews:
+    get:
+      summary: Retrieve a list of reviews
+      operationId: get_reviews
+      security: []
+      responses:
+        200:
+          description: A list of reviews
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reviews:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Review"
+                  total:
+                    type: integer
+        400:
+          description: Bad Request
+    post:
+      summary: Create a new review
+      operationId: create_review
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+              required:
+                - comment
+      responses:
+        201:
+          description: Review created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        400:
+          description: Bad Request
+  /reviews/{id}:
+    get:
+      summary: Retrieve a specific review by ID
+      operationId: get_review_by_id
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: A single review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        400:
+          description: Bad Request
+        404:
+          description: Review not found
+    patch:
+      summary: Update a specific review by ID
+      operationId: update_review_by_id
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+              required:
+                - comment
+      responses:
+        200:
+          description: Review updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        400:
+          description: Bad Request
+        404:
+          description: Review not found
+    delete:
+      summary: Delete a specific review by ID
+      operationId: delete_review_by_id
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Review deleted successfully
+        400:
+          description: Bad Request
+        404:
+          description: Review not found
+
+components:
+  schemas:
+    Review:
+      type: object
+      properties:
+        id:
+          type:
+            - integer
+            - "null"
+        comment:
+          type:
+            - string
+            - "null"
+      required:
+        - id
+        - comment

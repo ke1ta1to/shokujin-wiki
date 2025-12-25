@@ -1,8 +1,22 @@
 "use client";
 
-import { useUser } from "@/features/auth/hooks/use-user";
+import createFetchClient from "openapi-fetch";
+import createClient from "openapi-react-query";
+
+import type { paths } from "@/lib/api";
+
+const fetchClient = createFetchClient<paths>({
+  baseUrl: "/api",
+});
+const $api = createClient(fetchClient);
 
 export function HomeContent() {
-  const { user } = useUser();
-  return <pre>{JSON.stringify(user, null, 2)}</pre>;
+  const { data: reviews, error, isLoading } = $api.useQuery("get", "/reviews");
+  if (isLoading || !reviews) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {String(error)}</div>;
+  }
+  return <pre>{JSON.stringify(reviews, null, 2)}</pre>;
 }
