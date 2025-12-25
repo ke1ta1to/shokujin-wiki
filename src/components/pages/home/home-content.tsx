@@ -1,9 +1,8 @@
-import { SignInForm } from "@/features/auth/components/sign-in-form";
+"use client";
+
+import { useUser } from "@/features/auth/hooks/use-user";
 
 export function HomeContent() {
-  return (
-    <div>
-      <SignInForm />
-    </div>
-  );
+  const { user } = useUser();
+  return <pre>{JSON.stringify(user, null, 2)}</pre>;
 }

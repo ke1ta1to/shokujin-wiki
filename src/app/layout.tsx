@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { AppLayout } from "@/components/layouts/app-layout";
-
+import { UserProvider } from "@/features/auth/components/user-provider";
 import "./globals.css";
 
 export interface RootLayoutProps {
@@ -14,7 +14,9 @@ export default function RootLayout(props: RootLayoutProps) {
   return (
     <html lang="ja">
       <body>
-        <AppLayout>{children}</AppLayout>
+        <UserProvider>
+          <AppLayout>{children}</AppLayout>
+        </UserProvider>
       </body>
     </html>
   );

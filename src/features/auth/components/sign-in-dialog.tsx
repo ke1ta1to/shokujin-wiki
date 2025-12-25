@@ -1,18 +1,21 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createClient } from "@supabase/supabase-js";
+import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Field,
   FieldError,
@@ -20,17 +23,15 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { supabaseClient } from "@/lib/supabase/client";
 
 const formSchema = z.object({
   email: z.email("有効なメールアドレスを入力してください"),
   password: z.string().min(6, "パスワードは6文字以上で入力してください"),
 });
 
-export function SignInForm() {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string,
-  );
+export function SignInDialog() {
+  const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,10 +43,10 @@ export function SignInForm() {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const { email, password } = data;
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password,
+    });
     if (error) {
       console.log(error);
       form.setError("root", {
@@ -53,15 +54,21 @@ export function SignInForm() {
           "ログインに失敗しました。メールアドレスとパスワードを確認してください。",
       });
     }
-    console.log({ user });
+    toast.success("ログインしました");
+    form.reset();
+    setOpen(false);
   };
 
   return (
-    <Card className="w-full sm:max-w-md">
-      <CardHeader>
-        <CardTitle>ログイン</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="ghost">ログイン</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>ログイン</DialogTitle>
+          <DialogDescription></DialogDescription>
+        </DialogHeader>
         {form.formState.errors.root && (
           <Field data-invalid>
             <FieldError
@@ -116,14 +123,15 @@ export function SignInForm() {
             />
           </FieldGroup>
         </form>
-      </CardContent>
-      <CardFooter>
-        <Field orientation="horizontal">
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">キャンセル</Button>
+          </DialogClose>
           <Button type="submit" form="sign-in-form">
             ログイン
           </Button>
-        </Field>
-      </CardFooter>
-    </Card>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
