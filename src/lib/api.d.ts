@@ -46,7 +46,7 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         Review: {
-            id: number | null;
+            id: number;
             comment: string | null;
         };
     };
@@ -74,8 +74,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        reviews?: components["schemas"]["Review"][];
-                        total?: number;
+                        reviews: components["schemas"]["Review"][];
+                        total: number;
                     };
                 };
             };

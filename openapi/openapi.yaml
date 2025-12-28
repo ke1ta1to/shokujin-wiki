@@ -29,6 +29,9 @@ paths:
                       $ref: "#/components/schemas/Review"
                   total:
                     type: integer
+                required:
+                  - reviews
+                  - total
         400:
           description: Bad Request
     post:
@@ -133,9 +136,7 @@ components:
       type: object
       properties:
         id:
-          type:
-            - integer
-            - "null"
+          type: integer
         comment:
           type:
             - string
