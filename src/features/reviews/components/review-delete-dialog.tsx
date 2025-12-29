@@ -45,7 +45,7 @@ export function ReviewDeleteDialog(props: ReviewDeleteDialogProps) {
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>レビューを削除</AlertDialogTitle>
+          <AlertDialogTitle>レビュー削除</AlertDialogTitle>
           <AlertDialogDescription>
             この操作は元に戻せません。
           </AlertDialogDescription>
