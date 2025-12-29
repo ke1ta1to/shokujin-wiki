@@ -10,7 +10,7 @@ import { useUser } from "@/features/auth/hooks/use-user";
 export function Header() {
   const { user, isLoading } = useUser();
   return (
-    <div className="border-b-2">
+    <div className="border-t-4 border-t-orange-500">
       <div className="max-w-6xl h-16 mx-auto flex items-center px-4">
         <Image
           alt=""
