@@ -18,6 +18,7 @@ export function useUser() {
 
   return {
     user: user === "loading" ? null : user,
+    isLoading: user === "loading",
     signOut,
   };
 }

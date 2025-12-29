@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { count, eq } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";
 import { Hono } from "hono";
 import z from "zod";
@@ -27,7 +27,10 @@ export function createReviewsRoute(db: LibSQLDatabase) {
   // GET /reviews
 
   app.get("/", async (c) => {
-    const reviews = await db.select().from(reviewsTable);
+    const reviews = await db
+      .select()
+      .from(reviewsTable)
+      .orderBy(desc(reviewsTable.id));
     const total = await db.select({ count: count() }).from(reviewsTable);
     return c.json(
       {

@@ -1,17 +1,16 @@
 "use client";
 
-import createFetchClient from "openapi-fetch";
-import createClient from "openapi-react-query";
+import { PlusIcon } from "lucide-react";
+import { useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import { ReviewPreview } from "@/features/reviews/components/review-preview";
-import type { paths } from "@/lib/api";
-
-const fetchClient = createFetchClient<paths>({
-  baseUrl: "/api",
-});
-const $api = createClient(fetchClient);
+import { ReviewUploadDialog } from "@/features/reviews/components/review-upload-dialog";
+import { $api } from "@/lib/api-client";
 
 export function HomeContent() {
+  const [openUploadDialog, setOpenUploadDialog] = useState(false);
+
   const { data, error, isLoading } = $api.useQuery("get", "/reviews");
   if (isLoading || !data) {
     return null;
@@ -19,13 +18,28 @@ export function HomeContent() {
   if (error) {
     return <div>Error: {String(error)}</div>;
   }
+
   return (
-    <div className="divide-y">
-      {data.reviews.map((review) => (
-        <div key={review.id} className="py-2">
-          <ReviewPreview id={review.id} comment={review.comment} />
-        </div>
-      ))}
-    </div>
+    <>
+      <div className="divide-y">
+        {data.reviews.map((review) => (
+          <div key={review.id} className="py-2">
+            <ReviewPreview id={review.id} comment={review.comment} />
+          </div>
+        ))}
+      </div>
+      <Button
+        size="icon"
+        variant="default"
+        className="fixed bottom-4 right-4"
+        onClick={() => setOpenUploadDialog(true)}
+      >
+        <PlusIcon />
+      </Button>
+      <ReviewUploadDialog
+        open={openUploadDialog}
+        onOpenChange={setOpenUploadDialog}
+      />
+    </>
   );
 }
