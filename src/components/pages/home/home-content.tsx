@@ -1,6 +1,7 @@
 "use client";
 
 import { PlusIcon } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -11,11 +12,11 @@ import { $api } from "@/lib/api-client";
 export function HomeContent() {
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
 
-  const { data, error, isLoading } = $api.useQuery("get", "/reviews");
+  const { data, isError, error, isLoading } = $api.useQuery("get", "/reviews");
   if (isLoading || !data) {
     return null;
   }
-  if (error) {
+  if (isError) {
     return <div>Error: {String(error)}</div>;
   }
 
@@ -23,9 +24,13 @@ export function HomeContent() {
     <>
       <div className="divide-y">
         {data.reviews.map((review) => (
-          <div key={review.id} className="py-2">
+          <Link
+            href={`/reviews/${review.id}`}
+            key={review.id}
+            className="py-2 block hover:bg-gray-50"
+          >
             <ReviewPreview id={review.id} comment={review.comment} />
-          </div>
+          </Link>
         ))}
       </div>
       <Button

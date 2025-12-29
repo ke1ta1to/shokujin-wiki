@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import NextLink from "next/link";
 
 import logoImage from "@/assets/logo.svg";
 import { SignInDialog } from "@/features/auth/components/sign-in-dialog";
@@ -12,12 +13,14 @@ export function Header() {
   return (
     <div className="border-t-4 border-t-orange-500">
       <div className="max-w-6xl h-16 mx-auto flex items-center px-4">
-        <Image
-          alt=""
-          src={logoImage}
-          className="h-5 w-auto mr-auto"
-          loading="eager"
-        />
+        <NextLink href="/" className="mr-auto">
+          <Image
+            alt=""
+            src={logoImage}
+            className="h-5 w-auto"
+            loading="eager"
+          />
+        </NextLink>
         {user !== null || isLoading ? <UserMenu /> : <SignInDialog />}
       </div>
     </div>

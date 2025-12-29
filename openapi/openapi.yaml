@@ -34,6 +34,10 @@ paths:
                   - total
         400:
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     post:
       summary: Create a new review
       operationId: create_review
@@ -58,6 +62,10 @@ paths:
                 $ref: "#/components/schemas/Review"
         400:
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /reviews/{id}:
     get:
       summary: Retrieve a specific review by ID
@@ -78,8 +86,16 @@ paths:
                 $ref: "#/components/schemas/Review"
         400:
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         404:
           description: Review not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     patch:
       summary: Update a specific review by ID
       operationId: update_review_by_id
@@ -110,8 +126,16 @@ paths:
                 $ref: "#/components/schemas/Review"
         400:
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         404:
           description: Review not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     delete:
       summary: Delete a specific review by ID
       operationId: delete_review_by_id
@@ -127,8 +151,16 @@ paths:
           description: Review deleted successfully
         400:
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         404:
           description: Review not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   schemas:
@@ -144,3 +176,10 @@ components:
       required:
         - id
         - comment
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
