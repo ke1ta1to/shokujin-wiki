@@ -5,5 +5,9 @@ export default async function ReviewPage(
 ) {
   const { reviewId } = await props.params;
 
-  return <ReviewContent reviewId={parseInt(reviewId)} />;
+  return (
+    <div className="max-w-2xl mx-auto">
+      <ReviewContent reviewId={parseInt(reviewId)} />
+    </div>
+  );
 }

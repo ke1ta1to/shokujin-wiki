@@ -1,5 +1,10 @@
 "use client";
 
+import { EditIcon } from "lucide-react";
+import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { ReviewEditDialog } from "@/features/reviews/components/review-edit-dialog";
 import { ReviewPreview } from "@/features/reviews/components/review-preview";
 import { $api } from "@/lib/api-client";
 
@@ -9,6 +14,8 @@ export interface ReviewContentProps {
 
 export function ReviewContent(props: ReviewContentProps) {
   const { reviewId } = props;
+
+  const [openEditDialog, setOpenEditDialog] = useState(false);
 
   const { data, isError, error, isLoading } = $api.useQuery(
     "get",
@@ -30,8 +37,24 @@ export function ReviewContent(props: ReviewContentProps) {
   }
 
   return (
-    <div>
-      <ReviewPreview id={data.id} comment={data?.comment} />
-    </div>
+    <>
+      <div className="relative">
+        <ReviewPreview id={data.id} comment={data?.comment} />
+        <Button
+          variant="outline"
+          size="icon"
+          className="absolute top-0 right-0"
+          onClick={() => setOpenEditDialog(true)}
+        >
+          <EditIcon />
+        </Button>
+      </div>
+      <ReviewEditDialog
+        open={openEditDialog}
+        onOpenChange={setOpenEditDialog}
+        reviewId={reviewId}
+        defaultValues={{ comment: data.comment || "" }}
+      />
+    </>
   );
 }
